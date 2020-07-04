@@ -1,7 +1,7 @@
 {
-  "name": "kuraitis_rewrite",
+  "name": "kuraitis_rewrite_frontend",
   "version": "1.0.0",
-  "description": "Rewrite of Kuraitis.dk",
+  "description": "Rewrite of Kuraitis.dk frontend",
   "main": "index.js",
   "scripts": {
     "deploy-frontend": "git subtree push --prefix frontend kuraitis-next-prod master"
