@@ -1,0 +1,19 @@
+{
+  "name": "kuraitis_rewrite",
+  "version": "1.0.0",
+  "description": "Rewrite of Kuraitis.dk",
+  "main": "index.js",
+  "scripts": {
+    "deploy-frontend": "git subtree push --prefix frontend kuraitis-next-prod master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jj-lucas/kuraitis_rewrite.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jj-lucas/kuraitis_rewrite/issues"
+  },
+  "homepage": "https://github.com/jj-lucas/kuraitis_rewrite#readme"
+}
