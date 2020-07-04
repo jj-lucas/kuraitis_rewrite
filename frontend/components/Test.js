@@ -3,15 +3,11 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import styled from 'styled-components'
 
-const ALL_ITEMS_QUERY = gql`
-	query ALL_ITEMS_QUERY {
-		items {
+const ALL_USERS_QUERY = gql`
+	query ALL_USERS_QUERY {
+		users {
 			id
-			title
-			price
-			description
-			image
-			largeImage
+			name
 		}
 	}
 `
@@ -27,14 +23,14 @@ const Center = styled.div`
 `
 const Items = () => (
 	<Center>
-		<Query query={ALL_ITEMS_QUERY}>
+		<Query query={ALL_USERS_QUERY}>
 			{({ data, error, loading }) => {
 				if (error) return <p>Error</p>
 				if (loading) return <p>Loading.. </p>
 				return (
 					<ItemsList>
-						{data.items.map(item => (
-							<p key={item.id}>{item.title}</p>
+						{data.users.map(item => (
+							<p key={item.id}>{item.name}</p>
 						))}
 					</ItemsList>
 				)
