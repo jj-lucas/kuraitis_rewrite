@@ -4,7 +4,8 @@
   "description": "Rewrite of Kuraitis.dk frontend",
   "main": "index.js",
   "scripts": {
-    "deploy-frontend": "git subtree push --prefix frontend kuraitis-next-prod master"
+    "deploy-frontend": "git subtree push --prefix frontend kuraitis-next-prod master",
+    "deploy-backend": "git subtree push --prefix backend kuraitis-yoga-prod master"
   },
   "repository": {
     "type": "git",
