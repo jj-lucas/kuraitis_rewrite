@@ -7,13 +7,17 @@ const StyledHeader = styled.header`
 
 	margin: 0 auto;
 	max-width: ${props => props.theme.maxWidth};
+
+	span {
+		flex: 1;
+	}
 `
-const HeaderLogo = styled.div`
-	display: flex;
-
-	justify-content: center;
-	flex-grow: 1;
-
+const Left = styled.span`
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		display: none;
+	}
+`
+const Center = styled.span`
 	a {
 		display: flex;
 
@@ -25,6 +29,7 @@ const HeaderLogo = styled.div`
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
 		justify-content: start;
+		flex-basis: 50% !important;
 	}
 
 	small {
@@ -35,14 +40,21 @@ const HeaderLogo = styled.div`
 		}
 	}
 `
+const Right = styled.span`
+	text-align: right;
+`
+const HeaderLogo = styled.div`
+	display: flex;
+
+	justify-content: center;
+	flex-grow: 1;
+`
 const Logo = styled.img`
 	margin: ${props => props.theme.spacing.sm};
 `
-
 const UtilsBar = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
-
 const Nav = styled.div`
 	width: 100%;
 	margin: ${props => props.theme.spacing.sm};
@@ -50,15 +62,19 @@ const Nav = styled.div`
 
 const Header = () => (
 	<StyledHeader>
-		<HeaderLogo>
+		<Left></Left>
+		<Center>
 			<a href="/">
 				<Logo src="http://placekitten.com/80/80" />
 				<span>
 					Sergio Kuraitis<small> - Naturligt design</small>
 				</span>
 			</a>
-		</HeaderLogo>
-		<UtilsBar>Utils Bar</UtilsBar>
+		</Center>
+		<Right>
+			<UtilsBar>Utils Bar</UtilsBar>
+		</Right>
+
 		<Nav>Nav</Nav>
 	</StyledHeader>
 )
