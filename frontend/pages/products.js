@@ -3,7 +3,7 @@ import Items from '../components/Test'
 
 const Products = props => (
 	<div>
-		<p>Productss</p>
+		<p>Products</p>
 		<Items />
 		<Link href="/">
 			<a>Home {process.env.NODE_ENV}</a>
