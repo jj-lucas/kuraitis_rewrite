@@ -1,7 +1,7 @@
 import React from 'react'
 import Meta from './Meta'
-import styled, { ThemeProvider, injectGlobal } from 'styled-components'
-import { Header } from '../components'
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
+import { Header } from '../components/Header'
 
 const theme = {
 	colors: {
@@ -58,9 +58,8 @@ const Inner = styled.div`
 	margin: 0 auto;
 `
 
-injectGlobal`
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&display=swap');
-
+const GlobalStyle = createGlobalStyle`
+    
     body {
         font-family: 'Oswald', sans-serif;
         font-weight: ${theme.typography.fw.regular};
@@ -87,6 +86,7 @@ injectGlobal`
 `
 const Page = props => (
 	<ThemeProvider theme={theme}>
+		<GlobalStyle />
 		<StyledPage>
 			<Meta />
 			<Header />

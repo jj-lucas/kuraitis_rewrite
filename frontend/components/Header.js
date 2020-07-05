@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import Router from 'next/router'
 import NProgress from 'nprogress'
-import { Nav } from '../components'
+import { Nav } from '../components/Nav'
 
 Router.onRouteChangeStart = () => {
 	NProgress.start()
@@ -71,7 +71,6 @@ const UtilsBar = styled.div`
 const Burger = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
-
 const StyledNav = styled(Nav)`
 	display: none;
 
@@ -81,7 +80,6 @@ const StyledNav = styled(Nav)`
 		display: block;
 	}
 `
-
 const Header = () => (
 	<StyledHeader>
 		<Inner>

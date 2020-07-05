@@ -18,7 +18,6 @@ const StyledNav = styled.div`
 		}
 	}
 `
-
 const Nav = ({ className, children }) => (
 	<StyledNav className={className}>
 		<Link href="/">
