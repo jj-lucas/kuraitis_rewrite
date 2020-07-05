@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
 
-const StyledNav = styled.div`
+const StyledNav = styled.nav`
 	width: 100%;
 
 	a {

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import { Nav } from '../components/Nav'
 
 const StyledHeader = styled.header`
 	background-color: ${props => props.theme.colors.lightGray};
@@ -59,25 +58,17 @@ const UtilsBar = styled.div`
 const Burger = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
-const StyledNav = styled(Nav)`
-	display: none;
 
-	border-top: 1px solid #ebebeb;
-
-	@media (min-width: ${props => props.theme.breakpoints.sm}) {
-		display: block;
-	}
-`
 const Header = props => (
 	<StyledHeader>
 		<Inner>
 			<Left>
-				<Burger onClick={props.onBurgerToggle}>{props.drawerOpen ? 'X' : '='}</Burger>
+				<Burger onClick={props.toggleLeftDrawer}>{props.leftDrawerOpen ? 'X' : '='}</Burger>
 			</Left>
 			<Center>
 				<Link href="/">
 					<a>
-						<Logo src="http://placekitten.com/80/80" />
+						<Logo src="/logo.png" />
 						<span>
 							Sergio Kuraitis<small> - Naturligt design</small>
 						</span>
@@ -85,10 +76,10 @@ const Header = props => (
 				</Link>
 			</Center>
 			<Right>
-				<UtilsBar>Utils Bar</UtilsBar>
+				<UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>
 			</Right>
 
-			<StyledNav />
+			{props.children}
 		</Inner>
 	</StyledHeader>
 )
