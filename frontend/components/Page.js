@@ -24,7 +24,7 @@ const Inner = styled.div`
 `
 
 injectGlobal`
-    @font-face {
+    /*@font-face {
         font-family: 'radnika_next';
         src: url('/static/radnikanext-medium-webfont.woff2')
         format('woff2');
@@ -48,8 +48,8 @@ injectGlobal`
     }
     a {
         text-decoration: none;
-        color: ${theme.black};
-    }
+        color: ${theme.red};
+    }*/
 
 `
 const Page = props => (
