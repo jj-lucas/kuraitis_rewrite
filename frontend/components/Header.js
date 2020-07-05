@@ -80,11 +80,11 @@ const StyledNav = styled(Nav)`
 		display: block;
 	}
 `
-const Header = () => (
+const Header = props => (
 	<StyledHeader>
 		<Inner>
 			<Left>
-				<Burger>Burger</Burger>
+				<Burger onClick={props.onBurgerToggle}>{props.drawerOpen ? 'X' : '='}</Burger>
 			</Left>
 			<Center>
 				<Link href="/">

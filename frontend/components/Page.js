@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Meta from './Meta'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
-import { Header } from '../components/Header'
+import { Header } from './Header'
+import { Nav } from './Nav'
 
 const theme = {
 	colors: {
@@ -50,8 +51,17 @@ const theme = {
 }
 
 const StyledPage = styled.div`
+	width: 100%;
+	transform: translateX(${props => (props.drawerOpen ? '300px' : 0)});
+	position: relative;
+	transition: all 0.1s ease-in;
+
 	background: white;
 	color: ${props => props.theme.colors.black};
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		width: 100%;
+	}
 `
 
 const Inner = styled.div`
@@ -59,7 +69,6 @@ const Inner = styled.div`
 `
 
 const GlobalStyle = createGlobalStyle`
-    
     body {
         font-family: 'Oswald', sans-serif;
         font-weight: ${theme.typography.fw.regular};
@@ -82,16 +91,48 @@ const GlobalStyle = createGlobalStyle`
     #nprogress .peg {
         box-shadow: 0 0 10px ${theme.colors.blue}, 0 0 5px ${theme.colors.blue};
     }
-
 `
-const Page = props => (
-	<ThemeProvider theme={theme}>
-		<GlobalStyle />
-		<StyledPage>
-			<Meta />
-			<Header />
-			<Inner>{props.children}</Inner>
-		</StyledPage>
-	</ThemeProvider>
-)
+
+const Outer = styled.div`
+	display: flex;
+`
+
+const StyledNav = styled(Nav)`
+	width: 300px;
+	left: ${props => (props.open ? 0 : '-300px')};
+	position: fixed;
+	transition: left 0.1s ease-in;
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		display: none;
+	}
+	a {
+		display: block;
+
+		font-size: ${props => props.theme.typography.fs.lg};
+		padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
+	}
+`
+
+const Page = props => {
+	const [leftDrawerOpen, setLeftDrawerOpen] = useState(false)
+
+	const onBurgerToggle = () => {
+		setLeftDrawerOpen(!leftDrawerOpen)
+	}
+
+	return (
+		<ThemeProvider theme={theme}>
+			<GlobalStyle />
+			<Outer>
+				<StyledNav open={leftDrawerOpen} />
+				<StyledPage drawerOpen={leftDrawerOpen}>
+					<Meta />
+					<Header drawerOpen={leftDrawerOpen} onBurgerToggle={onBurgerToggle} />
+					<Inner>{props.children}</Inner>
+				</StyledPage>
+			</Outer>
+		</ThemeProvider>
+	)
+}
 export default Page
