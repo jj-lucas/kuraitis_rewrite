@@ -42,6 +42,8 @@ const Center = styled.span`
 
 		color: ${props => props.theme.colors.black};
 		font-size: ${props => props.theme.typography.fs.lg};
+		font-weight: ${props => props.theme.typography.fw.light};
+		text-transform: uppercase;
 	}
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
@@ -60,23 +62,32 @@ const Center = styled.span`
 const Right = styled.span`
 	text-align: right;
 `
-const HeaderLogo = styled.div`
-	display: flex;
-
-	justify-content: center;
-	flex-grow: 1;
-`
 const Logo = styled.img`
 	margin: ${props => props.theme.spacing.sm};
 `
 const UtilsBar = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
+const Burger = styled.div`
+	margin: ${props => props.theme.spacing.sm};
+`
+
+const StyledNav = styled(Nav)`
+	display: none;
+
+	border-top: 1px solid #ebebeb;
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		display: block;
+	}
+`
 
 const Header = () => (
 	<StyledHeader>
 		<Inner>
-			<Left></Left>
+			<Left>
+				<Burger>Burger</Burger>
+			</Left>
 			<Center>
 				<Link href="/">
 					<a>
@@ -91,7 +102,7 @@ const Header = () => (
 				<UtilsBar>Utils Bar</UtilsBar>
 			</Right>
 
-			<Nav />
+			<StyledNav />
 		</Inner>
 	</StyledHeader>
 )

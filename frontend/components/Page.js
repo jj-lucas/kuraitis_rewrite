@@ -6,6 +6,8 @@ import { Header } from '../components'
 const theme = {
 	colors: {
 		lightGray: '#f8f8f8',
+		gray: '#1a1a1a99',
+		darkGray: '#1a1a1a',
 		black: '#393939',
 		blue: '#0394fc',
 	},
@@ -39,6 +41,7 @@ const theme = {
 			xs: '12px',
 		},
 		fw: {
+			light: 300,
 			regular: 400,
 			semibold: 600,
 			bold: 700,
@@ -56,21 +59,12 @@ const Inner = styled.div`
 `
 
 injectGlobal`
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&display=swap');
 
-    html {
-        box-sizing: border-box;
-        font-size: 10px;
-        font-family: 'Roboto', sans-serif;
-        font-weight: normal;
-        font-style: normal;
-    }
-    *, *:before, *:after  {
-        box-sizing: inherit;
-    }
     body {
-        padding: 0;
-        margin: 0;
+        font-family: 'Oswald', sans-serif;
+        font-weight: ${theme.typography.fw.regular};
+        font-style: normal;
         font-size: ${theme.typography.fs.base};
         line-height: 1.5;
     }
@@ -85,6 +79,9 @@ injectGlobal`
     #nprogress .spinner-icon {
         border-top-color: ${theme.colors.blue};
         border-left-color: ${theme.colors.blue};
+    }    
+    #nprogress .peg {
+        box-shadow: 0 0 10px ${theme.colors.blue}, 0 0 5px ${theme.colors.blue};
     }
 
 `
