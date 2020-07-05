@@ -75,6 +75,14 @@ injectGlobal`
         text-decoration: none;
         color: ${theme.blue};
     }
+    #nprogress .bar {
+        background: ${theme.blue};
+        height:3px;
+    }
+    #nprogress .spinner-icon {
+        border-top-color: ${theme.blue};
+        border-left-color: ${theme.blue};
+    }
 
 `
 const Page = props => (

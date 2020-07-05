@@ -1,4 +1,17 @@
 import styled from 'styled-components'
+import Link from 'next/link'
+import Router from 'next/router'
+import NProgress from 'nprogress'
+
+Router.onRouteChangeStart = () => {
+	NProgress.start()
+}
+Router.onRouteChangeComplete = () => {
+	NProgress.done()
+}
+Router.onRouteChangeError = () => {
+	NProgress.done()
+}
 
 const StyledHeader = styled.header`
 	display: flex;
@@ -64,12 +77,14 @@ const Header = () => (
 	<StyledHeader>
 		<Left></Left>
 		<Center>
-			<a href="/">
-				<Logo src="http://placekitten.com/80/80" />
-				<span>
-					Sergio Kuraitis<small> - Naturligt design</small>
-				</span>
-			</a>
+			<Link href="/">
+				<a>
+					<Logo src="http://placekitten.com/80/80" />
+					<span>
+						Sergio Kuraitis<small> - Naturligt design</small>
+					</span>
+				</a>
+			</Link>
 		</Center>
 		<Right>
 			<UtilsBar>Utils Bar</UtilsBar>
