@@ -4,8 +4,11 @@ import styled, { ThemeProvider, injectGlobal } from 'styled-components'
 import { Header } from '../components'
 
 const theme = {
-	black: '#393939',
-	blue: '#0394fc',
+	colors: {
+		lightGray: '#f8f8f8',
+		black: '#393939',
+		blue: '#0394fc',
+	},
 	maxWidth: '1260px',
 	bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	breakpoints: {
@@ -45,7 +48,7 @@ const theme = {
 
 const StyledPage = styled.div`
 	background: white;
-	color: ${props => props.theme.black};
+	color: ${props => props.theme.colors.black};
 `
 
 const Inner = styled.div`
@@ -73,15 +76,15 @@ injectGlobal`
     }
     a {
         text-decoration: none;
-        color: ${theme.blue};
+        color: ${theme.colors.blue};
     }
     #nprogress .bar {
-        background: ${theme.blue};
+        background: ${theme.colors.blue};
         height:3px;
     }
     #nprogress .spinner-icon {
-        border-top-color: ${theme.blue};
-        border-left-color: ${theme.blue};
+        border-top-color: ${theme.colors.blue};
+        border-left-color: ${theme.colors.blue};
     }
 
 `

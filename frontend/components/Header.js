@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import Router from 'next/router'
 import NProgress from 'nprogress'
+import { Nav } from '../components'
 
 Router.onRouteChangeStart = () => {
 	NProgress.start()
@@ -14,6 +15,9 @@ Router.onRouteChangeError = () => {
 }
 
 const StyledHeader = styled.header`
+	background-color: ${props => props.theme.colors.lightGray};
+`
+const Inner = styled.div`
 	display: flex;
 
 	flex-wrap: wrap;
@@ -36,7 +40,7 @@ const Center = styled.span`
 
 		align-items: center;
 
-		color: ${props => props.theme.black};
+		color: ${props => props.theme.colors.black};
 		font-size: ${props => props.theme.typography.fs.lg};
 	}
 
@@ -68,29 +72,27 @@ const Logo = styled.img`
 const UtilsBar = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
-const Nav = styled.div`
-	width: 100%;
-	margin: ${props => props.theme.spacing.sm};
-`
 
 const Header = () => (
 	<StyledHeader>
-		<Left></Left>
-		<Center>
-			<Link href="/">
-				<a>
-					<Logo src="http://placekitten.com/80/80" />
-					<span>
-						Sergio Kuraitis<small> - Naturligt design</small>
-					</span>
-				</a>
-			</Link>
-		</Center>
-		<Right>
-			<UtilsBar>Utils Bar</UtilsBar>
-		</Right>
+		<Inner>
+			<Left></Left>
+			<Center>
+				<Link href="/">
+					<a>
+						<Logo src="http://placekitten.com/80/80" />
+						<span>
+							Sergio Kuraitis<small> - Naturligt design</small>
+						</span>
+					</a>
+				</Link>
+			</Center>
+			<Right>
+				<UtilsBar>Utils Bar</UtilsBar>
+			</Right>
 
-		<Nav>Nav</Nav>
+			<Nav />
+		</Inner>
 	</StyledHeader>
 )
 
