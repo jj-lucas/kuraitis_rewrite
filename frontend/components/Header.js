@@ -19,7 +19,7 @@ const Left = styled.span`
 `
 const Center = styled.span`
 	a {
-		display: flex;
+		display: inline-flex;
 
 		align-items: center;
 
