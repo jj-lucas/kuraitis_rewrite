@@ -1,15 +1,46 @@
 import React from 'react'
 import Meta from './Meta'
 import styled, { ThemeProvider, injectGlobal } from 'styled-components'
+import { Header } from '../components'
 
 const theme = {
-	red: '#FF0000',
 	black: '#393939',
-	grey: '#3A3A3A',
-	lightgrey: '#E1E1E1',
-	offWhite: '#EDEDED',
-	maxWidth: '1000px',
+	blue: '#0394fc',
+	maxWidth: '1260px',
 	bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
+	breakpoints: {
+		xs: '375px',
+		sm: '680px',
+		md: '1024px',
+		lg: '1260px',
+		xl: '1600px',
+	},
+	spacing: {
+		base: '20px',
+		xs: '5px', // /4
+		sm: '10px', // /2
+		lg: '40px', // *2
+		xl: '60px', // *3
+		xxl: '100px', // *5
+	},
+	typography: {
+		fs: {
+			h1: '36px',
+			h2: '24px',
+			h3: '16px',
+			h4: '16px',
+
+			lg: '20px',
+			base: '16px',
+			sm: '14px',
+			xs: '12px',
+		},
+		fw: {
+			regular: 400,
+			semibold: 600,
+			bold: 700,
+		},
+	},
 }
 
 const StyledPage = styled.div`
@@ -18,23 +49,18 @@ const StyledPage = styled.div`
 `
 
 const Inner = styled.div`
-	max-width: ${props => props.theme.maxWidth};
 	margin: 0 auto;
-	padding: 2rem;
 `
 
 injectGlobal`
-    /*@font-face {
-        font-family: 'radnika_next';
-        src: url('/static/radnikanext-medium-webfont.woff2')
-        format('woff2');
-        font-weight: normal;
-        font-style: normal;
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
-    }
     html {
         box-sizing: border-box;
         font-size: 10px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: normal;
+        font-style: normal;
     }
     *, *:before, *:after  {
         box-sizing: inherit;
@@ -42,20 +68,20 @@ injectGlobal`
     body {
         padding: 0;
         margin: 0;
-        font-size: 1.5rem;
-        line-height: 2;
-        font-family: 'radnika_next';
+        font-size: ${theme.typography.fs.base};
+        line-height: 1.5;
     }
     a {
         text-decoration: none;
-        color: ${theme.red};
-    }*/
+        color: ${theme.blue};
+    }
 
 `
 const Page = props => (
 	<ThemeProvider theme={theme}>
 		<StyledPage>
 			<Meta />
+			<Header />
 			<Inner>{props.children}</Inner>
 		</StyledPage>
 	</ThemeProvider>
