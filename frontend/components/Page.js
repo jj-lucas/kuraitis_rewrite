@@ -3,6 +3,8 @@ import Meta from './Meta'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { Header } from './Header'
 import { Nav } from './Nav'
+import Router from 'next/router'
+import NProgress, { render } from 'nprogress'
 
 const theme = {
 	colors: {
@@ -119,6 +121,17 @@ const Page = props => {
 
 	const onBurgerToggle = () => {
 		setLeftDrawerOpen(!leftDrawerOpen)
+	}
+
+	Router.onRouteChangeStart = () => {
+		NProgress.start()
+	}
+	Router.onRouteChangeComplete = () => {
+		NProgress.done()
+		setLeftDrawerOpen(false)
+	}
+	Router.onRouteChangeError = () => {
+		NProgress.done()
 	}
 
 	return (
