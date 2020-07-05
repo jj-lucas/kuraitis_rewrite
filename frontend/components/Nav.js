@@ -28,7 +28,7 @@ const NavLink = ({ href, children }) => {
 	const router = useRouter()
 
 	let className = children.props.className || ''
-	if (router.pathname === href) {
+	if (router && router.pathname === href) {
 		className = `${className} selected`
 	}
 
