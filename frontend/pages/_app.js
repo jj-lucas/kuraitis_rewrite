@@ -3,6 +3,9 @@ import { ApolloProvider } from 'react-apollo'
 import withData from '../lib/withData'
 import Page from '../components/Page'
 import 'normalize.css'
+import { Query } from 'react-apollo'
+import { LANGUAGE_QUERY } from '../components/LanguageSelector'
+import { LanguageProvider } from '../lib/languageContext'
 
 class MyApp extends App {
 	static async getInitialProps({ Component, ctx }) {
@@ -19,9 +22,15 @@ class MyApp extends App {
 
 		return (
 			<ApolloProvider client={apollo}>
-				<Page>
-					<Component {...pageProps} />
-				</Page>
+				<Query query={LANGUAGE_QUERY}>
+					{({ data: { language } }) => (
+						<LanguageProvider value={language}>
+							<Page>
+								<Component {...pageProps} />
+							</Page>
+						</LanguageProvider>
+					)}
+				</Query>
 			</ApolloProvider>
 		)
 	}
