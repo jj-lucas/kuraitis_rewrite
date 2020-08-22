@@ -42,7 +42,7 @@ const InnerWrapper = styled.div`
 	transform: translateX(
 		${props => (props.drawerOpen === 'left' ? '200px' : props.drawerOpen === 'right' ? '-200px' : 0)}
 	);
-	position: relative;
+	position: ${props => (props.drawerOpen ? 'fixed' : 'relative')};
 	transition: all 0.1s ease-in;
 
 	background: white;
