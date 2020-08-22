@@ -84,6 +84,7 @@ const Page = props => {
 	Router.onRouteChangeComplete = () => {
 		NProgress.done()
 		setLeftDrawerOpen(false)
+		setRightDrawerOpen(false)
 	}
 	Router.onRouteChangeError = () => {
 		NProgress.done()
