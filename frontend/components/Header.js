@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
+import LanguageSelector from './LanguageSelector'
 
 const StyledHeader = styled.header`
 	background-color: ${props => props.theme.colors.lightGray};
@@ -76,6 +77,7 @@ const Header = props => (
 				</Link>
 			</Center>
 			<Right>
+				<LanguageSelector />
 				<UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>
 			</Right>
 
