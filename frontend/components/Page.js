@@ -54,6 +54,8 @@ const InnerWrapper = styled.div`
 `
 const Content = styled.section`
 	margin: 0 auto;
+	padding: 10px;
+	max-width: ${props => props.theme.maxWidth};
 `
 const HorizontalNav = styled(Nav)`
 	display: none;
