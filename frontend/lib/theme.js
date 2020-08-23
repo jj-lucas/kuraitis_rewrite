@@ -32,9 +32,9 @@ const theme = {
 			h4: '16px',
 
 			lg: '20px',
-			base: '16px',
-			sm: '14px',
-			xs: '12px',
+			base: '14px',
+			sm: '12px',
+			xs: '10px',
 		},
 		fw: {
 			light: 300,
