@@ -2,19 +2,37 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
-	height: ${props => props.theme.maxSliderHeight};
 	margin-bottom: -80px;
+	height: 500px;
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		height: 500px;
+	}
+
+	@media (min-width: ${props => props.theme.breakpoints.xl}) {
+		height: 700px;
+	}
 `
 
 const Slide = styled.div`
-	max-width: ${props => props.theme.maxSliderWidth};
 	margin: 0 auto;
-	background-image: url(${props => props.image});
 	height: 100%;
 	width: 100%;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
+    max-width: 2700px;
+    
+
+    background-image: url('/images/slider/${props => props.image}-small.jpg');
+    
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+        background-image: url('/images/slider/${props => props.image}-medium.jpg');
+	}
+    
+	@media (min-width: ${props => props.theme.breakpoints.xl}) {
+        background-image: url('/images/slider/${props => props.image}-large.jpg');
+	}
 `
 
 const Slider = props => {

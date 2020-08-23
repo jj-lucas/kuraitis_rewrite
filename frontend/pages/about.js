@@ -12,7 +12,7 @@ const AboutPage = props => {
 			<Head>
 				<title>{language === 'en' ? 'About Sergio' : 'Om Sergio'} | Sergio Kuraitis: Naturligt Design</title>
 			</Head>
-			<Slider slides={['/images/hero_slide_1.jpg']} />
+			<Slider slides={['hero1']} />
 			<ContentSection>
 				<About />
 			</ContentSection>

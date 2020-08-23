@@ -8,8 +8,6 @@ const theme = {
 	},
 	maxWidth: '1260px',
 	maxLengthLine: '1260px',
-	maxSliderHeight: '700px',
-	maxSliderWidth: '3000px',
 	bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	breakpoints: {
 		xs: '375px',
