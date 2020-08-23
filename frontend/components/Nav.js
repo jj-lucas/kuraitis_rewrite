@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
+import { useContext } from 'react'
+import LanguageContext from '../lib/languageContext'
 
 const StyledNav = styled.nav`
 	width: 100%;
@@ -35,27 +37,36 @@ const NavLink = ({ href, children }) => {
 	return <Link href={href}>{React.cloneElement(children, { className })}</Link>
 }
 
-const Nav = ({ className, children }) => (
-	<StyledNav className={className}>
-		<NavLink href="/">
-			<a>Home</a>
-		</NavLink>
-		<NavLink href="/products">
-			<a>Products</a>
-		</NavLink>
-		<NavLink href="/about">
-			<a>About</a>
-		</NavLink>
-		<NavLink href="/markets">
-			<a>Markets</a>
-		</NavLink>
-		<NavLink href="/faq">
-			<a>FAQ</a>
-		</NavLink>
-		<NavLink href="/contact">
-			<a>Contact</a>
-		</NavLink>
-	</StyledNav>
-)
+const links = {
+	en: [
+		{ label: 'Home', path: '/' },
+		{ label: 'Products', path: '/products' },
+		{ label: 'About', path: '/about' },
+		{ label: 'Markets', path: '/markets' },
+		{ label: 'FAQ', path: '/faq' },
+		{ label: 'Contact', path: '/contact' },
+	],
+	da: [
+		{ label: 'Hjem', path: '/' },
+		{ label: 'Produkter', path: '/products' },
+		{ label: 'Om Sergio', path: '/about' },
+		{ label: 'Markeder', path: '/markets' },
+		{ label: 'FAQ', path: '/faq' },
+		{ label: 'Kontakt', path: '/contact' },
+	],
+}
+
+const Nav = ({ className, children }) => {
+	const language = useContext(LanguageContext)
+	return (
+		<StyledNav className={className}>
+			{links[language].map(link => (
+				<NavLink key={link.path} href={link.path}>
+					<a>{link.label}</a>
+				</NavLink>
+			))}
+		</StyledNav>
+	)
+}
 
 export { Nav }
