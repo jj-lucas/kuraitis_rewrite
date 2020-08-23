@@ -14,25 +14,36 @@ const languages = [
 	{ id: 'en', label: 'English' },
 ]
 
-const Language = styled.a`
-	color: ${props => (props.selected ? props.theme.colors.black : props.theme.colors.blue)};
+const Container = styled.div`
+	margin: 5px;
+`
+
+const Language = styled.button`
+	width: 23px;
+	height: 17px;
+
+	margin: 5px;
+	border: none;
+	outline: none;
+
+	background: url('/icons/${props => props.id}.png');
+	cursor: ${props => (props.selected ? 'auto' : 'pointer')};
 `
 
 const LanguageSelector = () => (
 	<Query query={LANGUAGE_QUERY}>
 		{({ data, client }) => (
-			<div>
+			<Container>
 				{languages.map(language => (
 					<Language
 						selected={language.id === data.language}
 						key={language.id}
-						href="#"
-						data-language={language.id}
-						onClick={() => client.writeData({ data: { language: language.id } })}>
-						{language.label}
-					</Language>
+						id={language.id}
+						onClick={() => client.writeData({ data: { language: language.id } })}
+						alt={language.label}
+					/>
 				))}
-			</div>
+			</Container>
 		)}
 	</Query>
 )
