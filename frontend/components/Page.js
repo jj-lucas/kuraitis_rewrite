@@ -5,7 +5,8 @@ import NProgress from 'nprogress'
 import { GlobalStyle } from './GlobalStyle'
 import Meta from './Meta'
 import { Header } from './Header'
-import { Nav } from './Nav'
+import Footer from './Footer'
+import Nav from './Nav'
 import theme from '../lib/theme'
 
 const Wrapper = styled.div`
@@ -107,6 +108,7 @@ const Page = props => {
 						<HorizontalNav />
 					</Header>
 					<Content>{props.children}</Content>
+					<Footer />
 				</InnerWrapper>
 				<RightDrawer open={rightDrawerOpen}></RightDrawer>
 			</Wrapper>

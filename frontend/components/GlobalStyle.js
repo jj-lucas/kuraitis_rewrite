@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
     body {
+	    background-color: ${props => props.theme.colors.lightGray};
         font-family: ${props => props.theme.typography.ff.oswald};
         font-weight: ${props => props.theme.typography.fw.regular};
         font-style: normal;
