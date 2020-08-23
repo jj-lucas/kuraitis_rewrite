@@ -88,7 +88,7 @@ const Markets = () => {
 
 	return (
 		<div style={{ overflow: 'auto' }}>
-			<h1>Kommende markeder 2019</h1>
+			<h1>{language === 'en' ? 'Markets and fairs' : 'Kommende markeder'} 2019</h1>
 			<p>
 				<Picture src="/images/markets.jpg" />
 				<List>
