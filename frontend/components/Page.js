@@ -53,11 +53,6 @@ const InnerWrapper = styled.div`
 		width: 100%;
 	}
 `
-const Content = styled.section`
-	margin: 0 auto;
-	padding: 10px;
-	max-width: ${props => props.theme.maxWidth};
-`
 const HorizontalNav = styled(Nav)`
 	display: none;
 
@@ -107,7 +102,7 @@ const Page = props => {
 						toggleRightDrawer={toggleRightDrawer}>
 						<HorizontalNav />
 					</Header>
-					<Content>{props.children}</Content>
+					{props.children}
 					<Footer />
 				</InnerWrapper>
 				<RightDrawer open={rightDrawerOpen}></RightDrawer>
