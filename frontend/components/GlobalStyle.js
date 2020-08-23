@@ -2,11 +2,22 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
     body {
-        font-family: 'Oswald', sans-serif;
+        font-family: ${props => props.theme.typography.ff.oswald};
         font-weight: ${props => props.theme.typography.fw.regular};
         font-style: normal;
         font-size: ${props => props.theme.typography.fs.base};
         line-height: 1.5;
+    }
+	h1 {
+		font-size: ${props => props.theme.typography.fs.lg};
+        
+        @media (min-width: ${props => props.theme.breakpoints.sm}) {
+		    font-size: ${props => props.theme.typography.fs.h1};
+        }
+	}
+	p {
+		max-width: ${props => props.theme.maxLengthLine};
+		font-family: ${props => props.theme.typography.ff.droid};
     }
     a {
         text-decoration: none;

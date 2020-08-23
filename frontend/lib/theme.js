@@ -7,6 +7,7 @@ const theme = {
 		blue: '#0394fc',
 	},
 	maxWidth: '1260px',
+	maxLengthLine: '1000px',
 	bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	breakpoints: {
 		xs: '375px',
@@ -40,6 +41,10 @@ const theme = {
 			regular: 400,
 			semibold: 600,
 			bold: 700,
+		},
+		ff: {
+			oswald: "'Oswald', sans-serif",
+			droid: 'droid_sansregular',
 		},
 	},
 }
