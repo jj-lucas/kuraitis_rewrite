@@ -20,7 +20,7 @@ const Slide = styled.div`
 	width: 100%;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: center center;
+	background-position: top center;
     max-width: 2700px;
     
 
