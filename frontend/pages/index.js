@@ -7,7 +7,7 @@ const Home = props => {
 	const language = useContext(LanguageContext)
 	return (
 		<>
-			<Slider slides={['hero2']} />
+			<Slider slides={['hero1']} />
 			<ContentSection>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
