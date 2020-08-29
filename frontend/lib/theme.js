@@ -47,6 +47,9 @@ const theme = {
 			droid: 'droid_sansregular',
 		},
 	},
+	transition: {
+		cubic: 'cubic-bezier(0.73, 0.09, 0.21, 0.96)',
+	},
 }
 
 export default theme
