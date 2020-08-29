@@ -16,6 +16,12 @@ const GlobalStyle = createGlobalStyle`
 		    font-size: ${props => props.theme.typography.fs.h1};
         }
 	}
+	h2 {
+		font-size: ${props => props.theme.typography.fs.h2};
+	}
+	h3 {
+		font-size: ${props => props.theme.typography.fs.h3};
+	}
 	p {
 		max-width: ${props => props.theme.maxLengthLine};
 		font-family: ${props => props.theme.typography.ff.droid};

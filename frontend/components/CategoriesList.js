@@ -23,10 +23,11 @@ const ALL_CATEGORIES_QUERY = gql`
 const ItemsList = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-gap: 60px;
+	grid-gap: 30px;
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
 		grid-template-columns: 1fr 1fr 1fr;
+		grid-gap: 0;
 	}
 `
 
@@ -35,37 +36,55 @@ const Center = styled.div`
 `
 
 const StyledTile = styled.a`
-	p strong {
-		color: ${props => props.theme.colors.black};
-		font-size: ${props => props.theme.typography.fs.lg};
-		font-weight: ${props => props.theme.typography.fw.light};
-		text-transform: uppercase;
+	color: ${props => props.theme.colors.black};
+	border: 1px solid ${props => props.theme.colors.lightGray};
+	transition: all 0.25s ${props => props.theme.transition.cubic};
+
+	.cta {
+		display: none;
 	}
 	img {
 		display: block;
 		width: 100%;
 		transition: transform 0.25s ${props => props.theme.transition.cubic};
 	}
-	div {
+	.outer {
+		padding: 0;
+
+		@media (min-width: ${props => props.theme.breakpoints.sm}) {
+			& {
+				padding: 0 30px 30px;
+			}
+		}
+	}
+	.inner {
 		width: 100%;
 		overflow: hidden;
 	}
 
 	&:hover {
+		background: ${props => props.theme.colors.lightGray};
 		img {
 			transform: scale(1.05) translateZ(0);
+		}
+	}
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		.cta {
+			display: block;
 		}
 	}
 `
 
 const Tile = props => (
 	<StyledTile href="#">
-		<p>
-			<strong>{props.name}</strong>{' '}
-		</p>
-		<p> Se alle</p>
-		<div>
-			<img src={`/images/categories/${'etuier'}.jpg`} />
+		<span>
+			<h3>{props.name}</h3>
+		</span>
+		<div className="outer">
+			<div className="inner">
+				<img src={`/images/categories/${'etuier'}.jpg`} />
+			</div>
 		</div>
 	</StyledTile>
 )
