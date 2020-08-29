@@ -24,7 +24,7 @@ const Slider = props => {
 					<source srcset={`/images/slider/${image}-large.jpg`} media="(min-width: 1024px)" />
 					<source srcset={`/images/slider/${image}-medium.jpg`} media="(min-width: 680px)" />
 					<source srcset={`/images/slider/${image}-small.jpg`} />
-					<img src={`/images/slider/${image}-medium.jpg`} />
+					<img src={`/images/slider/${image}-medium.jpg`} alt={props.alt} />
 				</picture>
 			))}
 		</Container>
