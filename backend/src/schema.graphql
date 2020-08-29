@@ -1,5 +1,6 @@
 type Query {
   users: [User]!
+  categories: [Category]!
 }
 
 type Mutation {
@@ -9,4 +10,15 @@ type Mutation {
 type User {
   id: ID!
   name: String!
+}
+
+type Category {
+  id: ID!
+  slug_da: String!
+  slug_en: String!
+  name_da: String!
+  name_en: String!
+  description_da: String
+  description_en: String
+  sorting: Int
 }

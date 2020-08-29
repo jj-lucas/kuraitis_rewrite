@@ -1,5 +1,9 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sat Jul 04 2020 20:00:24 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Aug 29 2020 12:13:24 GMT+0200 (Central European Summer Time)
+
+type AggregateCategory {
+  count: Int!
+}
 
 type AggregateUser {
   count: Int!
@@ -10,6 +14,451 @@ type BatchPayload {
   count: Long!
 }
 
+type Category implements Node {
+  id: ID!
+  slug_da: String!
+  slug_en: String!
+  name_da: String!
+  name_en: String!
+  description_da: String
+  description_en: String
+  sorting: Int
+}
+
+"""A connection to a list of items."""
+type CategoryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CategoryEdge]!
+  aggregate: AggregateCategory!
+}
+
+input CategoryCreateInput {
+  id: ID
+  slug_da: String!
+  slug_en: String!
+  name_da: String!
+  name_en: String!
+  description_da: String
+  description_en: String
+  sorting: Int
+}
+
+"""An edge in a connection."""
+type CategoryEdge {
+  """The item at the end of the edge."""
+  node: Category!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CategoryOrderByInput {
+  id_ASC
+  id_DESC
+  slug_da_ASC
+  slug_da_DESC
+  slug_en_ASC
+  slug_en_DESC
+  name_da_ASC
+  name_da_DESC
+  name_en_ASC
+  name_en_DESC
+  description_da_ASC
+  description_da_DESC
+  description_en_ASC
+  description_en_DESC
+  sorting_ASC
+  sorting_DESC
+}
+
+type CategoryPreviousValues {
+  id: ID!
+  slug_da: String!
+  slug_en: String!
+  name_da: String!
+  name_en: String!
+  description_da: String
+  description_en: String
+  sorting: Int
+}
+
+type CategorySubscriptionPayload {
+  mutation: MutationType!
+  node: Category
+  updatedFields: [String!]
+  previousValues: CategoryPreviousValues
+}
+
+input CategorySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategorySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategorySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategorySubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CategoryWhereInput
+}
+
+input CategoryUpdateInput {
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  sorting: Int
+}
+
+input CategoryUpdateManyMutationInput {
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  sorting: Int
+}
+
+input CategoryWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategoryWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategoryWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategoryWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  slug_da: String
+
+  """All values that are not equal to given value."""
+  slug_da_not: String
+
+  """All values that are contained in given list."""
+  slug_da_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_da_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_da_lt: String
+
+  """All values less than or equal the given value."""
+  slug_da_lte: String
+
+  """All values greater than the given value."""
+  slug_da_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_da_gte: String
+
+  """All values containing the given string."""
+  slug_da_contains: String
+
+  """All values not containing the given string."""
+  slug_da_not_contains: String
+
+  """All values starting with the given string."""
+  slug_da_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_da_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_da_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_da_not_ends_with: String
+  slug_en: String
+
+  """All values that are not equal to given value."""
+  slug_en_not: String
+
+  """All values that are contained in given list."""
+  slug_en_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_en_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_en_lt: String
+
+  """All values less than or equal the given value."""
+  slug_en_lte: String
+
+  """All values greater than the given value."""
+  slug_en_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_en_gte: String
+
+  """All values containing the given string."""
+  slug_en_contains: String
+
+  """All values not containing the given string."""
+  slug_en_not_contains: String
+
+  """All values starting with the given string."""
+  slug_en_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_en_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_en_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_en_not_ends_with: String
+  name_da: String
+
+  """All values that are not equal to given value."""
+  name_da_not: String
+
+  """All values that are contained in given list."""
+  name_da_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_da_not_in: [String!]
+
+  """All values less than the given value."""
+  name_da_lt: String
+
+  """All values less than or equal the given value."""
+  name_da_lte: String
+
+  """All values greater than the given value."""
+  name_da_gt: String
+
+  """All values greater than or equal the given value."""
+  name_da_gte: String
+
+  """All values containing the given string."""
+  name_da_contains: String
+
+  """All values not containing the given string."""
+  name_da_not_contains: String
+
+  """All values starting with the given string."""
+  name_da_starts_with: String
+
+  """All values not starting with the given string."""
+  name_da_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_da_ends_with: String
+
+  """All values not ending with the given string."""
+  name_da_not_ends_with: String
+  name_en: String
+
+  """All values that are not equal to given value."""
+  name_en_not: String
+
+  """All values that are contained in given list."""
+  name_en_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_en_not_in: [String!]
+
+  """All values less than the given value."""
+  name_en_lt: String
+
+  """All values less than or equal the given value."""
+  name_en_lte: String
+
+  """All values greater than the given value."""
+  name_en_gt: String
+
+  """All values greater than or equal the given value."""
+  name_en_gte: String
+
+  """All values containing the given string."""
+  name_en_contains: String
+
+  """All values not containing the given string."""
+  name_en_not_contains: String
+
+  """All values starting with the given string."""
+  name_en_starts_with: String
+
+  """All values not starting with the given string."""
+  name_en_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_en_ends_with: String
+
+  """All values not ending with the given string."""
+  name_en_not_ends_with: String
+  description_da: String
+
+  """All values that are not equal to given value."""
+  description_da_not: String
+
+  """All values that are contained in given list."""
+  description_da_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_da_not_in: [String!]
+
+  """All values less than the given value."""
+  description_da_lt: String
+
+  """All values less than or equal the given value."""
+  description_da_lte: String
+
+  """All values greater than the given value."""
+  description_da_gt: String
+
+  """All values greater than or equal the given value."""
+  description_da_gte: String
+
+  """All values containing the given string."""
+  description_da_contains: String
+
+  """All values not containing the given string."""
+  description_da_not_contains: String
+
+  """All values starting with the given string."""
+  description_da_starts_with: String
+
+  """All values not starting with the given string."""
+  description_da_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_da_ends_with: String
+
+  """All values not ending with the given string."""
+  description_da_not_ends_with: String
+  description_en: String
+
+  """All values that are not equal to given value."""
+  description_en_not: String
+
+  """All values that are contained in given list."""
+  description_en_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_en_not_in: [String!]
+
+  """All values less than the given value."""
+  description_en_lt: String
+
+  """All values less than or equal the given value."""
+  description_en_lte: String
+
+  """All values greater than the given value."""
+  description_en_gt: String
+
+  """All values greater than or equal the given value."""
+  description_en_gte: String
+
+  """All values containing the given string."""
+  description_en_contains: String
+
+  """All values not containing the given string."""
+  description_en_not_contains: String
+
+  """All values starting with the given string."""
+  description_en_starts_with: String
+
+  """All values not starting with the given string."""
+  description_en_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_en_ends_with: String
+
+  """All values not ending with the given string."""
+  description_en_not_ends_with: String
+  sorting: Int
+
+  """All values that are not equal to given value."""
+  sorting_not: Int
+
+  """All values that are contained in given list."""
+  sorting_in: [Int!]
+
+  """All values that are not contained in given list."""
+  sorting_not_in: [Int!]
+
+  """All values less than the given value."""
+  sorting_lt: Int
+
+  """All values less than or equal the given value."""
+  sorting_lte: Int
+
+  """All values greater than the given value."""
+  sorting_gt: Int
+
+  """All values greater than or equal the given value."""
+  sorting_gte: Int
+}
+
+input CategoryWhereUniqueInput {
+  id: ID
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -18,11 +467,17 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createCategory(data: CategoryCreateInput!): Category!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteCategory(where: CategoryWhereUniqueInput!): Category
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -54,8 +509,11 @@ type PageInfo {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   user(where: UserWhereUniqueInput!): User
+  category(where: CategoryWhereUniqueInput!): Category
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -66,6 +524,7 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
 }
 
 type User implements Node {

@@ -6,8 +6,8 @@ const theme = {
 		black: '#393939',
 		blue: '#0394fc',
 	},
-	maxWidth: '1260px',
-	maxLengthLine: '1260px',
+	maxWidth: '1024px',
+	maxLengthLine: '1024px',
 	bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	breakpoints: {
 		xs: '375px',
