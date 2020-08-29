@@ -13,9 +13,11 @@ const Wrapper = styled.div`
 	display: flex;
 `
 const LeftDrawer = styled.aside`
-	width: 200px;
 	left: ${props => (props.open ? 0 : '-200px')};
 	position: fixed;
+
+	width: 200px;
+
 	transition: left 0.1s ease-in;
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
@@ -29,9 +31,11 @@ const LeftDrawer = styled.aside`
 	}
 `
 const RightDrawer = styled.aside`
-	width: 200px;
 	right: ${props => (props.open ? 0 : '-200px')};
 	position: fixed;
+
+	width: 200px;
+
 	transition: right 0.1s ease-in;
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
@@ -40,10 +44,11 @@ const RightDrawer = styled.aside`
 `
 const InnerWrapper = styled.div`
 	width: 100%;
+	position: ${props => (props.drawerOpen ? 'fixed' : 'relative')};
+
 	transform: translateX(
 		${props => (props.drawerOpen === 'left' ? '200px' : props.drawerOpen === 'right' ? '-200px' : 0)}
 	);
-	position: ${props => (props.drawerOpen ? 'fixed' : 'relative')};
 	transition: all 0.1s ease-in;
 
 	background: white;

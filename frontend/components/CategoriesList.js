@@ -13,8 +13,6 @@ const ALL_CATEGORIES_QUERY = gql`
 			slug_en
 			name_da
 			name_en
-			description_da
-			description_en
 			sorting
 		}
 	}
@@ -36,16 +34,16 @@ const Center = styled.div`
 `
 
 const StyledTile = styled.a`
-	color: ${props => props.theme.colors.black};
-	border: 1px solid ${props => props.theme.colors.lightGray};
 	transition: all 0.25s ${props => props.theme.transition.cubic};
+	border: 1px solid ${props => props.theme.colors.lightGray};
+	color: ${props => props.theme.colors.black};
 
 	.cta {
 		display: none;
 	}
 	img {
-		display: block;
 		width: 100%;
+		display: block;
 		transition: transform 0.25s ${props => props.theme.transition.cubic};
 	}
 	.outer {
@@ -83,7 +81,7 @@ const Tile = props => (
 		</span>
 		<div className="outer">
 			<div className="inner">
-				<img src={`/images/categories/${'etuier'}.jpg`} />
+				<img src={`/images/categories/${'etuier'}.jpg`} alt={props.name} />
 			</div>
 		</div>
 	</StyledTile>

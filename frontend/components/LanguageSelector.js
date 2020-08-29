@@ -30,6 +30,11 @@ const Language = styled.button`
 	cursor: ${props => (props.selected ? 'auto' : 'pointer')};
 `
 
+const updateLanguage = (client, language) => {
+	client.writeData({ data: { language: language } })
+	sessionStorage.setItem('language', language)
+}
+
 const LanguageSelector = () => (
 	<Query query={LANGUAGE_QUERY}>
 		{({ data, client }) => (
@@ -39,7 +44,7 @@ const LanguageSelector = () => (
 						selected={language.id === data.language}
 						key={language.id}
 						id={language.id}
-						onClick={() => client.writeData({ data: { language: language.id } })}
+						onClick={() => updateLanguage(client, language.id)}
 						alt={language.label}
 					/>
 				))}
