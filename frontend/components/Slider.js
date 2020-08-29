@@ -20,19 +20,12 @@ const Slider = props => {
 	return (
 		<Container>
 			{props.slides.map(image => (
-				<img
-					srcset={`
-						/images/slider/${image}-small.jpg 680w,
-						/images/slider/${image}-medium.jpg 1024w,
-						/images/slider/${image}-large.jpg 1600w,
-					`}
-					sizes={`
-						(max-width: 680px) 680px,
-						(max-width: 1025px) 1024px,
-						1600px
-					`}
-					src={`/images/slider/${image}-medium.jpg`}
-				/>
+				<picture>
+					<source srcset={`/images/slider/${image}-large.jpg`} media="(min-width: 1024px)" />
+					<source srcset={`/images/slider/${image}-medium.jpg`} media="(min-width: 680px)" />
+					<source srcset={`/images/slider/${image}-small.jpg`} />
+					<img src={`/images/slider/${image}-medium.jpg`} />
+				</picture>
 			))}
 		</Container>
 	)
