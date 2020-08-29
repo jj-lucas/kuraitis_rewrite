@@ -1,8 +1,7 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
-import { useContext } from 'react'
-import LanguageContext from '../lib/languageContext'
+import { LocaleContext } from '../lib/localeContext'
 
 const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {
@@ -87,7 +86,7 @@ const Tile = props => (
 )
 
 const CategoriesList = () => {
-	const language = useContext(LanguageContext)
+	const { locale } = React.useContext(LocaleContext)
 	const { loading, error, data } = useQuery(ALL_CATEGORIES_QUERY)
 
 	if (loading) return <p>Loading..</p>
@@ -96,7 +95,7 @@ const CategoriesList = () => {
 		<Center>
 			<ItemsList>
 				{data.categories.map(item => (
-					<Tile key={item.id} name={item[`name_${language}`]} image={item[`slug_da`]} />
+					<Tile key={item.id} name={item[`name_${locale}`]} image={item[`slug_da`]} />
 				))}
 			</ItemsList>
 		</Center>

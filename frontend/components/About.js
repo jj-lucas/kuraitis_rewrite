@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useContext } from 'react'
-import LanguageContext from '../lib/languageContext'
+import Head from 'next/head'
+import { LocaleContext } from '../lib/localeContext'
 
 const Picture = styled.img`
 	display: block;
@@ -17,11 +17,14 @@ const Picture = styled.img`
 `
 
 const About = () => {
-	const language = useContext(LanguageContext).language
+	const { locale } = React.useContext(LocaleContext)
 
-	if (language === 'da') {
+	if (locale === 'da') {
 		return (
 			<div>
+				<Head>
+					<title>Om Sergio | Sergio Kuraitis: Naturligt Design</title>
+				</Head>
 				<h1>Sergio Kuraitis - en livslang passion for godt design</h1>
 				<p>
 					<em>
@@ -101,6 +104,9 @@ const About = () => {
 	}
 	return (
 		<div>
+			<Head>
+				<title>About Sergio | Sergio Kuraitis: Naturligt Design</title>
+			</Head>
 			<h1>Sergio Kuraitis – a lifelong passion for good design</h1>
 			<p>
 				<em>

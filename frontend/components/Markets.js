@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useContext } from 'react'
-import LanguageContext from '../lib/languageContext'
+import Head from 'next/head'
+import { LocaleContext } from '../lib/localeContext'
 import { datesToRange } from '../lib/dateHelper'
 
 const markets = [
@@ -84,17 +84,20 @@ const List = styled.ul`
 `
 
 const Markets = () => {
-	const language = useContext(LanguageContext).language
+	const { locale } = React.useContext(LocaleContext)
 
 	return (
 		<div style={{ overflow: 'auto' }}>
-			<h1>{language === 'en' ? 'Markets and fairs' : 'Kommende markeder'} 2019</h1>
+			<Head>
+				<title>{locale === 'en' ? 'Markets' : 'Markeder'} | Sergio Kuraitis: Naturligt Design</title>
+			</Head>
+			<h1>{locale === 'en' ? 'Markets and fairs' : 'Kommende markeder'} 2019</h1>
 			<p>
 				<Picture src="/images/markets.jpg" />
 				<List>
 					{markets.map(market => (
 						<li key={market.name}>
-							<strong>{datesToRange(market.start, market.end, language)}</strong>{' '}
+							<strong>{datesToRange(market.start, market.end, locale)}</strong>{' '}
 							<a target="blank" href={market.url.substr(0, 7) === 'http://' ? market.url : 'http://' + market.url}>
 								{market.name}
 							</a>{' '}

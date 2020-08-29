@@ -2,8 +2,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
-import { useContext } from 'react'
-import LanguageContext from '../lib/languageContext'
+import { LocaleContext } from '../lib/localeContext'
 
 const StyledNav = styled.nav`
 	width: 100%;
@@ -57,11 +56,11 @@ const links = {
 }
 
 const Nav = ({ className, children }) => {
-	const language = useContext(LanguageContext).language
+	const { locale } = React.useContext(LocaleContext)
 	return (
 		<StyledNav className={className}>
-			{links[language].map(link => (
-				<NavLink key={link.path} href={link.path}>
+			{links[locale].map(link => (
+				<NavLink key={link.path} href={`/${locale}${link.path}`}>
 					<a>{link.label}</a>
 				</NavLink>
 			))}
