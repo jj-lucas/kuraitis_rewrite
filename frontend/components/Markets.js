@@ -84,7 +84,7 @@ const List = styled.ul`
 `
 
 const Markets = () => {
-	const language = useContext(LanguageContext)
+	const language = useContext(LanguageContext).language
 
 	return (
 		<div style={{ overflow: 'auto' }}>

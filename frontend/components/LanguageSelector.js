@@ -1,13 +1,7 @@
 import React from 'react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 import styled from 'styled-components'
-
-const LANGUAGE_QUERY = gql`
-	query {
-		language @client
-	}
-`
+import { useContext } from 'react'
+import LanguageContext from '../lib/languageContext'
 
 const languages = [
 	{ id: 'da', label: 'Dansk' },
@@ -30,28 +24,23 @@ const Language = styled.button`
 	cursor: ${props => (props.selected ? 'auto' : 'pointer')};
 `
 
-const updateLanguage = (client, language) => {
-	client.writeData({ data: { language: language } })
-	sessionStorage.setItem('language', language)
+const LanguageSelector = () => {
+	const context = useContext(LanguageContext)
+	const currentLanguage = context.language
+
+	return (
+		<Container>
+			{languages.map(language => (
+				<Language
+					selected={language.id === currentLanguage}
+					key={language.id}
+					id={language.id}
+					onClick={() => context.setLanguage(language.id)}
+					alt={language.label}
+				/>
+			))}
+		</Container>
+	)
 }
 
-const LanguageSelector = () => (
-	<Query query={LANGUAGE_QUERY}>
-		{({ data, client }) => (
-			<Container>
-				{languages.map(language => (
-					<Language
-						selected={language.id === data.language}
-						key={language.id}
-						id={language.id}
-						onClick={() => updateLanguage(client, language.id)}
-						alt={language.label}
-					/>
-				))}
-			</Container>
-		)}
-	</Query>
-)
-
-export { LANGUAGE_QUERY }
 export default LanguageSelector

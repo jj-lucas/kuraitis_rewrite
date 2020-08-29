@@ -57,7 +57,7 @@ const links = {
 }
 
 const Nav = ({ className, children }) => {
-	const language = useContext(LanguageContext)
+	const language = useContext(LanguageContext).language
 	return (
 		<StyledNav className={className}>
 			{links[language].map(link => (

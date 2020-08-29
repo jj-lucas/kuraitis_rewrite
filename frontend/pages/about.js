@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import LanguageContext from '../lib/languageContext'
 
 const AboutPage = props => {
-	const language = useContext(LanguageContext)
+	const language = useContext(LanguageContext).language
 	return (
 		<>
 			<Head>

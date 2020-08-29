@@ -1,6 +1,5 @@
 import React from 'react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
 import { useContext } from 'react'
 import LanguageContext from '../lib/languageContext'
@@ -89,21 +88,17 @@ const Tile = props => (
 
 const CategoriesList = () => {
 	const language = useContext(LanguageContext)
+	const { loading, error, data } = useQuery(ALL_CATEGORIES_QUERY)
+
+	if (loading) return <p>Loading..</p>
+
 	return (
 		<Center>
-			<Query query={ALL_CATEGORIES_QUERY}>
-				{({ data, error, loading }) => {
-					if (error) return <p>Error</p>
-					if (loading) return <p>Loading.. </p>
-					return (
-						<ItemsList>
-							{data.categories.map(item => (
-								<Tile key={item.id} name={item[`name_${language}`]} image={item[`slug_da`]} />
-							))}
-						</ItemsList>
-					)
-				}}
-			</Query>
+			<ItemsList>
+				{data.categories.map(item => (
+					<Tile key={item.id} name={item[`name_${language}`]} image={item[`slug_da`]} />
+				))}
+			</ItemsList>
 		</Center>
 	)
 }

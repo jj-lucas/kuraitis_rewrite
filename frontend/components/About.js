@@ -17,7 +17,7 @@ const Picture = styled.img`
 `
 
 const About = () => {
-	const language = useContext(LanguageContext)
+	const language = useContext(LanguageContext).language
 
 	if (language === 'da') {
 		return (

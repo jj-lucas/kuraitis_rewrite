@@ -20,10 +20,10 @@ const Slider = props => {
 	return (
 		<Container>
 			{props.slides.map(image => (
-				<picture>
-					<source srcset={`/images/slider/${image}-large.jpg`} media="(min-width: 1024px)" />
-					<source srcset={`/images/slider/${image}-medium.jpg`} media="(min-width: 680px)" />
-					<source srcset={`/images/slider/${image}-small.jpg`} />
+				<picture key={image}>
+					<source srcSet={`/images/slider/${image}-large.jpg`} media="(min-width: 1024px)" />
+					<source srcSet={`/images/slider/${image}-medium.jpg`} media="(min-width: 680px)" />
+					<source srcSet={`/images/slider/${image}-small.jpg`} />
 					<img src={`/images/slider/${image}-medium.jpg`} alt={props.alt} />
 				</picture>
 			))}

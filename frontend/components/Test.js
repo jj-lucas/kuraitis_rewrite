@@ -1,6 +1,5 @@
 import React from 'react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
+import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
 
 const ALL_USERS_QUERY = gql`
@@ -21,22 +20,30 @@ const ItemsList = styled.div`
 const Center = styled.div`
 	text-align: center;
 `
-const Items = () => (
-	<Center>
-		<Query query={ALL_USERS_QUERY}>
-			{({ data, error, loading }) => {
-				if (error) return <p>Error</p>
-				if (loading) return <p>Loading.. </p>
-				return (
-					<ItemsList>
-						{data.users.map(item => (
-							<p key={item.id}>{item.name}</p>
-						))}
-					</ItemsList>
-				)
-			}}
-		</Query>
-	</Center>
-)
+const Items = () => {
+	const { loading, error, data } = useQuery(ALL_USERS_QUERY)
 
+	if (error)
+		return (
+			<Center>
+				<p>Error</p>
+			</Center>
+		)
+	if (loading)
+		return (
+			<Center>
+				<p>Loading.. </p>
+			</Center>
+		)
+
+	return (
+		<Center>
+			<ItemsList>
+				{data.users.map(item => (
+					<p key={item.id}>{item.name}</p>
+				))}
+			</ItemsList>
+		</Center>
+	)
+}
 export default Items
