@@ -62,6 +62,23 @@ const mutations = {
       message: 'Goodbye',
     }
   },
+
+  async createCategory(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to create an item')
+    }
+
+    const category = await ctx.db.mutation.createCategory(
+      {
+        data: {
+          ...args,
+        },
+      },
+      info
+    )
+
+    return category
+  },
 }
 
 module.exports = mutations

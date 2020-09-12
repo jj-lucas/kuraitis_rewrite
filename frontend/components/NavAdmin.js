@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
+import { LogoutButton } from '.'
 
 const links = [
 	{ label: 'Dashboard', path: '/admin' },
@@ -50,6 +51,7 @@ const NavAdmin = ({ className, children }) => {
 					<a>{link.label}</a>
 				</NavLink>
 			))}
+			<LogoutButton />
 		</StyledNav>
 	)
 }

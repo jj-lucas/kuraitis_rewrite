@@ -14,6 +14,15 @@ type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
+  createCategory(
+    slug_da: String!
+    slug_en: String!
+    name_da: String!
+    name_en: String!
+    description_da: String
+    description_en: String
+    sorting: Int
+  ): Category!
 }
 
 type User {
