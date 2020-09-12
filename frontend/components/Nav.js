@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
 import { LocaleContext } from '../lib/localeContext'
-import { User } from '../components'
+import { User, LogoutButton } from '../components'
 
 const StyledNav = styled.nav`
 	width: 100%;
@@ -26,7 +26,7 @@ const StyledNav = styled.nav`
 		}
 
 		&.admin {
-			color: ${props => props.theme.colors.positive};
+			color: ${props => props.theme.colors.warning};
 		}
 	}
 `
@@ -72,11 +72,14 @@ const Nav = ({ className, children }) => {
 			))}
 			<User>
 				{({ me }) =>
-					me &&
-					me.permissions.includes('ADMIN') && (
-						<Link href="/admin">
-							<a className="admin">Admin</a>
-						</Link>
+					me && (
+						<>
+							{me.permissions.includes('ADMIN') && (
+								<Link href="/admin">
+									<a className="admin">Admin</a>
+								</Link>
+							)}
+						</>
 					)
 				}
 			</User>

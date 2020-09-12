@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import { LanguageSelector } from './LanguageSelector'
+import { LanguageSelector, LogoutButton } from '.'
 import { LocaleContext } from '../lib/localeContext'
 
 const StyledHeader = styled.header`
@@ -82,6 +82,7 @@ const Header = props => {
 				<Right>
 					{locale && <LanguageSelector />}
 					{props.toggleRightDrawer && <UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>}
+					<LogoutButton />
 				</Right>
 
 				{props.children}
