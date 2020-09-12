@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { DisplayError } from './DisplayError'
+import { DisplayError, CURRENT_USER_QUERY } from '.'
 
 const SIGNIN_MUTATION = gql`
 	mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -23,13 +23,11 @@ const LoginForm = () => {
 				method="post"
 				onSubmit={async e => {
 					e.preventDefault()
-					await signin({ variables: { email, password } })
-						.then(data => {
-							window.location = '/admin/'
-						})
-						.catch(error => {
+					await signin({ variables: { email, password }, refetchQueries: [{ query: CURRENT_USER_QUERY }] }).catch(
+						error => {
 							console.log(error)
-						})
+						}
+					)
 				}}>
 				<fieldset>
 					<h2>Sign in</h2>

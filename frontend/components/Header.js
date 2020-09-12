@@ -82,7 +82,6 @@ const Header = props => {
 				<Right>
 					{locale && <LanguageSelector />}
 					{props.toggleRightDrawer && <UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>}
-					<LogoutButton />
 				</Right>
 
 				{props.children}
