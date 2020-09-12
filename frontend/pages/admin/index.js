@@ -1,18 +1,12 @@
-import { GlobalStyle, Header, ContentSection, PleaseSignIn } from '../../components'
-import { ThemeProvider } from 'styled-components'
-import theme from '../../lib/theme'
+import { PageSimple, PleaseSignIn } from '../../components'
 
-const IndexPage = props => {
+const IndexPage = () => {
 	return (
-		<ThemeProvider theme={theme}>
-			<GlobalStyle />
-			<Header></Header>
-			<ContentSection>
-				<PleaseSignIn>
-					<h1>Super secret admin page</h1>
-				</PleaseSignIn>
-			</ContentSection>
-		</ThemeProvider>
+		<PageSimple>
+			<PleaseSignIn>
+				<h1>Super secret admin page</h1>
+			</PleaseSignIn>
+		</PageSimple>
 	)
 }
 
