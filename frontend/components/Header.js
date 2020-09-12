@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import LanguageSelector from './LanguageSelector'
+import { LocaleContext } from '../lib/localeContext'
 
 const StyledHeader = styled.header`
 	background-color: ${props => props.theme.colors.lightGray};
@@ -60,30 +61,33 @@ const Burger = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
 
-const Header = props => (
-	<StyledHeader>
-		<Inner>
-			<Left>
-				<Burger onClick={props.toggleLeftDrawer}>{props.leftDrawerOpen ? 'X' : '='}</Burger>
-			</Left>
-			<Center>
-				<Link href="/">
-					<a>
-						<Logo src="/logo.png" />
-						<span>
-							Sergio Kuraitis<small> - Naturligt design</small>
-						</span>
-					</a>
-				</Link>
-			</Center>
-			<Right>
-				<LanguageSelector />
-				<UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>
-			</Right>
+const Header = props => {
+	const { locale } = React.useContext(LocaleContext)
+	return (
+		<StyledHeader>
+			<Inner>
+				<Left>
+					<Burger onClick={props.toggleLeftDrawer}>{props.leftDrawerOpen ? 'X' : '='}</Burger>
+				</Left>
+				<Center>
+					<Link href="/">
+						<a>
+							<Logo src="/logo.png" />
+							<span>
+								Sergio Kuraitis<small> - Naturligt design</small>
+							</span>
+						</a>
+					</Link>
+				</Center>
+				<Right>
+					{locale && <LanguageSelector />}
+					{props.toggleRightDrawer && <UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>}
+				</Right>
 
-			{props.children}
-		</Inner>
-	</StyledHeader>
-)
+				{props.children}
+			</Inner>
+		</StyledHeader>
+	)
+}
 
 export { Header }

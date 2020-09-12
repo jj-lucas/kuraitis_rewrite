@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
+import User from './User'
 
 const ALL_USERS_QUERY = gql`
 	query ALL_USERS_QUERY {
@@ -38,11 +39,20 @@ const Items = () => {
 
 	return (
 		<Center>
-			<ItemsList>
-				{data.users.map(item => (
-					<p key={item.id}>{item.name}</p>
-				))}
-			</ItemsList>
+			<User>
+				{({ me }) =>
+					console.log(me) || (
+						<>
+							<p>{me ? `Current user: ${me.name}` : 'Logged out'}</p>
+							<ItemsList>
+								{data.users.map(item => (
+									<p key={item.id}>{item.name}</p>
+								))}
+							</ItemsList>
+						</>
+					)
+				}
+			</User>
 		</Center>
 	)
 }

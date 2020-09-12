@@ -20,6 +20,7 @@ class MyApp extends App {
 		const client = new ApolloClient({
 			uri: process.env.NODE_ENV === 'development' ? apiUrlDev : apiUrlProd,
 			cache: new InMemoryCache(),
+			credentials: 'include',
 		})
 
 		return (

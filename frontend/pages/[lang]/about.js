@@ -1,5 +1,5 @@
 import ContentSection from '../../components/ContentSection'
-import About from '../../components/About'
+import { About } from '../../components'
 import Slider from '../../components/Slider'
 import withLocale from '../../lib/localeHelper'
 import Page from '../../components/Page'
