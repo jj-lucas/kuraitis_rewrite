@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { isLocale } from './localeHelper'
 
 export const LocaleContext = React.createContext({
-	locale: 'da',
+	locale: '',
 	setLocale: () => null,
 })
 

@@ -5,6 +5,10 @@ const theme = {
 		darkGray: '#1a1a1a',
 		black: '#393939',
 		blue: '#0394fc',
+		negative: '#ff421e',
+		positive: '#7ede28',
+		info: '#fbd01e',
+		warning: '#ffad1e',
 	},
 	maxWidth: '1024px',
 	maxLengthLine: '1024px',
@@ -23,6 +27,14 @@ const theme = {
 		lg: '40px', // *2
 		xl: '60px', // *3
 		xxl: '100px', // *5
+	},
+	sizes: {
+		icons: {
+			sm: '14px',
+			md: '20px',
+			lg: '36px',
+			fill: 'auto',
+		},
 	},
 	typography: {
 		fs: {
