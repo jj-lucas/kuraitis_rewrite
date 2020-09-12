@@ -15,4 +15,4 @@ const ContentSection = styled.div`
 	}
 `
 
-export default ContentSection
+export { ContentSection }

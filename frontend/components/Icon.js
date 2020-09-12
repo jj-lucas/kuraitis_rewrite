@@ -62,4 +62,4 @@ Icon.defaultProps = {
 	inverted: false,
 }
 
-export default Icon
+export { Icon }

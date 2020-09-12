@@ -102,4 +102,4 @@ const CategoriesList = () => {
 	)
 }
 
-export default CategoriesList
+export { CategoriesList }

@@ -1,6 +1,6 @@
-import Slider from './Slider'
-import ContentSection from './ContentSection'
-import CategoriesList from './CategoriesList'
+import { Slider } from './Slider'
+import { ContentSection } from './ContentSection'
+import { CategoriesList } from './CategoriesList'
 
 const Homepage = props => {
 	return (
@@ -60,4 +60,4 @@ const Homepage = props => {
 	)
 }
 
-export default Homepage
+export { Homepage }

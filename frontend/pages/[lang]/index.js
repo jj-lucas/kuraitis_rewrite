@@ -1,6 +1,5 @@
-import Homepage from '../../components/Homepage'
 import withLocale from '../../lib/localeHelper'
-import Page from '../../components/Page'
+import { Homepage, Page } from '../../components'
 
 const Home = props => {
 	return (

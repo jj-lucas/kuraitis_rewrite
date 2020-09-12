@@ -31,4 +31,4 @@ const Slider = props => {
 	)
 }
 
-export default Slider
+export { Slider }

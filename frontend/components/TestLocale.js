@@ -11,4 +11,4 @@ const Artist = () => {
 	)
 }
 
-export default Artist
+export { Artist }

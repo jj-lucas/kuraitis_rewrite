@@ -43,4 +43,4 @@ const Footer = props => (
 	</StyledHeader>
 )
 
-export default Footer
+export { Footer }

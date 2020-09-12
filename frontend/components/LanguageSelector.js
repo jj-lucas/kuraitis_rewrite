@@ -26,4 +26,4 @@ const LanguageSelector = () => {
 	)
 }
 
-export default LanguageSelector
+export { LanguageSelector }

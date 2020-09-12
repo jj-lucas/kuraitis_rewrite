@@ -110,4 +110,4 @@ const Markets = () => {
 	)
 }
 
-export default Markets
+export { Markets }

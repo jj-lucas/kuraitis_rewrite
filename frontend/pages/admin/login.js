@@ -1,10 +1,6 @@
-import { GlobalStyle } from '../../components/GlobalStyle'
+import { GlobalStyle, LoginForm, Header, ContentSection, CURRENT_USER_QUERY } from '../../components'
 import { ThemeProvider } from 'styled-components'
-import LoginForm from '../../components/LoginForm'
-import { Header } from '../../components/Header'
 import theme from '../../lib/theme'
-import ContentSection from '../../components/ContentSection'
-import { CURRENT_USER_QUERY } from '../../components/User'
 import { useQuery } from '@apollo/client'
 
 const LoginPage = () => {

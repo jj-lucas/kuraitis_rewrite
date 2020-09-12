@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
-import User from './User'
+import { User } from './User'
 
 const ALL_USERS_QUERY = gql`
 	query ALL_USERS_QUERY {
@@ -56,4 +56,4 @@ const Items = () => {
 		</Center>
 	)
 }
-export default Items
+export { Items }

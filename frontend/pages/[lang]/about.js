@@ -1,8 +1,5 @@
-import ContentSection from '../../components/ContentSection'
-import { About } from '../../components'
-import Slider from '../../components/Slider'
+import { About, ContentSection, Slider, Page } from '../../components'
 import withLocale from '../../lib/localeHelper'
-import Page from '../../components/Page'
 
 const AboutPage = props => {
 	return (

@@ -68,4 +68,4 @@ const Nav = ({ className, children }) => {
 	)
 }
 
-export default Nav
+export { Nav }

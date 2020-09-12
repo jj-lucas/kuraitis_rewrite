@@ -3,10 +3,10 @@ import styled, { ThemeProvider } from 'styled-components'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import { GlobalStyle } from './GlobalStyle'
-import Meta from './Meta'
+import { Meta } from './Meta'
 import { Header } from './Header'
-import Footer from './Footer'
-import Nav from './Nav'
+import { Footer } from './Footer'
+import { Nav } from './Nav'
 import theme from '../lib/theme'
 
 const Wrapper = styled.div`
@@ -115,4 +115,4 @@ const Page = props => {
 		</ThemeProvider>
 	)
 }
-export default Page
+export { Page }

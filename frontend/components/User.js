@@ -29,5 +29,4 @@ const User = props => {
 	return props.children(data)
 }
 
-export default User
-export { CURRENT_USER_QUERY }
+export { User, CURRENT_USER_QUERY }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import LanguageSelector from './LanguageSelector'
+import { LanguageSelector } from './LanguageSelector'
 import { LocaleContext } from '../lib/localeContext'
 
 const StyledHeader = styled.header`

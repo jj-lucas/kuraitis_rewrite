@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import Error from './ErrorMessage'
+import { DisplayError } from './DisplayError'
 
 const SIGNIN_MUTATION = gql`
 	mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -12,7 +12,7 @@ const SIGNIN_MUTATION = gql`
 	}
 `
 
-const LoginPage = () => {
+const LoginForm = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [signin, { data, loading, error }] = useMutation(SIGNIN_MUTATION)
@@ -33,7 +33,7 @@ const LoginPage = () => {
 				}}>
 				<fieldset>
 					<h2>Sign in</h2>
-					<Error error={error} />
+					<DisplayError error={error} />
 					<label htmlFor="email">
 						email
 						<input
@@ -65,4 +65,4 @@ const LoginPage = () => {
 	)
 }
 
-export default LoginPage
+export { LoginForm }

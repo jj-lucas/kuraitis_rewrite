@@ -1,5 +1,5 @@
 import React from 'react'
-import Artist from '../../components/TestLocale'
+import { Artist } from '../../components'
 import withLocale from '../../lib/localeHelper'
 
 const IndexPage = () => {
