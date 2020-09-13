@@ -67,7 +67,6 @@ const mutations = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to create an item')
     }
-
     const category = await ctx.db.mutation.createCategory(
       {
         data: {
@@ -76,8 +75,53 @@ const mutations = {
       },
       info
     )
-
     return category
+  },
+
+  async updateCategory(parent, args, ctx, info) {
+    const hasPermission = ctx.request.user.permissions.some((permission) =>
+      ['ADMIN', 'CATEGORYUPDATE'].includes(permission)
+    )
+    if (!hasPermission) {
+      throw new Error("You don't have permission to do this")
+    }
+
+    // take a copy of updates
+    const updates = { ...args }
+    // remove the ID from the updates
+    delete updates.id
+    // run the update method
+    return ctx.db.mutation.updateCategory(
+      {
+        data: updates,
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    )
+  },
+
+  async uploadCategoryImage(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to create an item')
+    }
+    const categoryId = args.categoryId
+    delete args.categoryId
+    const image = await ctx.db.mutation.createCategoryImage(
+      {
+        data: {
+          category: {
+            connect: {
+              id: categoryId,
+            },
+          },
+          ...args,
+        },
+      },
+      info
+    )
+    return image
   },
 }
 

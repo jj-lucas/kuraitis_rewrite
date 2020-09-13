@@ -1,9 +1,9 @@
 enum Permission {
   ADMIN
   USER
-  ITEMCREATE
-  ITEMUPDATE
-  ITEMDELETE
+  CATEGORYCREATE
+  CATEGORYUPDATE
+  CATEGORYDELETE
   PERMISSIONUPDATE
 }
 
@@ -17,11 +17,18 @@ type User {
   permissions: [Permission] @scalarList(strategy: RELATION)
 }
 
+type CategoryImage {
+  id: ID! @id
+  image: String!
+  largeImage: String!
+  category: Category!
+}
+
 type Category {
   id: ID! @id
 
-  slug_da: String!
-  slug_en: String!
+  slug_da: String! @unique
+  slug_en: String! @unique
   name_da: String!
   name_en: String!
   description_da: String

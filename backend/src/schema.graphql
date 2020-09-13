@@ -6,14 +6,24 @@ type SuccessMessage {
 
 type Query {
   users: [User]!
+  getCategoryInfo(id: ID!): Category
   categories: [Category]!
+  category(where: CategoryWhereUniqueInput!): Category
   me: User
+}
+
+type CategoryImage {
+  id: ID!
+  image: String!
+  largeImage: String!
+  category: Category!
 }
 
 type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
+
   createCategory(
     slug_da: String!
     slug_en: String!
@@ -23,6 +33,23 @@ type Mutation {
     description_en: String
     sorting: Int
   ): Category!
+
+  updateCategory(
+    id: ID!
+    slug_da: String
+    slug_en: String
+    name_da: String
+    name_en: String
+    description_da: String
+    description_en: String
+    images: [String]
+  ): Category
+
+  uploadCategoryImage(
+    image: String!
+    largeImage: String!
+    categoryId: String!
+  ): CategoryImage!
 }
 
 type User {
@@ -41,4 +68,5 @@ type Category {
   description_da: String
   description_en: String
   sorting: Int
+  images: [CategoryImage]
 }

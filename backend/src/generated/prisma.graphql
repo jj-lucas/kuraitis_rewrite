@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sat Sep 12 2020 11:48:04 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Sep 13 2020 21:04:33 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
+  count: Int!
+}
+
+type AggregateCategoryImage {
   count: Int!
 }
 
@@ -46,6 +50,11 @@ input CategoryCreateInput {
   sorting: Int
 }
 
+input CategoryCreateOneInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
+}
+
 """An edge in a connection."""
 type CategoryEdge {
   """The item at the end of the edge."""
@@ -53,6 +62,238 @@ type CategoryEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
+}
+
+type CategoryImage implements Node {
+  id: ID!
+  image: String!
+  largeImage: String!
+  category: Category!
+}
+
+"""A connection to a list of items."""
+type CategoryImageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CategoryImageEdge]!
+  aggregate: AggregateCategoryImage!
+}
+
+input CategoryImageCreateInput {
+  id: ID
+  image: String!
+  largeImage: String!
+  category: CategoryCreateOneInput!
+}
+
+"""An edge in a connection."""
+type CategoryImageEdge {
+  """The item at the end of the edge."""
+  node: CategoryImage!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CategoryImageOrderByInput {
+  id_ASC
+  id_DESC
+  image_ASC
+  image_DESC
+  largeImage_ASC
+  largeImage_DESC
+}
+
+type CategoryImagePreviousValues {
+  id: ID!
+  image: String!
+  largeImage: String!
+}
+
+type CategoryImageSubscriptionPayload {
+  mutation: MutationType!
+  node: CategoryImage
+  updatedFields: [String!]
+  previousValues: CategoryImagePreviousValues
+}
+
+input CategoryImageSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategoryImageSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategoryImageSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategoryImageSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CategoryImageWhereInput
+}
+
+input CategoryImageUpdateInput {
+  image: String
+  largeImage: String
+  category: CategoryUpdateOneRequiredInput
+}
+
+input CategoryImageUpdateManyMutationInput {
+  image: String
+  largeImage: String
+}
+
+input CategoryImageWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CategoryImageWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CategoryImageWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CategoryImageWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
+  category: CategoryWhereInput
+}
+
+input CategoryImageWhereUniqueInput {
+  id: ID
 }
 
 enum CategoryOrderByInput {
@@ -122,6 +363,16 @@ input CategorySubscriptionWhereInput {
   node: CategoryWhereInput
 }
 
+input CategoryUpdateDataInput {
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  sorting: Int
+}
+
 input CategoryUpdateInput {
   slug_da: String
   slug_en: String
@@ -140,6 +391,18 @@ input CategoryUpdateManyMutationInput {
   description_da: String
   description_en: String
   sorting: Int
+}
+
+input CategoryUpdateOneRequiredInput {
+  create: CategoryCreateInput
+  connect: CategoryWhereUniqueInput
+  update: CategoryUpdateDataInput
+  upsert: CategoryUpsertNestedInput
+}
+
+input CategoryUpsertNestedInput {
+  update: CategoryUpdateDataInput!
+  create: CategoryCreateInput!
 }
 
 input CategoryWhereInput {
@@ -457,6 +720,8 @@ input CategoryWhereInput {
 
 input CategoryWhereUniqueInput {
   id: ID
+  slug_da: String
+  slug_en: String
 }
 
 """
@@ -467,16 +732,22 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createCategoryImage(data: CategoryImageCreateInput!): CategoryImage!
   createCategory(data: CategoryCreateInput!): Category!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateCategoryImage(data: CategoryImageUpdateInput!, where: CategoryImageWhereUniqueInput!): CategoryImage
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteCategoryImage(where: CategoryImageWhereUniqueInput!): CategoryImage
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertCategoryImage(where: CategoryImageWhereUniqueInput!, create: CategoryImageCreateInput!, update: CategoryImageUpdateInput!): CategoryImage!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyCategoryImages(data: CategoryImageUpdateManyMutationInput!, where: CategoryImageWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyCategoryImages(where: CategoryImageWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
 }
 
@@ -510,18 +781,21 @@ type PageInfo {
 enum Permission {
   ADMIN
   USER
-  ITEMCREATE
-  ITEMUPDATE
-  ITEMDELETE
+  CATEGORYCREATE
+  CATEGORYUPDATE
+  CATEGORYDELETE
   PERMISSIONUPDATE
 }
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  categoryImages(where: CategoryImageWhereInput, orderBy: CategoryImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CategoryImage]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   user(where: UserWhereUniqueInput!): User
+  categoryImage(where: CategoryImageWhereUniqueInput!): CategoryImage
   category(where: CategoryWhereUniqueInput!): Category
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  categoryImagesConnection(where: CategoryImageWhereInput, orderBy: CategoryImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryImageConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
 
   """Fetches an object given its ID"""
@@ -533,6 +807,7 @@ type Query {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  categoryImage(where: CategoryImageSubscriptionWhereInput): CategoryImageSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
 }
 
