@@ -69,6 +69,9 @@ const CategoryEditor = props => {
 			case 'checkbox':
 				val = e.target.checked
 				break
+			default:
+				val = value
+				break
 		}
 		setChanges({
 			...changes,
