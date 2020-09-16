@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { cloudinaryUrl } from '../../../config'
-import { Icon } from '../../../components'
+import { Icon, Form, DisplayError } from '../../../components'
 
 const UPLOAD_IMAGE_MUTATION = gql`
 	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: String!) {
@@ -13,12 +13,21 @@ const UPLOAD_IMAGE_MUTATION = gql`
 	}
 `
 
+const DELETE_IMAGE_MUTATION = gql`
+	mutation DELETE_IMAGE_MUTATION($id: ID!) {
+		deleteCategoryImage(id: $id) {
+			id
+		}
+	}
+`
+
 const Drawer = styled.div`
 	background: ${props => props.theme.colors.lightGray};
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 
 	img {
+		display: block;
 		width: 100%;
 		background: ${props => props.theme.colors.lightGray};
 	}
@@ -26,8 +35,9 @@ const Drawer = styled.div`
 	.image {
 		position: relative;
 		margin: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.sm} 0 0;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-		svg {
+		a {
 			position: absolute;
 			top: 5px;
 			right: 5px;
@@ -36,7 +46,8 @@ const Drawer = styled.div`
 `
 
 const ImageUploader = props => {
-	const [uploadImage, { data, loading, error }] = useMutation(UPLOAD_IMAGE_MUTATION)
+	const [uploadImage, { loading: loadingUpload, error: errorUpload }] = useMutation(UPLOAD_IMAGE_MUTATION)
+	const [deleteImage, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_IMAGE_MUTATION)
 
 	const uploadFile = async e => {
 		const files = e.target.files
@@ -66,26 +77,40 @@ const ImageUploader = props => {
 			})
 	}
 
-	return (
-		<>
-			<h3>Images</h3>
-			<label htmlFor="file">
-				Image
-				<input type="file" id="file" name="file" placeholder="Upload an image" onChange={uploadFile} />
-			</label>
+	const handleImageDelete = async imageId => {
+		console.log(imageId)
+		await deleteImage({
+			variables: {
+				id: imageId,
+			},
+			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.categoryId } }],
+		})
+	}
 
-			<Drawer>
-				{props.images &&
-					props.images.map(image => (
-						<div className="image">
-							<img src={image.image} />
-							<a href="#">
-								<Icon name="cross" size="md" inverted />
-							</a>
-						</div>
-					))}
-			</Drawer>
-		</>
+	return (
+		<Form>
+			<fieldset disabled={loadingUpload || loadingDelete} aria-busy={loadingUpload || loadingDelete}>
+				<DisplayError error={errorUpload || errorDelete} />
+
+				<h3>Images</h3>
+				<label htmlFor="file">
+					Image
+					<input type="file" id="file" name="file" placeholder="Upload an image" onChange={uploadFile} />
+				</label>
+
+				<Drawer>
+					{props.images &&
+						props.images.map(image => (
+							<div className="image" key={image.id}>
+								<img src={image.image} />
+								<a href="#" onClick={e => handleImageDelete(image.id)}>
+									<Icon name="cross" size="md" inverted />
+								</a>
+							</div>
+						))}
+				</Drawer>
+			</fieldset>
+		</Form>
 	)
 }
 

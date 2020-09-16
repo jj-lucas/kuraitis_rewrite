@@ -47,6 +47,16 @@ const Form = styled.form`
 		&[disabled] {
 			opacity: 0.5;
 		}
+		&::before {
+			height: 5px;
+			content: '';
+			display: block;
+		}
+		&[aria-busy='true']::before {
+			background-size: 50% auto;
+			animation: ${loading} 0.5s linear infinite;
+			background-image: linear-gradient(to right, #0394fc 0%, #f8f8f8 50%, #0394fc 100%);
+		}
 	}
 `
 

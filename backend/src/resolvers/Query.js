@@ -21,6 +21,7 @@ const Query = {
         },
       },
       `{
+        id
         image
         largeImage
       }

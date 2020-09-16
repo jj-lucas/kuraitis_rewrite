@@ -1,4 +1,4 @@
-import { GlobalStyle, Header, ContentSection, PleaseSignIn, NavAdmin } from '.'
+import { GlobalStyle, Header, ContentSection, PleaseSignIn, NavAdmin, Meta } from '.'
 import { ThemeProvider } from 'styled-components'
 import theme from '../lib/theme'
 
@@ -7,6 +7,7 @@ const PageAdmin = props => {
 		<ThemeProvider theme={theme}>
 			<GlobalStyle />
 			<Header />
+			<Meta />
 			<ContentSection>
 				<PleaseSignIn>
 					<NavAdmin />

@@ -50,6 +50,8 @@ type Mutation {
     largeImage: String!
     categoryId: String!
   ): CategoryImage!
+
+  deleteCategoryImage(id: ID!): CategoryImage
 }
 
 type User {

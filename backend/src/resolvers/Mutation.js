@@ -128,6 +128,13 @@ const mutations = {
     )
     return image
   },
+
+  async deleteCategoryImage(parent, args, ctx, info) {
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
+
+    const where = { id: args.id }
+    return ctx.db.mutation.deleteCategoryImage({ where }, info)
+  },
 }
 
 module.exports = mutations

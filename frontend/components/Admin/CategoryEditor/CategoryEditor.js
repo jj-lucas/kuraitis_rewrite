@@ -11,6 +11,7 @@ const SINGLE_CATEGORY_QUERY = gql`
             ${languages.map(lang => 'slug_' + lang.id)}
             ${languages.map(lang => 'description_' + lang.id)}
             images {
+				id
                 image
             }
 		}
@@ -72,6 +73,8 @@ const CategoryEditor = props => {
 				<>
 					<h1>Edit category: {category.name_da}</h1>
 
+					<ImageUploader categoryId={props.query.id} images={category.images} queryToRefetch={SINGLE_CATEGORY_QUERY} />
+
 					<Form
 						onSubmit={async e => {
 							e.preventDefault()
@@ -86,12 +89,6 @@ const CategoryEditor = props => {
 							})
 						}}>
 						<DisplayError error={errorQuery || errorMutation} />
-
-						<ImageUploader
-							categoryId={props.query.id}
-							images={category.images}
-							queryToRefetch={SINGLE_CATEGORY_QUERY}
-						/>
 
 						{languages.map(lang => (
 							<div key={lang.id}>
