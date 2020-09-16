@@ -27,10 +27,10 @@ type CategoryImage {
 type Category {
   id: ID! @id
 
-  slug_da: String! @unique
-  slug_en: String! @unique
-  name_da: String!
-  name_en: String!
+  slug_da: String @unique
+  slug_en: String @unique
+  name_da: String
+  name_en: String
   description_da: String
   description_en: String
 

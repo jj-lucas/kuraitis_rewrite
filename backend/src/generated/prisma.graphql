@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sun Sep 13 2020 21:04:33 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Sep 16 2020 22:10:11 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -20,10 +20,10 @@ type BatchPayload {
 
 type Category implements Node {
   id: ID!
-  slug_da: String!
-  slug_en: String!
-  name_da: String!
-  name_en: String!
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
   description_da: String
   description_en: String
   sorting: Int
@@ -41,10 +41,10 @@ type CategoryConnection {
 
 input CategoryCreateInput {
   id: ID
-  slug_da: String!
-  slug_en: String!
-  name_da: String!
-  name_en: String!
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
   description_da: String
   description_en: String
   sorting: Int
@@ -317,10 +317,10 @@ enum CategoryOrderByInput {
 
 type CategoryPreviousValues {
   id: ID!
-  slug_da: String!
-  slug_en: String!
-  name_da: String!
-  name_en: String!
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
   description_da: String
   description_en: String
   sorting: Int

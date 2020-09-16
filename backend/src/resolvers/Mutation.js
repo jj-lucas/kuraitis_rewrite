@@ -78,15 +78,7 @@ const mutations = {
   async createCategory(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYCREATE'])
 
-    const category = await ctx.db.mutation.createCategory(
-      {
-        data: {
-          ...args,
-        },
-      },
-      info
-    )
-    return category
+    return await ctx.db.mutation.createCategory({ data: {} }, info)
   },
 
   async updateCategory(parent, args, ctx, info) {

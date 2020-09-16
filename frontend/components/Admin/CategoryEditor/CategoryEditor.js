@@ -88,8 +88,6 @@ const CategoryEditor = props => {
 								console.log(error)
 							})
 						}}>
-						<DisplayError error={errorQuery || errorMutation} />
-
 						{languages.map(lang => (
 							<div key={lang.id}>
 								<h3>{lang.pretty}</h3>
@@ -133,6 +131,7 @@ const CategoryEditor = props => {
 								</fieldset>
 							</div>
 						))}
+						<DisplayError error={errorQuery || errorMutation} />
 						<button type="submit">Save</button>
 					</Form>
 				</>

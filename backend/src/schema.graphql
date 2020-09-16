@@ -23,15 +23,7 @@ type Mutation {
   signin(email: String!, password: String!): User!
   signout: SuccessMessage
 
-  createCategory(
-    slug_da: String!
-    slug_en: String!
-    name_da: String!
-    name_en: String!
-    description_da: String
-    description_en: String
-    sorting: Int
-  ): Category!
+  createCategory: Category!
 
   updateCategory(
     id: ID!
@@ -62,10 +54,10 @@ type User {
 
 type Category {
   id: ID!
-  slug_da: String!
-  slug_en: String!
-  name_da: String!
-  name_en: String!
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
   description_da: String
   description_en: String
   sorting: Int
