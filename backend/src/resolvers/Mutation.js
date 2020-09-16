@@ -1,6 +1,18 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const hasPermissions = (ctx, eligiblePermissions) => {
+  if (!ctx.request.userId) {
+    throw new Error('You must be logged in to do this')
+  }
+  const hasPermission = ctx.request.user.permissions.some((permission) =>
+    eligiblePermissions.includes(permission)
+  )
+  if (!hasPermission) {
+    throw new Error("You don't have permission to do this")
+  }
+}
+
 const mutations = {
   async signup(parent, args, ctx, info) {
     args.email = args.email.toLowerCase()
@@ -64,9 +76,8 @@ const mutations = {
   },
 
   async createCategory(parent, args, ctx, info) {
-    if (!ctx.request.userId) {
-      throw new Error('You must be logged in to create an item')
-    }
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYCREATE'])
+
     const category = await ctx.db.mutation.createCategory(
       {
         data: {
@@ -79,12 +90,7 @@ const mutations = {
   },
 
   async updateCategory(parent, args, ctx, info) {
-    const hasPermission = ctx.request.user.permissions.some((permission) =>
-      ['ADMIN', 'CATEGORYUPDATE'].includes(permission)
-    )
-    if (!hasPermission) {
-      throw new Error("You don't have permission to do this")
-    }
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 
     // take a copy of updates
     const updates = { ...args }
@@ -103,9 +109,8 @@ const mutations = {
   },
 
   async uploadCategoryImage(parent, args, ctx, info) {
-    if (!ctx.request.userId) {
-      throw new Error('You must be logged in to create an item')
-    }
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
+
     const categoryId = args.categoryId
     delete args.categoryId
     const image = await ctx.db.mutation.createCategoryImage(
