@@ -12,6 +12,9 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_da
 			name_en
 			sorting
+			images {
+				image
+			}
 		}
 	}
 `
@@ -37,7 +40,7 @@ const Tile = ({ data }) => (
 	<StyledTile>
 		<Link href={`/admin/category?id=${data.id}`}>
 			<a>
-				<img src={`/images/categories/etuier.jpg`} />
+				<img src={data.images[0] ? data.images[0].image : null} />
 				<h3>{data.name_da}</h3>
 			</a>
 		</Link>

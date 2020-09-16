@@ -1,9 +1,7 @@
 const { forwardTo } = require('prisma-binding')
 
 const Query = {
-  category: forwardTo('db'),
-
-  async getCategoryInfo(parent, args, ctx, info) {
+  async category(parent, args, ctx, info) {
     const category = await ctx.db.query.category(
       {
         where: {
@@ -27,20 +25,36 @@ const Query = {
       }
       `
     )
-
-    console.log(categoryImages)
     return { ...category, images: [...categoryImages] }
-
-    return ctx.db.query.users({}, info)
   },
 
   async users(parent, args, ctx, info) {
-    // 3. if they do, query all the users
     return ctx.db.query.users({}, info)
   },
 
   async categories(parent, args, ctx, info) {
-    return ctx.db.query.categories({}, info)
+    // get all categories
+    const categories = await ctx.db.query.categories()
+    // iterate and enrich with images
+    categories.map((category, index) => {
+      const categoryImages = ctx.db.query.categoryImages(
+        {
+          where: {
+            category: {
+              id: category.id,
+            },
+          },
+        },
+        `{
+          id
+          image
+          largeImage
+        }
+        `
+      )
+      categories[index].images = categoryImages
+    })
+    return categories
   },
 
   me(parent, args, ctx, info) {

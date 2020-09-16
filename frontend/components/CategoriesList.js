@@ -12,6 +12,9 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_da
 			name_en
 			sorting
+			images {
+				image
+			}
 		}
 	}
 `
@@ -79,7 +82,7 @@ const Tile = props => (
 		</span>
 		<div className="outer">
 			<div className="inner">
-				<img src={`/images/categories/${'etuier'}.jpg`} alt={props.name} />
+				<img src={props.image || `/images/categories/${'etuier'}.jpg`} alt={props.name} />
 			</div>
 		</div>
 	</StyledTile>
@@ -95,7 +98,7 @@ const CategoriesList = () => {
 		<Center>
 			<ItemsList>
 				{data.categories.map(item => (
-					<Tile key={item.id} name={item[`name_${locale}`]} image={item[`slug_da`]} />
+					<Tile key={item.id} name={item[`name_${locale}`]} image={item.images[0] ? item.images[0].image : null} />
 				))}
 			</ItemsList>
 		</Center>

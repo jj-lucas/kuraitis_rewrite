@@ -6,9 +6,8 @@ type SuccessMessage {
 
 type Query {
   users: [User]!
-  getCategoryInfo(id: ID!): Category
   categories: [Category]!
-  category(where: CategoryWhereUniqueInput!): Category
+  category(id: ID!): Category
   me: User
 }
 

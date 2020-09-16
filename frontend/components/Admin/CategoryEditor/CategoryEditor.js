@@ -5,7 +5,7 @@ import { languages } from '../../../config'
 
 const SINGLE_CATEGORY_QUERY = gql`
 	query SINGLE_CATEGORY_QUERY($id: ID!) {
-		getCategoryInfo(id: $id ) {
+		category(id: $id ) {
 			id
             ${languages.map(lang => 'name_' + lang.id)}
             ${languages.map(lang => 'slug_' + lang.id)}
@@ -53,7 +53,7 @@ const CategoryEditor = props => {
 
 	if (loadingQuery) return <p>Loading</p>
 
-	const category = dataQuery && dataQuery.getCategoryInfo
+	const category = dataQuery && dataQuery.category
 
 	const handleChange = e => {
 		const { name, type, value } = e.target
