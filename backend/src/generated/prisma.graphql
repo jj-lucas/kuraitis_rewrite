@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Wed Sep 16 2020 22:10:11 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Sep 16 2020 22:21:34 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -27,6 +27,7 @@ type Category implements Node {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean
 }
 
 """A connection to a list of items."""
@@ -48,6 +49,7 @@ input CategoryCreateInput {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean
 }
 
 input CategoryCreateOneInput {
@@ -313,6 +315,8 @@ enum CategoryOrderByInput {
   description_en_DESC
   sorting_ASC
   sorting_DESC
+  published_ASC
+  published_DESC
 }
 
 type CategoryPreviousValues {
@@ -324,6 +328,7 @@ type CategoryPreviousValues {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean
 }
 
 type CategorySubscriptionPayload {
@@ -371,6 +376,7 @@ input CategoryUpdateDataInput {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean
 }
 
 input CategoryUpdateInput {
@@ -381,6 +387,7 @@ input CategoryUpdateInput {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean
 }
 
 input CategoryUpdateManyMutationInput {
@@ -391,6 +398,7 @@ input CategoryUpdateManyMutationInput {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean
 }
 
 input CategoryUpdateOneRequiredInput {
@@ -716,6 +724,10 @@ input CategoryWhereInput {
 
   """All values greater than or equal the given value."""
   sorting_gte: Int
+  published: Boolean
+
+  """All values that are not equal to given value."""
+  published_not: Boolean
 }
 
 input CategoryWhereUniqueInput {

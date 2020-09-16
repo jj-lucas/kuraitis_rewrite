@@ -32,6 +32,11 @@ const Form = styled.form`
 			border-color: ${props => props.theme.colors.blue};
 		}
 	}
+	input[type='checkbox'] {
+		width: 15px;
+		height: 15px;
+		margin: 3px 10px 3px 0;
+	}
 	button,
 	input[type='submit'] {
 		width: auto;

@@ -35,4 +35,5 @@ type Category {
   description_en: String
 
   sorting: Int
+  published: Boolean @default(value: false)
 }

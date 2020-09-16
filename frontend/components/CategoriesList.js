@@ -7,6 +7,7 @@ const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {
 		categories {
 			id
+			published
 			slug_da
 			slug_en
 			name_da
@@ -97,9 +98,12 @@ const CategoriesList = () => {
 	return (
 		<Center>
 			<ItemsList>
-				{data.categories.map(item => (
-					<Tile key={item.id} name={item[`name_${locale}`]} image={item.images[0] ? item.images[0].image : null} />
-				))}
+				{data.categories.map(
+					item =>
+						item.published && (
+							<Tile key={item.id} name={item[`name_${locale}`]} image={item.images[0] ? item.images[0].image : null} />
+						)
+				)}
 			</ItemsList>
 		</Center>
 	)

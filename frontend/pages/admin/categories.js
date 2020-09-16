@@ -7,6 +7,7 @@ const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {
 		categories {
 			id
+			published
 			slug_da
 			slug_en
 			name_da
@@ -46,6 +47,11 @@ const StyledTile = styled.li`
 		width: 100px;
 		min-width: 100px;
 	}
+	.bubble {
+		float: right;
+		width: 5px;
+		background: green;
+	}
 `
 
 const Tile = ({ data }) => (
@@ -54,6 +60,7 @@ const Tile = ({ data }) => (
 			<a>
 				<img src={data.images[0] ? data.images[0].image : null} />
 				<h3>{data.name_da || 'New category'}</h3>
+				{!data.published && <Icon name="inactive" size="lg" />}
 			</a>
 		</Link>
 	</StyledTile>

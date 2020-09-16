@@ -7,6 +7,7 @@ const SINGLE_CATEGORY_QUERY = gql`
 	query SINGLE_CATEGORY_QUERY($id: ID!) {
 		category(id: $id ) {
 			id
+			published
             ${languages.map(lang => 'name_' + lang.id)}
             ${languages.map(lang => 'slug_' + lang.id)}
             ${languages.map(lang => 'description_' + lang.id)}
@@ -20,13 +21,16 @@ const SINGLE_CATEGORY_QUERY = gql`
 
 const UPDATE_CATEGORY_MUTATION = gql`
 	mutation UPDATE_CATEGORY_MUTATION(
-        $id: ID!, 
+        $id: ID!,
+		$published: Boolean, 
         ${languages.map(lang => '$slug_' + lang.id + ': String,')}
         ${languages.map(lang => '$name_' + lang.id + ': String,')}
         ${languages.map(lang => '$description_' + lang.id + ': String,')}
         $images: [String]
         ) {
-		updateCategory(id: $id,
+		updateCategory(
+			id: $id,
+			published: $published,
             ${languages.map(lang => 'slug_' + lang.id + ': $slug_' + lang.id + ',')}
             ${languages.map(lang => 'name_' + lang.id + ': $name_' + lang.id + ',')}
             ${languages.map(lang => 'description_' + lang.id + ': $description_' + lang.id + ',')}
@@ -57,7 +61,15 @@ const CategoryEditor = props => {
 
 	const handleChange = e => {
 		const { name, type, value } = e.target
-		const val = type === 'number' ? parseFloat(value) : value
+		let val
+		switch (type) {
+			case 'number':
+				val = parseFloat(value)
+				break
+			case 'checkbox':
+				val = e.target.checked
+				break
+		}
 		setChanges({
 			...changes,
 			[name]: val,
@@ -131,6 +143,18 @@ const CategoryEditor = props => {
 								</fieldset>
 							</div>
 						))}
+						<fieldset disabled={loading} aria-busy={loading}>
+							<label htmlFor="published">
+								<input
+									type="checkbox"
+									id="published"
+									name="published"
+									defaultChecked={category.published}
+									onChange={handleChange}
+								/>
+								Published
+							</label>
+						</fieldset>
 						<DisplayError error={errorQuery || errorMutation} />
 						<button type="submit">Save</button>
 					</Form>

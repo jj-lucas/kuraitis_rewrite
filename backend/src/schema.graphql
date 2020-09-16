@@ -34,6 +34,7 @@ type Mutation {
     description_da: String
     description_en: String
     images: [String]
+    published: Boolean
   ): Category
 
   uploadCategoryImage(
@@ -61,5 +62,6 @@ type Category {
   description_da: String
   description_en: String
   sorting: Int
+  published: Boolean!
   images: [CategoryImage]
 }
