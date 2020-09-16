@@ -22,3 +22,5 @@ export * from './Slider'
 export * from './Test'
 export * from './TestLocale'
 export * from './User'
+
+export * from './Admin'
