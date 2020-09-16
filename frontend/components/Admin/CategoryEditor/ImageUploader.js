@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { cloudinaryUrl } from '../../../config'
+import { Icon } from '../../../components'
 
 const UPLOAD_IMAGE_MUTATION = gql`
 	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: String!) {
@@ -8,6 +9,28 @@ const UPLOAD_IMAGE_MUTATION = gql`
 			id
 			image
 			largeImage
+		}
+	}
+`
+
+const Drawer = styled.div`
+	background: ${props => props.theme.colors.lightGray};
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+
+	img {
+		width: 100%;
+		background: ${props => props.theme.colors.lightGray};
+	}
+
+	.image {
+		position: relative;
+		margin: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.sm} 0 0;
+
+		svg {
+			position: absolute;
+			top: 5px;
+			right: 5px;
 		}
 	}
 `
@@ -50,7 +73,18 @@ const ImageUploader = props => {
 				Image
 				<input type="file" id="file" name="file" placeholder="Upload an image" onChange={uploadFile} />
 			</label>
-			{props.images && props.images.map(image => <img src={image.image} />)}
+
+			<Drawer>
+				{props.images &&
+					props.images.map(image => (
+						<div className="image">
+							<img src={image.image} />
+							<a href="#">
+								<Icon name="cross" size="md" inverted />
+							</a>
+						</div>
+					))}
+			</Drawer>
 		</>
 	)
 }

@@ -18,6 +18,12 @@ const icons = {
 			transform="translate(0 2)"
 		/>
 	),
+	cross: (
+		<path
+			d="M10.54 11.95l-5.61-5.6a1 1 0 0 1 1.41-1.42l5.61 5.61L17.3 5.2a1 1 0 0 1 1.42 1.42l-5.34 5.33 5.7 5.7a1 1 0 0 1-1.41 1.42l-5.7-5.7-5.98 5.97a1 1 0 0 1-1.42-1.41l5.98-5.98z"
+			fill-rule="nonzero"
+		/>
+	),
 }
 
 const StyledIcon = styled.svg`
