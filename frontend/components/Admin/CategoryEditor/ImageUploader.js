@@ -48,7 +48,7 @@ const ImageUploader = props => {
 			<h3>Images</h3>
 			<label htmlFor="file">
 				Image
-				<input type="file" id="file" name="file" placeholder="Upload an image" required onChange={uploadFile} />
+				<input type="file" id="file" name="file" placeholder="Upload an image" onChange={uploadFile} />
 			</label>
 			{props.images && props.images.map(image => <img src={image.image} />)}
 		</>

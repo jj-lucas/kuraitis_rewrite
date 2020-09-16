@@ -77,8 +77,9 @@ const CategoryEditor = props => {
 							e.preventDefault()
 							const updates = { ...category, ...changes }
 							delete updates.__typename
+							delete updates.images
 							await updateCategory({
-								variables: { ...category, ...changes },
+								variables: updates,
 								refetchQueries: [{ query: SINGLE_CATEGORY_QUERY, variables: { id: props.query.id } }],
 							}).catch(error => {
 								console.log(error)
