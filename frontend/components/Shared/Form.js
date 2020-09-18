@@ -40,14 +40,18 @@ const Form = styled.form`
 	button,
 	input[type='submit'] {
 		width: auto;
-		background: ${props => props.theme.colors.blue};
 		color: white;
+		background: ${props => props.theme.colors.gray};
 		border: 0;
 		padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
-		margin: 0 ${props => props.theme.spacing.base} 0 0;
+		margin: 0 ${props => props.theme.spacing.sm} 0 0;
 
+		&[type='submit'] {
+			background: ${props => props.theme.colors.blue};
+		}
 		&.warning {
 			background: ${props => props.theme.colors.warning};
+			float: right;
 		}
 	}
 	fieldset {

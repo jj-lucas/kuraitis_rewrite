@@ -81,6 +81,13 @@ const mutations = {
     return await ctx.db.mutation.createCategory({ data: {} }, info)
   },
 
+  async deleteCategory(parent, args, ctx, info) {
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYDELETE'])
+
+    const where = { id: args.id }
+    return ctx.db.mutation.deleteCategory({ where }, info)
+  },
+
   async updateCategory(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 

@@ -44,6 +44,14 @@ const UPDATE_CATEGORY_MUTATION = gql`
 	}
 `
 
+const DELETE_CATEGORY_MUTATION = gql`
+	mutation DELETE_CATEGORY_MUTATION($id: ID!) {
+		deleteCategory(id: $id) {
+			id
+		}
+	}
+`
+
 const CategoryEditor = props => {
 	const [changes, setChanges] = React.useState({})
 
@@ -51,9 +59,8 @@ const CategoryEditor = props => {
 		variables: { id: props.query.id },
 	})
 
-	const [updateCategory, { data: dataMutation, loading: loadingMutation, error: errorMutation }] = useMutation(
-		UPDATE_CATEGORY_MUTATION
-	)
+	const [updateCategory, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CATEGORY_MUTATION)
+	const [deleteCategory, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_CATEGORY_MUTATION)
 
 	if (loadingQuery) return <p>Loading</p>
 
@@ -79,7 +86,20 @@ const CategoryEditor = props => {
 		})
 	}
 
-	const loading = loadingQuery || loadingMutation
+	const handleDelete = async e => {
+		e.preventDefault()
+		if (confirm('Are you sure you want to delete this category?')) {
+			await deleteCategory({
+				variables: {
+					id: props.query.id,
+				},
+			}).then(() => {
+				window.location = '/admin/categories'
+			})
+		}
+	}
+
+	const loading = loadingQuery || loadingUpdate || loadingDelete
 
 	return (
 		<>
@@ -158,9 +178,18 @@ const CategoryEditor = props => {
 								Published
 							</label>
 						</fieldset>
-						<DisplayError error={errorQuery || errorMutation} />
+						<DisplayError error={errorQuery || errorUpdate} />
+						<button
+							onClick={e => {
+								e.preventDefault()
+								window.history.back()
+							}}>
+							Cancel
+						</button>
 						<button type="submit">Save</button>
-						<button className="warning">Delete</button>
+						<button className="warning" onClick={handleDelete}>
+							Delete
+						</button>
 					</Form>
 				</>
 			)}
