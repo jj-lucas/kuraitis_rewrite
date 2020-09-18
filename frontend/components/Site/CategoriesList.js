@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
-import { LocaleContext } from '../../lib/localeContext'
+import { LocaleContext } from '../../lib'
 
 const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {

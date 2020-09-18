@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { LocaleContext } from '../../lib/localeContext'
+import { LocaleContext } from '../../lib'
 import { languages } from '../../config'
 
 const LanguageSelector = () => {

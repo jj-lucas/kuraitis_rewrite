@@ -4,7 +4,7 @@ import Router from 'next/router'
 import NProgress from 'nprogress'
 import { Meta, Header, Footer, GlobalStyle } from '../../components'
 import { Nav } from '.'
-import theme from '../../lib/theme'
+import { theme } from '../../lib'
 
 const Wrapper = styled.div`
 	display: flex;

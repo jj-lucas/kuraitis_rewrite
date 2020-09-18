@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Head from 'next/head'
-import { LocaleContext } from '../../lib/localeContext'
-import { datesToRange } from '../../lib/dateHelper'
+import { LocaleContext, datesToRange } from '../../lib'
 
 const markets = [
 	{

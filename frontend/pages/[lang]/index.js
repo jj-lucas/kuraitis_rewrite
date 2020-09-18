@@ -1,4 +1,4 @@
-import withLocale from '../../lib/localeHelper'
+import { withLocale } from '../../lib'
 import { Homepage, Page } from '../../components'
 
 const Home = props => {

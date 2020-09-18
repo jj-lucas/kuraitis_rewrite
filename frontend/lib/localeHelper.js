@@ -4,7 +4,7 @@ import { getDisplayName } from 'next/dist/next-server/lib/utils'
 import { LocaleProvider } from './localeContext'
 import { languages } from '../config'
 
-const WithLocale = WrappedPage => {
+const withLocale = WrappedPage => {
 	const withLocale = ({ locale, ...pageProps }) => {
 		if (!locale) {
 			return <Error statusCode={404} />
@@ -53,5 +53,4 @@ const getInitialLocale = () => {
 	return languages[0].id
 }
 
-export { isLocale, getInitialLocale }
-export default WithLocale
+export { isLocale, getInitialLocale, withLocale }

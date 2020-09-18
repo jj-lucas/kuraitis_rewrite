@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
-import { LocaleContext } from '../../lib/localeContext'
+import { LocaleContext } from '../../lib'
 import { User } from '../../components'
 
 const StyledNav = styled.nav`

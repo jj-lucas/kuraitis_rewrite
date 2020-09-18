@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
-import { LogoutButton } from '.'
+import { LogoutButton } from '../../components'
 
 const links = [
 	{ label: 'Dashboard', path: '/admin' },

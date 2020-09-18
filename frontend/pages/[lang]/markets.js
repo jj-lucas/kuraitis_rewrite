@@ -1,5 +1,5 @@
 import { Markets, ContentSection, Page } from '../../components'
-import withLocale from '../../lib/localeHelper'
+import { withLocale } from '../../lib'
 
 const MarketsPage = props => {
 	return (

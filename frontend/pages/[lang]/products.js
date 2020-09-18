@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Items, Page } from '../../components'
-import withLocale from '../../lib/localeHelper'
+import { withLocale } from '../../lib'
 
 const Products = props => (
 	<Page>

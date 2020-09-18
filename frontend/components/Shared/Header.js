@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import { LanguageSelector, LogoutButton } from '../../components'
-import { LocaleContext } from '../../lib/localeContext'
+import { LocaleContext } from '../../lib'
 
 const StyledHeader = styled.header`
 	background-color: ${props => props.theme.colors.lightGray};

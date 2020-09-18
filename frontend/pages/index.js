@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { getInitialLocale } from '../lib/localeHelper'
+import { getInitialLocale } from '../lib'
 
 const Index = () => {
 	React.useEffect(() => {
