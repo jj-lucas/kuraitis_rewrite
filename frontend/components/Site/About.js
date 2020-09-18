@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Head from 'next/head'
-import { LocaleContext } from '../lib/localeContext'
+import { LocaleContext } from '../../lib/localeContext'
 
 const Picture = styled.img`
 	display: block;

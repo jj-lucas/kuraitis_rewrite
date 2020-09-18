@@ -1,4 +1,4 @@
-import { LoginForm, CURRENT_USER_QUERY } from '../components'
+import { LoginForm, CURRENT_USER_QUERY } from '../../components'
 import { useQuery } from '@apollo/client'
 
 const PleaseSignIn = props => {

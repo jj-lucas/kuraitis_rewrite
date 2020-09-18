@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { locales, languageNames } from '../lib/localeHelper'
-import { LocaleContext } from '../lib/localeContext'
+import { locales, languageNames } from '../../lib/localeHelper'
+import { LocaleContext } from '../../lib/localeContext'
 
 const LanguageSelector = () => {
 	const router = useRouter()

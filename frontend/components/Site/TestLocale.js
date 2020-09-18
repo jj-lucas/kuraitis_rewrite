@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContext } from 'react'
-import { LocaleContext } from '../lib/localeContext'
+import { LocaleContext } from '../../lib/localeContext'
 
 const Artist = () => {
 	const { locale } = useContext(LocaleContext)

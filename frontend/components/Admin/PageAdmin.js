@@ -1,6 +1,6 @@
-import { GlobalStyle, Header, ContentSection, PleaseSignIn, NavAdmin, Meta } from '.'
+import { GlobalStyle, Header, ContentSection, PleaseSignIn, NavAdmin, Meta } from '../../components'
 import { ThemeProvider } from 'styled-components'
-import theme from '../lib/theme'
+import theme from '../../lib/theme'
 
 const PageAdmin = props => {
 	return (

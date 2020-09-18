@@ -1,6 +1,4 @@
-import { Slider } from './Slider'
-import { ContentSection } from './ContentSection'
-import { CategoriesList } from './CategoriesList'
+import { CategoriesList, Slider, ContentSection } from '../../components'
 
 const Homepage = props => {
 	return (

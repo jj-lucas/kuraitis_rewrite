@@ -1,6 +1,6 @@
 import React from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { CURRENT_USER_QUERY, User } from '.'
+import { CURRENT_USER_QUERY, User } from '../../components'
 import styled from 'styled-components'
 
 const SIGNOUT_MUTATION = gql`

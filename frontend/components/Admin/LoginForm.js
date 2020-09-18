@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { DisplayError, CURRENT_USER_QUERY } from '.'
+import { DisplayError, CURRENT_USER_QUERY } from '../../components'
 
 const SIGNIN_MUTATION = gql`
 	mutation SIGNIN_MUTATION($email: String!, $password: String!) {

@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Link from 'next/link'
-import { LocaleContext } from '../lib/localeContext'
-import { User } from '../components'
+import { LocaleContext } from '../../lib/localeContext'
+import { User } from '../../components'
 
 const StyledNav = styled.nav`
 	width: 100%;
