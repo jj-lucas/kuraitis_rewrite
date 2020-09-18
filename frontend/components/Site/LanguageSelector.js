@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { locales, languageNames } from '../../lib/localeHelper'
 import { LocaleContext } from '../../lib/localeContext'
+import { languages } from '../../config'
 
 const LanguageSelector = () => {
 	const router = useRouter()
@@ -9,7 +9,7 @@ const LanguageSelector = () => {
 
 	const handleLocaleChange = React.useCallback(
 		e => {
-			const regex = new RegExp(`^/(${locales.join('|')})`)
+			const regex = new RegExp(`^/(${languages.map(lang => lang.id).join('|')})`)
 			router.push(router.pathname, router.asPath.replace(regex, `/${e.target.value}`))
 		},
 		[router]
@@ -17,9 +17,9 @@ const LanguageSelector = () => {
 
 	return (
 		<select value={locale} onChange={handleLocaleChange}>
-			{locales.map(locale => (
-				<option key={locale} value={locale}>
-					{languageNames[locale]}
+			{languages.map(locale => (
+				<option key={locale.id} value={locale.id}>
+					{locale.pretty}
 				</option>
 			))}
 		</select>

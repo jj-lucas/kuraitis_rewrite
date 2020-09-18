@@ -1,14 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Error from 'next/error'
 import { getDisplayName } from 'next/dist/next-server/lib/utils'
 import { LocaleProvider } from './localeContext'
-
-const locales = ['da', 'en']
-
-const languageNames = {
-	en: 'English',
-	da: 'Dansk',
-}
+import { languages } from '../config'
 
 const WithLocale = WrappedPage => {
 	const withLocale = ({ locale, ...pageProps }) => {
@@ -39,7 +33,7 @@ const WithLocale = WrappedPage => {
 }
 
 const isLocale = locale => {
-	return locales.includes(locale)
+	return languages.map(lang => lang.id).includes(locale)
 }
 
 const getInitialLocale = () => {
@@ -56,8 +50,8 @@ const getInitialLocale = () => {
 	}
 
 	console.log('using default')
-	return 'da'
+	return languages[0].id
 }
 
-export { locales, languageNames, isLocale, getInitialLocale }
+export { isLocale, getInitialLocale }
 export default WithLocale
