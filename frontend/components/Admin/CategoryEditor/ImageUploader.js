@@ -53,7 +53,7 @@ const ImageUploader = props => {
 		const files = e.target.files
 		const data = new FormData()
 		data.append('file', files[0])
-		data.append('upload_preset', 'sickfits')
+		data.append('upload_preset', 'kuraitis_category')
 		const res = await fetch(cloudinaryUrl, {
 			method: 'POST',
 			body: data,
