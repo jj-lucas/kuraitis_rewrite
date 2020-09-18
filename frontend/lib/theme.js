@@ -12,7 +12,6 @@ const theme = {
 	},
 	maxWidth: '1024px',
 	maxLengthLine: '1024px',
-	bs: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	breakpoints: {
 		xs: '375px',
 		sm: '680px',
@@ -58,6 +57,10 @@ const theme = {
 			oswald: "'Oswald', sans-serif",
 			droid: 'droid_sansregular',
 		},
+	},
+	boxShadow: {
+		sm: '0 0 5px 3px rgba(0, 0, 0, 0.05)',
+		lg: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	},
 	transition: {
 		cubic: 'cubic-bezier(0.73, 0.09, 0.21, 0.96)',

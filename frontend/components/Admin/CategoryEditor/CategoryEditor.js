@@ -160,6 +160,7 @@ const CategoryEditor = props => {
 						</fieldset>
 						<DisplayError error={errorQuery || errorMutation} />
 						<button type="submit">Save</button>
+						<button className="warning">Delete</button>
 					</Form>
 				</>
 			)}

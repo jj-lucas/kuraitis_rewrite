@@ -13,20 +13,20 @@ const loading = keyframes`
 `
 
 const Form = styled.form`
-	box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
-	background: rgba(0, 0, 0, 0.02);
+	box-shadow: ${props => props.theme.boxShadow.sm};
+	background: ${props => props.theme.colors.lightGray};
 	border: 5px solid white;
-	padding: 20px;
+	padding: ${props => props.theme.spacing.base};
 	label {
 		display: block;
-		margin-bottom: 1rem;
+		margin-bottom: ${props => props.theme.spacing.sm};
 	}
 	input,
 	textarea,
 	select {
 		width: 100%;
-		padding: 0.5rem;
-		border: 1px solid black;
+		padding: ${props => props.theme.spacing.xs};
+		border: 1px solid ${props => props.theme.colors.gray};
 		&:focus {
 			outline: 0;
 			border-color: ${props => props.theme.colors.blue};
@@ -40,10 +40,15 @@ const Form = styled.form`
 	button,
 	input[type='submit'] {
 		width: auto;
-		background: red;
+		background: ${props => props.theme.colors.blue};
 		color: white;
 		border: 0;
-		padding: 0.5rem 1.2rem;
+		padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
+		margin: 0 ${props => props.theme.spacing.base} 0 0;
+
+		&.warning {
+			background: ${props => props.theme.colors.warning};
+		}
 	}
 	fieldset {
 		border: 0;
