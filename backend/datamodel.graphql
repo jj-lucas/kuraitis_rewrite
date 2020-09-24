@@ -17,12 +17,12 @@ type User {
   permissions: [Permission] @scalarList(strategy: RELATION)
 }
 
-type CategoryImage {
+type Image {
   id: ID! @id
   image: String!
   largeImage: String!
-  category: Category!
   sorting: Int
+  category: Category
 }
 
 type Category {
@@ -37,4 +37,12 @@ type Category {
 
   sorting: Int
   published: Boolean @default(value: false)
+}
+
+type ImageReport {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  image: Image!
+  url: String!
+  message: String!
 }

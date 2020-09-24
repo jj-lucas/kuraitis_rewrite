@@ -134,7 +134,7 @@ const CategoryEditor = props => {
 											id={`slug_${lang.id}`}
 											name={`slug_${lang.id}`}
 											placeholder="Slug"
-											required
+											required={lang.required}
 											defaultValue={category[`slug_${lang.id}`]}
 											onChange={handleChange}
 										/>
@@ -146,7 +146,7 @@ const CategoryEditor = props => {
 											id={`name_${lang.id}`}
 											name={`name_${lang.id}`}
 											placeholder="Title"
-											required
+											required={lang.required}
 											defaultValue={category[`name_${lang.id}`]}
 											onChange={handleChange}
 										/>

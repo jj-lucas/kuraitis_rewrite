@@ -6,8 +6,9 @@ import { LogoutButton } from '../../components'
 
 const links = [
 	{ label: 'Dashboard', path: '/admin' },
-	{ label: 'Products', path: '/admin/products' },
 	{ label: 'Categories', path: '/admin/categories' },
+	{ label: 'Reported images', path: '/admin/reportedImages' },
+	{ label: 'Products', path: '/admin/products' },
 ]
 
 const StyledNav = styled.nav`

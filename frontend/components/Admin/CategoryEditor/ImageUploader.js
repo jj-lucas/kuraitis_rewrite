@@ -47,7 +47,7 @@ const Drawer = styled.div`
 const Tile = styled.div`
 	position: relative;
 	margin: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.sm} 0 0;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	box-shadow: ${props => props.theme.boxShadow.md};
 
 	img {
 		display: block;

@@ -9,13 +9,14 @@ type Query {
   categories: [Category]!
   category(id: ID!): Category
   me: User
+  imageReports: [ImageReport]
 }
 
-type CategoryImage {
+type Image {
   id: ID!
   image: String!
   largeImage: String!
-  category: Category!
+  category: Category
 }
 
 type Mutation {
@@ -25,7 +26,6 @@ type Mutation {
 
   createCategory: Category!
   deleteCategory(id: ID!): Category
-
   updateCategory(
     id: ID!
     slug_da: String
@@ -42,11 +42,11 @@ type Mutation {
     image: String!
     largeImage: String!
     categoryId: String!
-  ): CategoryImage!
-
+  ): Image!
   sortCategoryImages(images: [String]): SuccessMessage
+  deleteCategoryImage(id: ID!): Image
 
-  deleteCategoryImage(id: ID!): CategoryImage
+  createImageReport(image: ID!, url: String!, message: String!): ImageReport
 }
 
 type User {
@@ -66,5 +66,13 @@ type Category {
   description_en: String
   sorting: Int
   published: Boolean!
-  images: [CategoryImage]
+  images: [Image]
+}
+
+type ImageReport {
+  id: ID!
+  createdAt: DateTime!
+  image: Image!
+  url: String!
+  message: String!
 }

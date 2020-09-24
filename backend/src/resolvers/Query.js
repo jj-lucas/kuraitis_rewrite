@@ -10,7 +10,7 @@ const Query = {
       },
       info
     )
-    const categoryImages = await ctx.db.query.categoryImages(
+    const images = await ctx.db.query.images(
       {
         where: {
           category: {
@@ -27,8 +27,7 @@ const Query = {
       }
       `
     )
-    console.log(categoryImages)
-    return { ...category, images: [...categoryImages] }
+    return { ...category, images: [...images] }
   },
 
   async users(parent, args, ctx, info) {
@@ -40,22 +39,24 @@ const Query = {
     const categories = await ctx.db.query.categories()
     // iterate and enrich with images
     categories.map((category, index) => {
-      const categoryImages = ctx.db.query.categoryImages(
+      const images = ctx.db.query.images(
         {
           where: {
             category: {
               id: category.id,
             },
           },
+          orderBy: 'sorting_ASC',
         },
         `{
           id
+          sorting
           image
           largeImage
         }
         `
       )
-      categories[index].images = categoryImages
+      categories[index].images = images
     })
     return categories
   },
@@ -73,6 +74,10 @@ const Query = {
       },
       info
     )
+  },
+
+  async imageReports(parent, args, ctx, info) {
+    return ctx.db.query.imageReports({}, info)
   },
 }
 

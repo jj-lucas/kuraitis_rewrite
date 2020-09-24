@@ -84,7 +84,7 @@ const mutations = {
   async deleteCategory(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYDELETE'])
 
-    await ctx.db.mutation.deleteManyCategoryImages({
+    await ctx.db.mutation.deleteManyImages({
       where: {
         category: {
           id: args.id,
@@ -119,7 +119,7 @@ const mutations = {
 
     const categoryId = args.categoryId
     delete args.categoryId
-    const image = await ctx.db.mutation.createCategoryImage(
+    const image = await ctx.db.mutation.createImage(
       {
         data: {
           category: {
@@ -140,8 +140,7 @@ const mutations = {
 
     const images = args.images
     images.map(async (id, index) => {
-      console.log(`${id} -> ${index + 1}`)
-      await ctx.db.mutation.updateCategoryImage({
+      await ctx.db.mutation.updateImage({
         where: { id },
         data: { sorting: index + 1 },
       })
@@ -155,7 +154,29 @@ const mutations = {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 
     const where = { id: args.id }
-    return ctx.db.mutation.deleteCategoryImage({ where }, info)
+    return ctx.db.mutation.deleteImage({ where }, info)
+  },
+
+  // reateImageReport(id: ID!, url: String!, message: String!): ImageReport
+
+  async createImageReport(parent, args, ctx, info) {
+    hasPermissions(ctx, ['ADMIN'])
+
+    const imageId = args.image
+    delete args.image
+    return await ctx.db.mutation.createImageReport(
+      {
+        data: {
+          image: {
+            connect: {
+              id: imageId,
+            },
+          },
+          ...args,
+        },
+      },
+      info
+    )
   },
 }
 

@@ -7,6 +7,7 @@ export const languages = [
 	{
 		id: 'da',
 		pretty: 'Dansk',
+		required: true,
 	},
 	{
 		id: 'en',
