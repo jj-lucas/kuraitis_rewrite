@@ -84,8 +84,15 @@ const mutations = {
   async deleteCategory(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYDELETE'])
 
-    const where = { id: args.id }
-    return ctx.db.mutation.deleteCategory({ where }, info)
+    await ctx.db.mutation.deleteManyCategoryImages({
+      where: {
+        category: {
+          id: args.id,
+        },
+      },
+    })
+
+    return ctx.db.mutation.deleteCategory({ where: { id: args.id } }, info)
   },
 
   async updateCategory(parent, args, ctx, info) {
