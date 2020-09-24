@@ -17,14 +17,17 @@ const Query = {
             id: args.id,
           },
         },
+        orderBy: 'sorting_ASC',
       },
       `{
+        sorting
         id
         image
         largeImage
       }
       `
     )
+    console.log(categoryImages)
     return { ...category, images: [...categoryImages] }
   },
 

@@ -1,7 +1,10 @@
 import styled from 'styled-components'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client'
 import { cloudinaryUrl } from '../../../config'
 import { Icon, Form, DisplayError } from '../../../components'
+import { SortableContainer, SortableElement } from 'react-sortable-hoc'
+import arrayMove from 'array-move'
+import { useState, useEffect } from 'react'
 
 const UPLOAD_IMAGE_MUTATION = gql`
 	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: String!) {
@@ -21,10 +24,30 @@ const DELETE_IMAGE_MUTATION = gql`
 	}
 `
 
+const SORT_IMAGES_MUTATION = gql`
+	mutation SORT_IMAGES_MUTATION($images: [String]) {
+		sortCategoryImages(images: $images) {
+			message
+		}
+	}
+`
+
+const SortableItem = SortableElement(({ children }) => <Tile>{children}</Tile>)
+
+const SortableList = SortableContainer(({ children }) => {
+	return <Drawer>{children}</Drawer>
+})
+
 const Drawer = styled.div`
 	background: ${props => props.theme.colors.lightGray};
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
+`
+
+const Tile = styled.div`
+	position: relative;
+	margin: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.sm} 0 0;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 	img {
 		display: block;
@@ -32,22 +55,23 @@ const Drawer = styled.div`
 		background: ${props => props.theme.colors.lightGray};
 	}
 
-	.image {
-		position: relative;
-		margin: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.sm} 0 0;
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
-		a {
-			position: absolute;
-			top: 5px;
-			right: 5px;
-		}
+	a {
+		position: absolute;
+		top: 5px;
+		right: 5px;
 	}
 `
 
 const ImageUploader = props => {
 	const [uploadImage, { loading: loadingUpload, error: errorUpload }] = useMutation(UPLOAD_IMAGE_MUTATION)
 	const [deleteImage, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_IMAGE_MUTATION)
+	const [sortImages, { loading: loadingSort, error: errorSort }] = useMutation(SORT_IMAGES_MUTATION)
+
+	const [images, setImages] = useState([])
+
+	useEffect(() => {
+		setImages(props.images)
+	}, [props.images])
 
 	const uploadFile = async e => {
 		const files = e.target.files
@@ -77,8 +101,24 @@ const ImageUploader = props => {
 			})
 	}
 
-	const handleImageDelete = async imageId => {
-		console.log(imageId)
+	const onSortEnd = async ({ oldIndex, newIndex }) => {
+		const reorderedImages = arrayMove(images, oldIndex, newIndex)
+		setImages(reorderedImages)
+
+		await sortImages({
+			variables: {
+				images: reorderedImages.map(image => image.id),
+			},
+		})
+			.catch(error => {
+				console.log(error)
+			})
+			.then(response => {
+				console.log(response.data.sortCategoryImages.message)
+			})
+	}
+
+	const onImageDelete = async imageId => {
 		await deleteImage({
 			variables: {
 				id: imageId,
@@ -98,17 +138,22 @@ const ImageUploader = props => {
 					<input type="file" id="file" name="file" placeholder="Upload an image" onChange={uploadFile} />
 				</label>
 
-				<Drawer>
-					{props.images &&
-						props.images.map(image => (
-							<div className="image" key={image.id}>
+				<SortableList onSortEnd={onSortEnd} axis="xy" distance={1}>
+					{images &&
+						images.map((image, index) => (
+							<SortableItem key={image.id} index={index}>
 								<img src={image.image} />
-								<a href="#" onClick={e => handleImageDelete(image.id)}>
+								<a
+									href="#"
+									onClick={e => {
+										e.preventDefault()
+										onImageDelete(image.id)
+									}}>
 									<Icon name="cross" size="md" inverted />
 								</a>
-							</div>
+							</SortableItem>
 						))}
-				</Drawer>
+				</SortableList>
 			</fieldset>
 		</Form>
 	)

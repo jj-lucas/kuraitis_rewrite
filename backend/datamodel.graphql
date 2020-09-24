@@ -22,6 +22,7 @@ type CategoryImage {
   image: String!
   largeImage: String!
   category: Category!
+  sorting: Int
 }
 
 type Category {

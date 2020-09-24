@@ -135,6 +135,22 @@ const mutations = {
     return image
   },
 
+  async sortCategoryImages(parent, args, ctx, info) {
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
+
+    const images = args.images
+    images.map(async (id, index) => {
+      console.log(`${id} -> ${index + 1}`)
+      await ctx.db.mutation.updateCategoryImage({
+        where: { id },
+        data: { sorting: index + 1 },
+      })
+    })
+    return {
+      message: 'Images sorted',
+    }
+  },
+
   async deleteCategoryImage(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 

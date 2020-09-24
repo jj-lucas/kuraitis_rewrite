@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 import { DisplayError, CURRENT_USER_QUERY } from '../../components'
 

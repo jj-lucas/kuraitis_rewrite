@@ -44,6 +44,8 @@ type Mutation {
     categoryId: String!
   ): CategoryImage!
 
+  sortCategoryImages(images: [String]): SuccessMessage
+
   deleteCategoryImage(id: ID!): CategoryImage
 }
 
