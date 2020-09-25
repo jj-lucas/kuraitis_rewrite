@@ -43,7 +43,7 @@ type Report {
   id: ID! @id
   createdAt: DateTime! @createdAt
   resolvedAt: DateTime
-  image: Image
+  image: String
   text: String
   url: String!
   message: String!

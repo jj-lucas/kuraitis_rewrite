@@ -52,13 +52,13 @@ const StyledIcon = styled.svg`
 		props.positive &&
 		`
         background-color: ${props.theme.colors.gray};
-        fill: ${props.theme.colors.lightGray};
+        fill: ${props.theme.colors.positive};
     `}
 	${props =>
 		props.negative &&
 		`
         background-color: ${props.theme.colors.gray};
-        fill: ${props.theme.colors.lightGray};
+        fill: ${props.theme.colors.negative};
     `}
 `
 

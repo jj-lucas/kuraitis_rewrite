@@ -47,7 +47,12 @@ type Mutation {
   sortCategoryImages(images: [String]): SuccessMessage
   deleteCategoryImage(id: ID!): Image
 
-  createReport(image: ID, text: String, url: String!, message: String!): Report
+  createReport(
+    image: String
+    text: String
+    url: String!
+    message: String!
+  ): Report
 }
 
 type User {
@@ -74,8 +79,8 @@ type Report {
   id: ID!
   createdAt: DateTime!
   resolvedAt: DateTime
-  image: Image
-  test: String
+  image: String
+  text: String
   url: String!
   message: String!
 }

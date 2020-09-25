@@ -80,7 +80,7 @@ const Query = {
     return ctx.db.query.reports(
       {
         where: {
-          image: { id_not: null },
+          image_not: null,
         },
       },
       info

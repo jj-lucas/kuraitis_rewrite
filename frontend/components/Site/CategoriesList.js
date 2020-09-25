@@ -2,6 +2,7 @@ import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
 import { LocaleContext } from '../../lib'
+import { Picture } from '../../components'
 
 const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {
@@ -36,7 +37,7 @@ const Center = styled.div`
 `
 
 const StyledTile = styled.a`
-	transition: all 0.25s ${props => props.theme.transition.cubic};
+	transition: all ${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.cubic}`};
 	border: 1px solid ${props => props.theme.colors.lightGray};
 	color: ${props => props.theme.colors.black};
 
@@ -46,7 +47,7 @@ const StyledTile = styled.a`
 	img {
 		width: 100%;
 		display: block;
-		transition: transform 0.25s ${props => props.theme.transition.cubic};
+		transition: transform ${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.cubic}`};
 	}
 	.outer {
 		padding: 0;
@@ -83,7 +84,7 @@ const Tile = props => (
 		</span>
 		<div className="outer">
 			<div className="inner">
-				<img src={props.image || `/images/categories/${'etuier'}.jpg`} alt={props.name} />
+				<Picture source={props.image || `/images/categories/${'etuier'}.jpg`} alt={props.name} />
 			</div>
 		</div>
 	</StyledTile>

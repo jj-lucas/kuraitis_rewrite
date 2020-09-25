@@ -6,10 +6,7 @@ const IMAGE_REPORTS_QUERY = gql`
 	query IMAGE_REPORTS_QUERY {
 		imageReports {
 			id
-			image {
-				id
-				image
-			}
+			image
 			url
 			message
 		}
@@ -60,7 +57,7 @@ const AdminReportedImagesPage = () => {
 			{reports.map(report => (
 				<Report key={report.id}>
 					<a href={report.url} target="_blank">
-						<img src={report.image.image} />
+						<img src={report.image} />
 					</a>
 					<div classsName="info">
 						<p>{report.message}</p>

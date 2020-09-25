@@ -160,23 +160,9 @@ const mutations = {
   async createReport(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN'])
 
-    let imageData = {}
-    if (args.image) {
-      console.log('here')
-      const imageId = args.image
-      delete args.image
-      imageData = {
-        image: {
-          connect: {
-            id: imageId,
-          },
-        },
-      }
-    }
     return await ctx.db.mutation.createReport(
       {
         data: {
-          ...imageData,
           ...args,
         },
       },

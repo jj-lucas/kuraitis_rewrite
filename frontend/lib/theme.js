@@ -64,7 +64,13 @@ const theme = {
 		lg: '0 12px 24px 0 rgba(0, 0, 0, 0.09)',
 	},
 	transition: {
-		cubic: 'cubic-bezier(0.73, 0.09, 0.21, 0.96)',
+		durations: {
+			short: '0.25s',
+			long: '0.8s',
+		},
+		types: {
+			cubic: 'cubic-bezier(0.73, 0.09, 0.21, 0.96)',
+		},
 	},
 }
 

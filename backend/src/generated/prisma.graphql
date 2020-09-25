@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Fri Sep 25 2020 13:00:32 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Sep 25 2020 20:46:37 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -538,11 +538,6 @@ input ImageCreateInput {
   category: CategoryCreateOneInput
 }
 
-input ImageCreateOneInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
-}
-
 """An edge in a connection."""
 type ImageEdge {
   """The item at the end of the edge."""
@@ -607,13 +602,6 @@ input ImageSubscriptionWhereInput {
   node: ImageWhereInput
 }
 
-input ImageUpdateDataInput {
-  image: String
-  largeImage: String
-  sorting: Int
-  category: CategoryUpdateOneInput
-}
-
 input ImageUpdateInput {
   image: String
   largeImage: String
@@ -625,20 +613,6 @@ input ImageUpdateManyMutationInput {
   image: String
   largeImage: String
   sorting: Int
-}
-
-input ImageUpdateOneInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: ImageUpdateDataInput
-  upsert: ImageUpsertNestedInput
-}
-
-input ImageUpsertNestedInput {
-  update: ImageUpdateDataInput!
-  create: ImageCreateInput!
 }
 
 input ImageWhereInput {
@@ -807,29 +781,29 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createImage(data: ImageCreateInput!): Image!
   createReport(data: ReportCreateInput!): Report!
   createCategory(data: CategoryCreateInput!): Category!
-  createImage(data: ImageCreateInput!): Image!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   updateReport(data: ReportUpdateInput!, where: ReportWhereUniqueInput!): Report
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
-  updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteImage(where: ImageWhereUniqueInput!): Image
   deleteReport(where: ReportWhereUniqueInput!): Report
   deleteCategory(where: CategoryWhereUniqueInput!): Category
-  deleteImage(where: ImageWhereUniqueInput!): Image
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   upsertReport(where: ReportWhereUniqueInput!, create: ReportCreateInput!, update: ReportUpdateInput!): Report!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
-  upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   updateManyReports(data: ReportUpdateManyMutationInput!, where: ReportWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
-  updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyImages(where: ImageWhereInput): BatchPayload!
   deleteManyReports(where: ReportWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
-  deleteManyImages(where: ImageWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -870,17 +844,17 @@ enum Permission {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   reports(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Report]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
-  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   user(where: UserWhereUniqueInput!): User
+  image(where: ImageWhereUniqueInput!): Image
   report(where: ReportWhereUniqueInput!): Report
   category(where: CategoryWhereUniqueInput!): Category
-  image(where: ImageWhereUniqueInput!): Image
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
   reportsConnection(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReportConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
-  imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -893,7 +867,7 @@ type Report implements Node {
   id: ID!
   createdAt: DateTime!
   resolvedAt: DateTime
-  image: Image
+  image: String
   text: String
   url: String!
   message: String!
@@ -912,10 +886,10 @@ type ReportConnection {
 input ReportCreateInput {
   id: ID
   resolvedAt: DateTime
+  image: String
   text: String
   url: String!
   message: String!
-  image: ImageCreateOneInput
 }
 
 """An edge in a connection."""
@@ -934,6 +908,8 @@ enum ReportOrderByInput {
   createdAt_DESC
   resolvedAt_ASC
   resolvedAt_DESC
+  image_ASC
+  image_DESC
   text_ASC
   text_DESC
   url_ASC
@@ -946,6 +922,7 @@ type ReportPreviousValues {
   id: ID!
   createdAt: DateTime!
   resolvedAt: DateTime
+  image: String
   text: String
   url: String!
   message: String!
@@ -990,14 +967,15 @@ input ReportSubscriptionWhereInput {
 
 input ReportUpdateInput {
   resolvedAt: DateTime
+  image: String
   text: String
   url: String
   message: String
-  image: ImageUpdateOneInput
 }
 
 input ReportUpdateManyMutationInput {
   resolvedAt: DateTime
+  image: String
   text: String
   url: String
   message: String
@@ -1096,6 +1074,46 @@ input ReportWhereInput {
 
   """All values greater than or equal the given value."""
   resolvedAt_gte: DateTime
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
   text: String
 
   """All values that are not equal to given value."""
@@ -1216,7 +1234,6 @@ input ReportWhereInput {
 
   """All values not ending with the given string."""
   message_not_ends_with: String
-  image: ImageWhereInput
 }
 
 input ReportWhereUniqueInput {
@@ -1225,9 +1242,9 @@ input ReportWhereUniqueInput {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
   report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
-  image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
 }
 
 type User implements Node {
