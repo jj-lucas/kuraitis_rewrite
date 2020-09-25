@@ -7,7 +7,7 @@ type SuccessMessage {
 type Query {
   users: [User]!
   categories: [Category]!
-  category(id: ID!): Category
+  category(id: ID, slug_da: String, slug_en: String): Category
   me: User
   reports: [Report]
 }

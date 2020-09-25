@@ -1,4 +1,4 @@
-import { ContentSection, Page } from '../../../components'
+import { ContentSection, Page, CategoryOverview } from '../../../components'
 import { withLocale } from '../../../lib'
 import { useRouter } from 'next/router'
 
@@ -8,7 +8,7 @@ const CategoryPage = props => {
 	return (
 		<Page>
 			<ContentSection>
-				<h1>{slug}</h1>
+				<CategoryOverview slug={slug} />
 			</ContentSection>
 		</Page>
 	)

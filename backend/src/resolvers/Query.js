@@ -1,15 +1,48 @@
 const { forwardTo } = require('prisma-binding')
 
+const getCategoryBySlug = async (ctx, slug_da, slug_en, info) => {
+  const categories = await ctx.db.query.categories(
+    {
+      where: {
+        OR: [{ slug_da }, { slug_en }],
+      },
+    },
+    info
+  )
+  return categories.map((category) => category.id)[0]
+}
+
 const Query = {
   async category(parent, args, ctx, info) {
+    let idToLookFor = args.id
+    if (!idToLookFor) {
+      // get by slug
+      const eligibleCategories = await ctx.db.query.categories(
+        {
+          where: {
+            OR: [{ slug_da: args.slug_da }, { slug_en: args.slug_en }],
+          },
+        },
+        `{
+          id
+        }
+        `
+      )
+      idToLookFor = eligibleCategories.map((category) => category.id)[0]
+
+      if (!idToLookFor) return null
+    }
+
+    // get by ID
     const category = await ctx.db.query.category(
       {
         where: {
-          id: args.id,
+          id: idToLookFor,
         },
       },
       info
     )
+
     const images = await ctx.db.query.images(
       {
         where: {
