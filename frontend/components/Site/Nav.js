@@ -53,9 +53,9 @@ const links = {
 	],
 	da: [
 		{ label: 'Hjem', path: '/' },
-		{ label: 'Produkter', path: '/products' },
-		{ label: 'Om Sergio', path: '/about' },
-		{ label: 'Markeder', path: '/markets' },
+		{ label: 'Produkter', path: '/produkter' },
+		{ label: 'Om Sergio', path: '/om-sergio' },
+		{ label: 'Markeder', path: '/markeder' },
 		{ label: 'FAQ', path: '/faq' },
 		{ label: 'Kontakt', path: '/contact' },
 	],

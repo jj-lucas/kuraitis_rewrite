@@ -116,7 +116,7 @@ const About = () => {
 				</em>
 			</p>
 			<p>
-				<Picture src="/images/sergio.jpg" />
+				<StyledPicture source="/images/sergio.jpg" />
 			</p>
 			<p>
 				I was born in Buenos Aires, a feverish mega city where foreign modernism met native traditions. As a child I was
