@@ -45,7 +45,6 @@ type Report {
   createdAt: DateTime! @createdAt
   resolvedAt: DateTime
   image: String
-  text: String
   url: String!
   message: String!
 }

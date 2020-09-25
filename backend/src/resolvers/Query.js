@@ -76,23 +76,10 @@ const Query = {
     )
   },
 
-  async imageReports(parent, args, ctx, info) {
+  async reports(parent, args, ctx, info) {
     return ctx.db.query.reports(
       {
-        where: {
-          image_not: null,
-        },
-      },
-      info
-    )
-  },
-
-  async textReports(parent, args, ctx, info) {
-    return ctx.db.query.reports(
-      {
-        where: {
-          image: null,
-        },
+        where: {},
       },
       info
     )
