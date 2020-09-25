@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Fri Sep 25 2020 20:46:37 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Sep 25 2020 20:55:56 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -840,6 +840,7 @@ enum Permission {
   CATEGORYUPDATE
   CATEGORYDELETE
   PERMISSIONUPDATE
+  REPORT
 }
 
 type Query {

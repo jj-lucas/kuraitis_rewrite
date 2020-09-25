@@ -158,7 +158,7 @@ const mutations = {
   },
 
   async createReport(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN'])
+    hasPermissions(ctx, ['ADMIN', 'REPORT'])
 
     return await ctx.db.mutation.createReport(
       {
@@ -168,6 +168,13 @@ const mutations = {
       },
       info
     )
+  },
+
+  async deleteReport(parent, args, ctx, info) {
+    hasPermissions(ctx, ['ADMIN', 'REPORT'])
+
+    const where = { id: args.id }
+    return ctx.db.mutation.deleteReport({ where }, info)
   },
 }
 

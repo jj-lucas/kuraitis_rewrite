@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Head from 'next/head'
 import { LocaleContext, datesToRange } from '../../lib'
+import { Picture } from '../../components'
 
 const markets = [
 	{
@@ -55,7 +56,7 @@ const markets = [
 	},
 ]
 
-const Picture = styled.img`
+const StyledPicture = styled(Picture)`
 	display: block;
 
 	margin: auto;
@@ -92,7 +93,7 @@ const Markets = () => {
 			</Head>
 			<h1>{locale === 'en' ? 'Markets and fairs' : 'Kommende markeder'} 2019</h1>
 			<p>
-				<Picture src="/images/markets.jpg" />
+				<StyledPicture source="/images/markets.jpg" />
 				<List>
 					{markets.map(market => (
 						<li key={market.name}>

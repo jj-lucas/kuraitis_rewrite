@@ -5,6 +5,7 @@ enum Permission {
   CATEGORYUPDATE
   CATEGORYDELETE
   PERMISSIONUPDATE
+  REPORT
 }
 
 type User {

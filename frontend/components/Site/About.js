@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import Head from 'next/head'
 import { LocaleContext } from '../../lib'
+import { Picture } from '../../components'
 
-const Picture = styled.img`
+const StyledPicture = styled(Picture)`
 	display: block;
 
 	margin: auto;
@@ -33,7 +34,7 @@ const About = () => {
 					</em>
 				</p>
 				<p>
-					<Picture src="/images/sergio.jpg" />
+					<StyledPicture source="/images/sergio.jpg" />
 				</p>
 				<p>
 					Jeg blev født i Buenos Aires, en hektisk kæmpeby, hvor udenlandsk modernisme mødte indfødte traditioner. Som

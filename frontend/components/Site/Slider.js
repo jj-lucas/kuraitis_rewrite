@@ -17,18 +17,24 @@ const Container = styled.div`
 	}
 `
 
+const StyledPicture = styled(Picture)`
+	width: 100%;
+	height: 100%;
+	display: block;
+`
+
 const Slider = props => {
 	return (
 		<Container>
 			{props.slides.map(image => (
-				<Picture
+				<StyledPicture
 					key={image}
 					sources={[
 						`/images/slider/${image}-small.jpg`,
 						`/images/slider/${image}-medium.jpg`,
 						`/images/slider/${image}-large.jpg`,
 					]}
-					alt={props.alt}></Picture>
+					alt={props.alt}></StyledPicture>
 			))}
 		</Container>
 	)

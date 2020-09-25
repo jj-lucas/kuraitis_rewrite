@@ -53,6 +53,7 @@ type Mutation {
     url: String!
     message: String!
   ): Report
+  deleteReport(id: ID!): Report
 }
 
 type User {
