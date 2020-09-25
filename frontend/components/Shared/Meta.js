@@ -9,7 +9,7 @@ const Meta = () => (
 		<link
 			href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&display=swap"
 			rel="stylesheet"></link>
-		<link rel="stylesheet" href="/static/droidsans_regular_macroman/stylesheet.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="/static/droidsans_regular_macroman/stylesheet.css" type="text/css" charSet="utf-8" />
 		<title>Sergio Kuraitis: Naturligt Design</title>
 	</Head>
 )

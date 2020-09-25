@@ -157,21 +157,26 @@ const mutations = {
     return ctx.db.mutation.deleteImage({ where }, info)
   },
 
-  // reateImageReport(id: ID!, url: String!, message: String!): ImageReport
-
-  async createImageReport(parent, args, ctx, info) {
+  async createReport(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN'])
 
-    const imageId = args.image
-    delete args.image
-    return await ctx.db.mutation.createImageReport(
+    let imageData = {}
+    if (args.image) {
+      console.log('here')
+      const imageId = args.image
+      delete args.image
+      imageData = {
+        image: {
+          connect: {
+            id: imageId,
+          },
+        },
+      }
+    }
+    return await ctx.db.mutation.createReport(
       {
         data: {
-          image: {
-            connect: {
-              id: imageId,
-            },
-          },
+          ...imageData,
           ...args,
         },
       },

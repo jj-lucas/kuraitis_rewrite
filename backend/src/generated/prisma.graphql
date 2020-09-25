@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Fri Sep 25 2020 00:10:26 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Sep 25 2020 13:00:32 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -9,7 +9,7 @@ type AggregateImage {
   count: Int!
 }
 
-type AggregateImageReport {
+type AggregateReport {
   count: Int!
 }
 
@@ -570,264 +570,6 @@ type ImagePreviousValues {
   sorting: Int
 }
 
-type ImageReport implements Node {
-  id: ID!
-  createdAt: DateTime!
-  image: Image!
-  url: String!
-  message: String!
-}
-
-"""A connection to a list of items."""
-type ImageReportConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [ImageReportEdge]!
-  aggregate: AggregateImageReport!
-}
-
-input ImageReportCreateInput {
-  id: ID
-  url: String!
-  message: String!
-  image: ImageCreateOneInput!
-}
-
-"""An edge in a connection."""
-type ImageReportEdge {
-  """The item at the end of the edge."""
-  node: ImageReport!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum ImageReportOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  url_ASC
-  url_DESC
-  message_ASC
-  message_DESC
-}
-
-type ImageReportPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  url: String!
-  message: String!
-}
-
-type ImageReportSubscriptionPayload {
-  mutation: MutationType!
-  node: ImageReport
-  updatedFields: [String!]
-  previousValues: ImageReportPreviousValues
-}
-
-input ImageReportSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ImageReportSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ImageReportSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ImageReportSubscriptionWhereInput!]
-
-  """The subscription event gets dispatched when it's listed in mutation_in"""
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: ImageReportWhereInput
-}
-
-input ImageReportUpdateInput {
-  url: String
-  message: String
-  image: ImageUpdateOneRequiredInput
-}
-
-input ImageReportUpdateManyMutationInput {
-  url: String
-  message: String
-}
-
-input ImageReportWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ImageReportWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ImageReportWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ImageReportWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  url: String
-
-  """All values that are not equal to given value."""
-  url_not: String
-
-  """All values that are contained in given list."""
-  url_in: [String!]
-
-  """All values that are not contained in given list."""
-  url_not_in: [String!]
-
-  """All values less than the given value."""
-  url_lt: String
-
-  """All values less than or equal the given value."""
-  url_lte: String
-
-  """All values greater than the given value."""
-  url_gt: String
-
-  """All values greater than or equal the given value."""
-  url_gte: String
-
-  """All values containing the given string."""
-  url_contains: String
-
-  """All values not containing the given string."""
-  url_not_contains: String
-
-  """All values starting with the given string."""
-  url_starts_with: String
-
-  """All values not starting with the given string."""
-  url_not_starts_with: String
-
-  """All values ending with the given string."""
-  url_ends_with: String
-
-  """All values not ending with the given string."""
-  url_not_ends_with: String
-  message: String
-
-  """All values that are not equal to given value."""
-  message_not: String
-
-  """All values that are contained in given list."""
-  message_in: [String!]
-
-  """All values that are not contained in given list."""
-  message_not_in: [String!]
-
-  """All values less than the given value."""
-  message_lt: String
-
-  """All values less than or equal the given value."""
-  message_lte: String
-
-  """All values greater than the given value."""
-  message_gt: String
-
-  """All values greater than or equal the given value."""
-  message_gte: String
-
-  """All values containing the given string."""
-  message_contains: String
-
-  """All values not containing the given string."""
-  message_not_contains: String
-
-  """All values starting with the given string."""
-  message_starts_with: String
-
-  """All values not starting with the given string."""
-  message_not_starts_with: String
-
-  """All values ending with the given string."""
-  message_ends_with: String
-
-  """All values not ending with the given string."""
-  message_not_ends_with: String
-  image: ImageWhereInput
-}
-
-input ImageReportWhereUniqueInput {
-  id: ID
-}
-
 type ImageSubscriptionPayload {
   mutation: MutationType!
   node: Image
@@ -885,9 +627,11 @@ input ImageUpdateManyMutationInput {
   sorting: Int
 }
 
-input ImageUpdateOneRequiredInput {
+input ImageUpdateOneInput {
   create: ImageCreateInput
   connect: ImageWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: ImageUpdateDataInput
   upsert: ImageUpsertNestedInput
 }
@@ -1063,27 +807,27 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createImageReport(data: ImageReportCreateInput!): ImageReport!
+  createReport(data: ReportCreateInput!): Report!
   createCategory(data: CategoryCreateInput!): Category!
   createImage(data: ImageCreateInput!): Image!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateImageReport(data: ImageReportUpdateInput!, where: ImageReportWhereUniqueInput!): ImageReport
+  updateReport(data: ReportUpdateInput!, where: ReportWhereUniqueInput!): Report
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteImageReport(where: ImageReportWhereUniqueInput!): ImageReport
+  deleteReport(where: ReportWhereUniqueInput!): Report
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteImage(where: ImageWhereUniqueInput!): Image
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertImageReport(where: ImageReportWhereUniqueInput!, create: ImageReportCreateInput!, update: ImageReportUpdateInput!): ImageReport!
+  upsertReport(where: ReportWhereUniqueInput!, create: ReportCreateInput!, update: ReportUpdateInput!): Report!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManyImageReports(data: ImageReportUpdateManyMutationInput!, where: ImageReportWhereInput): BatchPayload!
+  updateManyReports(data: ReportUpdateManyMutationInput!, where: ReportWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyImageReports(where: ImageReportWhereInput): BatchPayload!
+  deleteManyReports(where: ReportWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
 }
@@ -1126,15 +870,15 @@ enum Permission {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  imageReports(where: ImageReportWhereInput, orderBy: ImageReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ImageReport]!
+  reports(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Report]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   user(where: UserWhereUniqueInput!): User
-  imageReport(where: ImageReportWhereUniqueInput!): ImageReport
+  report(where: ReportWhereUniqueInput!): Report
   category(where: CategoryWhereUniqueInput!): Category
   image(where: ImageWhereUniqueInput!): Image
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  imageReportsConnection(where: ImageReportWhereInput, orderBy: ImageReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageReportConnection!
+  reportsConnection(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReportConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
 
@@ -1145,9 +889,343 @@ type Query {
   ): Node
 }
 
+type Report implements Node {
+  id: ID!
+  createdAt: DateTime!
+  resolvedAt: DateTime
+  image: Image
+  text: String
+  url: String!
+  message: String!
+}
+
+"""A connection to a list of items."""
+type ReportConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ReportEdge]!
+  aggregate: AggregateReport!
+}
+
+input ReportCreateInput {
+  id: ID
+  resolvedAt: DateTime
+  text: String
+  url: String!
+  message: String!
+  image: ImageCreateOneInput
+}
+
+"""An edge in a connection."""
+type ReportEdge {
+  """The item at the end of the edge."""
+  node: Report!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ReportOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  resolvedAt_ASC
+  resolvedAt_DESC
+  text_ASC
+  text_DESC
+  url_ASC
+  url_DESC
+  message_ASC
+  message_DESC
+}
+
+type ReportPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  resolvedAt: DateTime
+  text: String
+  url: String!
+  message: String!
+}
+
+type ReportSubscriptionPayload {
+  mutation: MutationType!
+  node: Report
+  updatedFields: [String!]
+  previousValues: ReportPreviousValues
+}
+
+input ReportSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ReportSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ReportSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ReportSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ReportWhereInput
+}
+
+input ReportUpdateInput {
+  resolvedAt: DateTime
+  text: String
+  url: String
+  message: String
+  image: ImageUpdateOneInput
+}
+
+input ReportUpdateManyMutationInput {
+  resolvedAt: DateTime
+  text: String
+  url: String
+  message: String
+}
+
+input ReportWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ReportWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ReportWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ReportWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  resolvedAt: DateTime
+
+  """All values that are not equal to given value."""
+  resolvedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  resolvedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  resolvedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  resolvedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  resolvedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  resolvedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  resolvedAt_gte: DateTime
+  text: String
+
+  """All values that are not equal to given value."""
+  text_not: String
+
+  """All values that are contained in given list."""
+  text_in: [String!]
+
+  """All values that are not contained in given list."""
+  text_not_in: [String!]
+
+  """All values less than the given value."""
+  text_lt: String
+
+  """All values less than or equal the given value."""
+  text_lte: String
+
+  """All values greater than the given value."""
+  text_gt: String
+
+  """All values greater than or equal the given value."""
+  text_gte: String
+
+  """All values containing the given string."""
+  text_contains: String
+
+  """All values not containing the given string."""
+  text_not_contains: String
+
+  """All values starting with the given string."""
+  text_starts_with: String
+
+  """All values not starting with the given string."""
+  text_not_starts_with: String
+
+  """All values ending with the given string."""
+  text_ends_with: String
+
+  """All values not ending with the given string."""
+  text_not_ends_with: String
+  url: String
+
+  """All values that are not equal to given value."""
+  url_not: String
+
+  """All values that are contained in given list."""
+  url_in: [String!]
+
+  """All values that are not contained in given list."""
+  url_not_in: [String!]
+
+  """All values less than the given value."""
+  url_lt: String
+
+  """All values less than or equal the given value."""
+  url_lte: String
+
+  """All values greater than the given value."""
+  url_gt: String
+
+  """All values greater than or equal the given value."""
+  url_gte: String
+
+  """All values containing the given string."""
+  url_contains: String
+
+  """All values not containing the given string."""
+  url_not_contains: String
+
+  """All values starting with the given string."""
+  url_starts_with: String
+
+  """All values not starting with the given string."""
+  url_not_starts_with: String
+
+  """All values ending with the given string."""
+  url_ends_with: String
+
+  """All values not ending with the given string."""
+  url_not_ends_with: String
+  message: String
+
+  """All values that are not equal to given value."""
+  message_not: String
+
+  """All values that are contained in given list."""
+  message_in: [String!]
+
+  """All values that are not contained in given list."""
+  message_not_in: [String!]
+
+  """All values less than the given value."""
+  message_lt: String
+
+  """All values less than or equal the given value."""
+  message_lte: String
+
+  """All values greater than the given value."""
+  message_gt: String
+
+  """All values greater than or equal the given value."""
+  message_gte: String
+
+  """All values containing the given string."""
+  message_contains: String
+
+  """All values not containing the given string."""
+  message_not_contains: String
+
+  """All values starting with the given string."""
+  message_starts_with: String
+
+  """All values not starting with the given string."""
+  message_not_starts_with: String
+
+  """All values ending with the given string."""
+  message_ends_with: String
+
+  """All values not ending with the given string."""
+  message_not_ends_with: String
+  image: ImageWhereInput
+}
+
+input ReportWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  imageReport(where: ImageReportSubscriptionWhereInput): ImageReportSubscriptionPayload
+  report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
 }

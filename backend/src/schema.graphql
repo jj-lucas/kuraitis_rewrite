@@ -9,7 +9,8 @@ type Query {
   categories: [Category]!
   category(id: ID!): Category
   me: User
-  imageReports: [ImageReport]
+  imageReports: [Report]
+  textReports: [Report]
 }
 
 type Image {
@@ -46,7 +47,7 @@ type Mutation {
   sortCategoryImages(images: [String]): SuccessMessage
   deleteCategoryImage(id: ID!): Image
 
-  createImageReport(image: ID!, url: String!, message: String!): ImageReport
+  createReport(image: ID, text: String, url: String!, message: String!): Report
 }
 
 type User {
@@ -69,10 +70,12 @@ type Category {
   images: [Image]
 }
 
-type ImageReport {
+type Report {
   id: ID!
   createdAt: DateTime!
-  image: Image!
+  resolvedAt: DateTime
+  image: Image
+  test: String
   url: String!
   message: String!
 }
