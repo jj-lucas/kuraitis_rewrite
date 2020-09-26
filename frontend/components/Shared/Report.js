@@ -25,8 +25,10 @@ const CREATE_REPORT_MUTATION = gql`
 const StyledIcon = styled(Icon)`
 	position: absolute;
 	top: 10px;
-	left: calc(50% - 18px);
+	left: calc(50% - ${props => (props.negative ? `18px` : `5px`)});
 	cursor: pointer;
+
+	${props => props.negative && `opacity: 1 !important;`}
 `
 const Report = props => {
 	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(REPORTS_QUERY, {})
@@ -74,9 +76,9 @@ const Report = props => {
 						{me.permissions.includes('ADMIN') && (
 							<StyledIcon
 								name="alert"
-								size="lg"
-								positive={props.image in existingReports}
-								negative={!(props.image in existingReports)}
+								size={props.image in existingReports ? 'lg' : 'md'}
+								negative={props.image in existingReports}
+								warning={!(props.image in existingReports)}
 								onClick={onClick}
 							/>
 						)}

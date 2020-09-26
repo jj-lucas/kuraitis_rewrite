@@ -60,6 +60,12 @@ const StyledIcon = styled.svg`
         background-color: ${props.theme.colors.gray};
         fill: ${props.theme.colors.negative};
     `}
+	${props =>
+		props.warning &&
+		`
+        background-color: ${props.theme.colors.gray};
+        fill: ${props.theme.colors.warning};
+    `}
 `
 
 const Icon = props => (
