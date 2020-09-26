@@ -9,7 +9,9 @@ type Query {
   categories: [Category]!
   category(id: ID, slug_da: String, slug_en: String): Category
   me: User
-  reports: [Report]
+  reports: [Report]!
+  products: [Product]!
+  product(id: ID, code: String): Product
 }
 
 type Image {
@@ -37,7 +39,6 @@ type Mutation {
     images: [String]
     published: Boolean
   ): Category
-
   sortCategories(categories: [ID]): SuccessMessage
 
   uploadCategoryImage(
@@ -52,6 +53,23 @@ type Mutation {
   deleteReport(id: ID!): Report
 
   createProduct: Product!
+  deleteProduct(id: ID!): Product
+  updateProduct(
+    id: ID!
+    code: String
+    customizable: Boolean
+    price: Int
+    customPrice: Int
+    sorting: Int
+    published: Boolean
+
+    slug_da: String
+    slug_en: String
+    name_da: String
+    name_en: String
+    description_da: String
+    description_en: String
+  ): Product
 }
 
 type User {
@@ -64,10 +82,10 @@ type User {
 type Category {
   id: ID!
   sorting: Int
-  published: Boolean!
+  published: Boolean
   images: [Image]
 
-  slug_da: String!
+  slug_da: String
   slug_en: String
   name_da: String
   name_en: String
@@ -86,7 +104,7 @@ type Report {
 
 type Product {
   id: ID!
-  code: String!
+  code: String
   customizable: Boolean
   price: Int
   customPrice: Int
@@ -95,7 +113,7 @@ type Product {
 
   slug_da: String
   slug_en: String
-  name_da: String!
+  name_da: String
   name_en: String
   description_da: String
   description_en: String

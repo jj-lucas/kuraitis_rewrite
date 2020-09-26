@@ -73,7 +73,7 @@ const Report = props => {
 			{({ me }) =>
 				me && (
 					<>
-						{me.permissions.includes('ADMIN') && (
+						{(me.permissions.includes('ADMIN') || me.permissions.includes('REPORTCREATE')) && (
 							<StyledIcon
 								name="alert"
 								size={props.image in existingReports ? 'lg' : 'md'}

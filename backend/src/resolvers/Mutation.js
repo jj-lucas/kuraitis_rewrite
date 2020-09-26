@@ -6,9 +6,11 @@ const hasPermissions = require('../lib/hasPermissions')
 const mutations = {
   ...require('./mutations/user'),
   ...require('./mutations/category'),
+  ...require('./mutations/product'),
 
+  // REPORT
   async createReport(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'REPORT'])
+    hasPermissions(ctx, ['ADMIN', 'REPORTCREATE'])
 
     return await ctx.db.mutation.createReport(
       {
@@ -20,7 +22,7 @@ const mutations = {
     )
   },
   async deleteReport(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'REPORT'])
+    hasPermissions(ctx, ['ADMIN', 'REPORTRESOLVE'])
 
     const where = { id: args.id }
     return ctx.db.mutation.deleteReport({ where }, info)

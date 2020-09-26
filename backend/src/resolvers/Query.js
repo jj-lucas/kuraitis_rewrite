@@ -2,7 +2,9 @@ const { forwardTo } = require('prisma-binding')
 
 const Query = {
   ...require('./queries/category'),
+  ...require('./queries/product'),
 
+  // USER
   async users(parent, args, ctx, info) {
     return ctx.db.query.users({}, info)
   },
@@ -22,6 +24,7 @@ const Query = {
     )
   },
 
+  // REPORT
   async reports(parent, args, ctx, info) {
     return ctx.db.query.reports(
       {

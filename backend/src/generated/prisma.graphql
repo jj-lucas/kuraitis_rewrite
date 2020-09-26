@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sat Sep 26 2020 12:43:40 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Sep 26 2020 13:42:45 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -28,14 +28,14 @@ type BatchPayload {
 
 type Category implements Node {
   id: ID!
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
-  name_da: String!
+  name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean
 }
 
 """A connection to a list of items."""
@@ -50,14 +50,14 @@ type CategoryConnection {
 
 input CategoryCreateInput {
   id: ID
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
-  name_da: String!
+  name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean
 }
 
 input CategoryCreateOneInput {
@@ -77,6 +77,10 @@ type CategoryEdge {
 enum CategoryOrderByInput {
   id_ASC
   id_DESC
+  sorting_ASC
+  sorting_DESC
+  published_ASC
+  published_DESC
   slug_da_ASC
   slug_da_DESC
   slug_en_ASC
@@ -89,22 +93,18 @@ enum CategoryOrderByInput {
   description_da_DESC
   description_en_ASC
   description_en_DESC
-  sorting_ASC
-  sorting_DESC
-  published_ASC
-  published_DESC
 }
 
 type CategoryPreviousValues {
   id: ID!
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
-  name_da: String!
+  name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean
 }
 
 type CategorySubscriptionPayload {
@@ -145,36 +145,36 @@ input CategorySubscriptionWhereInput {
 }
 
 input CategoryUpdateDataInput {
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
   name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean
 }
 
 input CategoryUpdateInput {
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
   name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean
 }
 
 input CategoryUpdateManyMutationInput {
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
   name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean
 }
 
 input CategoryUpdateOneInput {
@@ -240,6 +240,32 @@ input CategoryWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  sorting: Int
+
+  """All values that are not equal to given value."""
+  sorting_not: Int
+
+  """All values that are contained in given list."""
+  sorting_in: [Int!]
+
+  """All values that are not contained in given list."""
+  sorting_not_in: [Int!]
+
+  """All values less than the given value."""
+  sorting_lt: Int
+
+  """All values less than or equal the given value."""
+  sorting_lte: Int
+
+  """All values greater than the given value."""
+  sorting_gt: Int
+
+  """All values greater than or equal the given value."""
+  sorting_gte: Int
+  published: Boolean
+
+  """All values that are not equal to given value."""
+  published_not: Boolean
   slug_da: String
 
   """All values that are not equal to given value."""
@@ -480,32 +506,6 @@ input CategoryWhereInput {
 
   """All values not ending with the given string."""
   description_en_not_ends_with: String
-  sorting: Int
-
-  """All values that are not equal to given value."""
-  sorting_not: Int
-
-  """All values that are contained in given list."""
-  sorting_in: [Int!]
-
-  """All values that are not contained in given list."""
-  sorting_not_in: [Int!]
-
-  """All values less than the given value."""
-  sorting_lt: Int
-
-  """All values less than or equal the given value."""
-  sorting_lte: Int
-
-  """All values greater than the given value."""
-  sorting_gt: Int
-
-  """All values greater than or equal the given value."""
-  sorting_gte: Int
-  published: Boolean
-
-  """All values that are not equal to given value."""
-  published_not: Boolean
 }
 
 input CategoryWhereUniqueInput {
@@ -850,23 +850,27 @@ enum Permission {
   CATEGORYUPDATE
   CATEGORYDELETE
   PERMISSIONUPDATE
-  REPORT
+  REPORTCREATE
+  REPORTRESOLVE
+  PRODUCTCREATE
+  PRODUCTDELETE
+  PRODUCTUPDATE
 }
 
 type Product implements Node {
   id: ID!
-  code: String!
-  slug_da: String
-  slug_en: String
-  name_da: String!
-  name_en: String
-  description_da: String
-  description_en: String
+  code: String
   customizable: Boolean
   price: Int
   customPrice: Int
   sorting: Int
   published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
 }
 
 """A connection to a list of items."""
@@ -881,18 +885,18 @@ type ProductConnection {
 
 input ProductCreateInput {
   id: ID
-  code: String!
-  slug_da: String
-  slug_en: String
-  name_da: String!
-  name_en: String
-  description_da: String
-  description_en: String
+  code: String
   customizable: Boolean
   price: Int
   customPrice: Int
   sorting: Int
   published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
 }
 
 """An edge in a connection."""
@@ -909,6 +913,16 @@ enum ProductOrderByInput {
   id_DESC
   code_ASC
   code_DESC
+  customizable_ASC
+  customizable_DESC
+  price_ASC
+  price_DESC
+  customPrice_ASC
+  customPrice_DESC
+  sorting_ASC
+  sorting_DESC
+  published_ASC
+  published_DESC
   slug_da_ASC
   slug_da_DESC
   slug_en_ASC
@@ -921,32 +935,22 @@ enum ProductOrderByInput {
   description_da_DESC
   description_en_ASC
   description_en_DESC
-  customizable_ASC
-  customizable_DESC
-  price_ASC
-  price_DESC
-  customPrice_ASC
-  customPrice_DESC
-  sorting_ASC
-  sorting_DESC
-  published_ASC
-  published_DESC
 }
 
 type ProductPreviousValues {
   id: ID!
-  code: String!
-  slug_da: String
-  slug_en: String
-  name_da: String!
-  name_en: String
-  description_da: String
-  description_en: String
+  code: String
   customizable: Boolean
   price: Int
   customPrice: Int
   sorting: Int
   published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
 }
 
 type ProductSubscriptionPayload {
@@ -988,32 +992,32 @@ input ProductSubscriptionWhereInput {
 
 input ProductUpdateInput {
   code: String
+  customizable: Boolean
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
   name_da: String
   name_en: String
   description_da: String
   description_en: String
-  customizable: Boolean
-  price: Int
-  customPrice: Int
-  sorting: Int
-  published: Boolean
 }
 
 input ProductUpdateManyMutationInput {
   code: String
+  customizable: Boolean
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean
   slug_da: String
   slug_en: String
   name_da: String
   name_en: String
   description_da: String
   description_en: String
-  customizable: Boolean
-  price: Int
-  customPrice: Int
-  sorting: Int
-  published: Boolean
 }
 
 input ProductWhereInput {
@@ -1105,6 +1109,80 @@ input ProductWhereInput {
 
   """All values not ending with the given string."""
   code_not_ends_with: String
+  customizable: Boolean
+
+  """All values that are not equal to given value."""
+  customizable_not: Boolean
+  price: Int
+
+  """All values that are not equal to given value."""
+  price_not: Int
+
+  """All values that are contained in given list."""
+  price_in: [Int!]
+
+  """All values that are not contained in given list."""
+  price_not_in: [Int!]
+
+  """All values less than the given value."""
+  price_lt: Int
+
+  """All values less than or equal the given value."""
+  price_lte: Int
+
+  """All values greater than the given value."""
+  price_gt: Int
+
+  """All values greater than or equal the given value."""
+  price_gte: Int
+  customPrice: Int
+
+  """All values that are not equal to given value."""
+  customPrice_not: Int
+
+  """All values that are contained in given list."""
+  customPrice_in: [Int!]
+
+  """All values that are not contained in given list."""
+  customPrice_not_in: [Int!]
+
+  """All values less than the given value."""
+  customPrice_lt: Int
+
+  """All values less than or equal the given value."""
+  customPrice_lte: Int
+
+  """All values greater than the given value."""
+  customPrice_gt: Int
+
+  """All values greater than or equal the given value."""
+  customPrice_gte: Int
+  sorting: Int
+
+  """All values that are not equal to given value."""
+  sorting_not: Int
+
+  """All values that are contained in given list."""
+  sorting_in: [Int!]
+
+  """All values that are not contained in given list."""
+  sorting_not_in: [Int!]
+
+  """All values less than the given value."""
+  sorting_lt: Int
+
+  """All values less than or equal the given value."""
+  sorting_lte: Int
+
+  """All values greater than the given value."""
+  sorting_gt: Int
+
+  """All values greater than or equal the given value."""
+  sorting_gte: Int
+  published: Boolean
+
+  """All values that are not equal to given value."""
+  published_not: Boolean
   slug_da: String
 
   """All values that are not equal to given value."""
@@ -1345,80 +1423,6 @@ input ProductWhereInput {
 
   """All values not ending with the given string."""
   description_en_not_ends_with: String
-  customizable: Boolean
-
-  """All values that are not equal to given value."""
-  customizable_not: Boolean
-  price: Int
-
-  """All values that are not equal to given value."""
-  price_not: Int
-
-  """All values that are contained in given list."""
-  price_in: [Int!]
-
-  """All values that are not contained in given list."""
-  price_not_in: [Int!]
-
-  """All values less than the given value."""
-  price_lt: Int
-
-  """All values less than or equal the given value."""
-  price_lte: Int
-
-  """All values greater than the given value."""
-  price_gt: Int
-
-  """All values greater than or equal the given value."""
-  price_gte: Int
-  customPrice: Int
-
-  """All values that are not equal to given value."""
-  customPrice_not: Int
-
-  """All values that are contained in given list."""
-  customPrice_in: [Int!]
-
-  """All values that are not contained in given list."""
-  customPrice_not_in: [Int!]
-
-  """All values less than the given value."""
-  customPrice_lt: Int
-
-  """All values less than or equal the given value."""
-  customPrice_lte: Int
-
-  """All values greater than the given value."""
-  customPrice_gt: Int
-
-  """All values greater than or equal the given value."""
-  customPrice_gte: Int
-  sorting: Int
-
-  """All values that are not equal to given value."""
-  sorting_not: Int
-
-  """All values that are contained in given list."""
-  sorting_in: [Int!]
-
-  """All values that are not contained in given list."""
-  sorting_not_in: [Int!]
-
-  """All values less than the given value."""
-  sorting_lt: Int
-
-  """All values less than or equal the given value."""
-  sorting_lte: Int
-
-  """All values greater than the given value."""
-  sorting_gt: Int
-
-  """All values greater than or equal the given value."""
-  sorting_gte: Int
-  published: Boolean
-
-  """All values that are not equal to given value."""
-  published_not: Boolean
 }
 
 input ProductWhereUniqueInput {

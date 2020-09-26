@@ -5,7 +5,11 @@ enum Permission {
   CATEGORYUPDATE
   CATEGORYDELETE
   PERMISSIONUPDATE
-  REPORT
+  REPORTCREATE
+  REPORTRESOLVE
+  PRODUCTCREATE
+  PRODUCTDELETE
+  PRODUCTUPDATE
 }
 
 type User {
@@ -33,7 +37,7 @@ type Category {
 
   slug_da: String @unique
   slug_en: String @unique
-  name_da: String!
+  name_da: String
   name_en: String
   description_da: String
   description_en: String
@@ -50,7 +54,7 @@ type Report {
 
 type Product {
   id: ID! @id
-  code: String! @unique
+  code: String @unique
   customizable: Boolean @default(value: true)
   price: Int
   customPrice: Int
@@ -59,7 +63,7 @@ type Product {
 
   slug_da: String @unique
   slug_en: String @unique
-  name_da: String!
+  name_da: String
   name_en: String
   description_da: String
   description_en: String
