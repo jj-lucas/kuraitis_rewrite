@@ -39,6 +39,20 @@ const SORT_CATEGORIES_MUTATION = gql`
 const Button = styled.button`
 	cursor: pointer;
 `
+const StyledCard = styled.div`
+	background: ${props => props.theme.colors.lightGray};
+	padding: 0 0 ${props => props.theme.spacing.base};
+
+	h3 {
+		margin: 0;
+	}
+	img {
+		width: 100%;
+	}
+	.meta {
+		padding: 0 ${props => props.theme.spacing.base};
+	}
+`
 
 const ProductsOverview = () => {
 	const { loading, error, data } = useQuery(PRODUCTS_QUERY)
@@ -89,20 +103,22 @@ const ProductsOverview = () => {
 				{products &&
 					products.map((product, index) => (
 						<SortableItem key={product.id} index={index}>
-							<a href={`/admin/product?id=${product.id}`}>
-								<div>
-									{/*<img src={data.images[0] ? data.images[0].image : null} />*/}
-									<img alt="" src={'/images/placeholder_product.png'} />
-								</div>
-
-								<div>
-									<div className="meta">
-										<h3>{product.name_da || 'New product'}</h3>
+							<StyledCard>
+								<a href={`/admin/product?id=${product.id}`}>
+									<div>
+										{/*<img src={data.images[0] ? data.images[0].image : null} />*/}
+										<img alt="" src={'/images/placeholder_product.png'} />
 									</div>
-									<div className="meta">{product.code}</div>
-									<div className="meta">{product.price}</div>
-								</div>
-							</a>
+
+									<div>
+										<div className="meta">
+											<h3>{product.name_da || 'New product'}</h3>
+										</div>
+										<div className="meta">{product.code}</div>
+										<div className="meta">{product.price}</div>
+									</div>
+								</a>
+							</StyledCard>
 						</SortableItem>
 					))}
 

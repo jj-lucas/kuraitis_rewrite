@@ -12,20 +12,6 @@ const SortableList = SortableContainer(({ columns, children }) => {
 	return <StyledGrid columns={columns}>{children}</StyledGrid>
 })
 
-const StyledCard = styled.div`
-	background: ${props => props.theme.colors.lightGray};
-	padding: 0 0 ${props => props.theme.spacing.base};
-
-	h3 {
-		margin: 0;
-	}
-	img {
-		width: 100%;
-	}
-	.meta {
-		padding: 0 ${props => props.theme.spacing.base};
-	}
-`
-const SortableItem = SortableElement(props => <StyledCard {...props}>{props.children}</StyledCard>)
+const SortableItem = SortableElement(props => <>{props.children}</>)
 
 export { SortableList, SortableItem }

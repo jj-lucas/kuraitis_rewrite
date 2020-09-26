@@ -38,6 +38,21 @@ const SORT_CATEGORIES_MUTATION = gql`
 	}
 `
 
+const StyledCard = styled.div`
+	background: ${props => props.theme.colors.lightGray};
+	padding: 0 0 ${props => props.theme.spacing.base};
+
+	h3 {
+		margin: 0;
+	}
+	img {
+		width: 100%;
+	}
+	.meta {
+		padding: 0 ${props => props.theme.spacing.base};
+	}
+`
+
 const Button = styled.button`
 	cursor: pointer;
 `
@@ -86,18 +101,23 @@ const CategoriesOverview = () => {
 			{categories &&
 				categories.map((category, index) => (
 					<SortableItem key={category.id} index={index} data={category}>
-						<a href={`/admin/category?id=${category.id}`}>
-							<div>
-								<img alt="" src={category.images[0] ? category.images[0].image : '/images/placeholder_category.png'} />
-							</div>
-
-							<div>
-								<div className="meta">
-									<h3>{category.name_da || 'New category'}</h3>
+						<StyledCard>
+							<a href={`/admin/category?id=${category.id}`}>
+								<div>
+									<img
+										alt=""
+										src={category.images[0] ? category.images[0].image : '/images/placeholder_category.png'}
+									/>
 								</div>
-								<div className="meta">{!category.published && <Icon name="inactive" size="md" />}</div>
-							</div>
-						</a>
+
+								<div>
+									<div className="meta">
+										<h3>{category.name_da || 'New category'}</h3>
+									</div>
+									<div className="meta">{!category.published && <Icon name="inactive" size="md" />}</div>
+								</div>
+							</a>
+						</StyledCard>
 					</SortableItem>
 				))}
 			<Button onClick={initializeCategory}>
