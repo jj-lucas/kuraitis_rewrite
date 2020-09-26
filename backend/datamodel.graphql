@@ -28,16 +28,15 @@ type Image {
 
 type Category {
   id: ID! @id
+  sorting: Int
+  published: Boolean @default(value: false)
 
   slug_da: String @unique
   slug_en: String @unique
-  name_da: String
+  name_da: String!
   name_en: String
   description_da: String
   description_en: String
-
-  sorting: Int
-  published: Boolean @default(value: false)
 }
 
 type Report {
@@ -47,4 +46,21 @@ type Report {
   image: String
   url: String!
   message: String!
+}
+
+type Product {
+  id: ID! @id
+  code: String! @unique
+  customizable: Boolean @default(value: true)
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean @default(value: false)
+
+  slug_da: String @unique
+  slug_en: String @unique
+  name_da: String!
+  name_en: String
+  description_da: String
+  description_en: String
 }

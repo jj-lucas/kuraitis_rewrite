@@ -50,6 +50,8 @@ type Mutation {
 
   createReport(image: String, url: String!, message: String!): Report
   deleteReport(id: ID!): Report
+
+  createProduct: Product!
 }
 
 type User {
@@ -61,15 +63,16 @@ type User {
 
 type Category {
   id: ID!
-  slug_da: String
+  sorting: Int
+  published: Boolean!
+  images: [Image]
+
+  slug_da: String!
   slug_en: String
   name_da: String
   name_en: String
   description_da: String
   description_en: String
-  sorting: Int
-  published: Boolean!
-  images: [Image]
 }
 
 type Report {
@@ -79,4 +82,21 @@ type Report {
   image: String
   url: String!
   message: String!
+}
+
+type Product {
+  id: ID!
+  code: String!
+  customizable: Boolean
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean
+
+  slug_da: String
+  slug_en: String
+  name_da: String!
+  name_en: String
+  description_da: String
+  description_en: String
 }
