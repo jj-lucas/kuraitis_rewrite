@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sat Sep 26 2020 13:42:45 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Sep 26 2020 18:49:53 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -522,6 +522,7 @@ type Image implements Node {
   largeImage: String!
   sorting: Int
   category: Category
+  product: Product
 }
 
 """A connection to a list of items."""
@@ -540,6 +541,7 @@ input ImageCreateInput {
   largeImage: String!
   sorting: Int
   category: CategoryCreateOneInput
+  product: ProductCreateOneInput
 }
 
 """An edge in a connection."""
@@ -611,6 +613,7 @@ input ImageUpdateInput {
   largeImage: String
   sorting: Int
   category: CategoryUpdateOneInput
+  product: ProductUpdateOneInput
 }
 
 input ImageUpdateManyMutationInput {
@@ -771,6 +774,7 @@ input ImageWhereInput {
   """All values greater than or equal the given value."""
   sorting_gte: Int
   category: CategoryWhereInput
+  product: ProductWhereInput
 }
 
 input ImageWhereUniqueInput {
@@ -787,33 +791,33 @@ type Mutation {
   createUser(data: UserCreateInput!): User!
   createImage(data: ImageCreateInput!): Image!
   createReport(data: ReportCreateInput!): Report!
-  createProduct(data: ProductCreateInput!): Product!
   createCategory(data: CategoryCreateInput!): Category!
+  createProduct(data: ProductCreateInput!): Product!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   updateReport(data: ReportUpdateInput!, where: ReportWhereUniqueInput!): Report
-  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   deleteUser(where: UserWhereUniqueInput!): User
   deleteImage(where: ImageWhereUniqueInput!): Image
   deleteReport(where: ReportWhereUniqueInput!): Report
-  deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteProduct(where: ProductWhereUniqueInput!): Product
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   upsertReport(where: ReportWhereUniqueInput!, create: ReportCreateInput!, update: ReportUpdateInput!): Report!
-  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   updateManyReports(data: ReportUpdateManyMutationInput!, where: ReportWhereInput): BatchPayload!
-  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
   deleteManyReports(where: ReportWhereInput): BatchPayload!
-  deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  deleteManyProducts(where: ProductWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -897,6 +901,11 @@ input ProductCreateInput {
   name_en: String
   description_da: String
   description_en: String
+}
+
+input ProductCreateOneInput {
+  create: ProductCreateInput
+  connect: ProductWhereUniqueInput
 }
 
 """An edge in a connection."""
@@ -990,6 +999,21 @@ input ProductSubscriptionWhereInput {
   node: ProductWhereInput
 }
 
+input ProductUpdateDataInput {
+  code: String
+  customizable: Boolean
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+}
+
 input ProductUpdateInput {
   code: String
   customizable: Boolean
@@ -1018,6 +1042,20 @@ input ProductUpdateManyMutationInput {
   name_en: String
   description_da: String
   description_en: String
+}
+
+input ProductUpdateOneInput {
+  create: ProductCreateInput
+  connect: ProductWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProductUpdateDataInput
+  upsert: ProductUpsertNestedInput
+}
+
+input ProductUpsertNestedInput {
+  update: ProductUpdateDataInput!
+  create: ProductCreateInput!
 }
 
 input ProductWhereInput {
@@ -1436,18 +1474,18 @@ type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   reports(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Report]!
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   user(where: UserWhereUniqueInput!): User
   image(where: ImageWhereUniqueInput!): Image
   report(where: ReportWhereUniqueInput!): Report
-  product(where: ProductWhereUniqueInput!): Product
   category(where: CategoryWhereUniqueInput!): Category
+  product(where: ProductWhereUniqueInput!): Product
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
   reportsConnection(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReportConnection!
-  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1790,8 +1828,8 @@ type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
   report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
-  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
 }
 
 type User implements Node {

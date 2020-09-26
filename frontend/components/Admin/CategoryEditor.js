@@ -2,18 +2,18 @@ import { DisplayError, Form, ImageUploader } from '../../components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { languages } from '../../config'
 
-const SINGLE_CATEGORY_QUERY = gql`
-	query SINGLE_CATEGORY_QUERY($id: ID!) {
+const CATEGORY_BY_ID_QUERY = gql`
+	query CATEGORY_BY_ID_QUERY($id: ID!) {
 		category(id: $id ) {
 			id
 			published
-            ${languages.map(lang => 'name_' + lang.id)}
-            ${languages.map(lang => 'slug_' + lang.id)} 
-            ${languages.map(lang => 'description_' + lang.id)}
             images {
 				id
                 image
             }
+            ${languages.map(lang => 'name_' + lang.id)}
+            ${languages.map(lang => 'slug_' + lang.id)} 
+            ${languages.map(lang => 'description_' + lang.id)}
 		}
 	}
 `
@@ -54,7 +54,7 @@ const DELETE_CATEGORY_MUTATION = gql`
 const CategoryEditor = props => {
 	const [changes, setChanges] = React.useState({})
 
-	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(SINGLE_CATEGORY_QUERY, {
+	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(CATEGORY_BY_ID, {
 		variables: { id: props.query.id },
 	})
 
@@ -107,7 +107,7 @@ const CategoryEditor = props => {
 				<>
 					<h1>Edit category: {category.name_da}</h1>
 
-					<ImageUploader categoryId={props.query.id} images={category.images} queryToRefetch={SINGLE_CATEGORY_QUERY} />
+					<ImageUploader categoryId={props.query.id} images={category.images} queryToRefetch={CATEGORY_BY_ID} />
 
 					<Form
 						onSubmit={async e => {
@@ -117,7 +117,7 @@ const CategoryEditor = props => {
 							delete updates.images
 							await updateCategory({
 								variables: updates,
-								refetchQueries: [{ query: SINGLE_CATEGORY_QUERY, variables: { id: props.query.id } }],
+								refetchQueries: [{ query: CATEGORY_BY_ID, variables: { id: props.query.id } }],
 							}).catch(error => {
 								console.log(error)
 							})

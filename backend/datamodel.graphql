@@ -28,6 +28,7 @@ type Image {
   largeImage: String!
   sorting: Int
   category: Category
+  product: Product
 }
 
 type Category {

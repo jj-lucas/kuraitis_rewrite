@@ -5,13 +5,12 @@ const productQueries = {
     // get all products
     const products = await ctx.db.query.products({ orderBy: 'sorting_ASC' })
     // iterate and enrich with images
-    /*
-    categories.map((category, index) => {
+    products.map((product, index) => {
       const images = ctx.db.query.images(
         {
           where: {
-            category: {
-              id: category.id,
+            product: {
+              id: product.id,
             },
           },
           orderBy: 'sorting_ASC',
@@ -24,9 +23,9 @@ const productQueries = {
         }
         `
       )
-      categories[index].images = images
+      products[index].images = images
     })
-    */
+
     return products
   },
 
@@ -34,7 +33,7 @@ const productQueries = {
     let idToLookFor = args.id
     if (!idToLookFor) {
       // get by code
-      const eligibleProductss = await ctx.db.query.products(
+      const eligibleProducts = await ctx.db.query.products(
         {
           where: {
             code: args.code,
@@ -45,7 +44,7 @@ const productQueries = {
             }
             `
       )
-      idToLookFor = eligibleProductss.map((product) => product.id)[0]
+      idToLookFor = eligibleProducts.map((product) => product.id)[0]
 
       if (!idToLookFor) return null
     }
@@ -60,12 +59,11 @@ const productQueries = {
       info
     )
 
-    /*
     const images = await ctx.db.query.images(
       {
         where: {
-          category: {
-            id: args.id,
+          product: {
+            id: idToLookFor,
           },
         },
         orderBy: 'sorting_ASC',
@@ -78,8 +76,8 @@ const productQueries = {
           }
           `
     )
-    */
-    return { ...product /*, images: [...images] */ }
+
+    return { ...product, images: [...images] }
   },
 }
 

@@ -18,7 +18,7 @@ const productMutations = {
     hasPermissions(ctx, ['ADMIN', 'PRODUCTUPDATE'])
 
     // take a copy of updates
-    const updates = { ...args }
+    const updates = { ...args, code: args.code.toUpperCase() }
     // remove the ID from the updates
     delete updates.id
     // run the update method

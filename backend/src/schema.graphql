@@ -30,18 +30,24 @@ type Mutation {
   deleteCategory(id: ID!): Category
   updateCategory(
     id: ID!
+    images: [String]
+    published: Boolean
+
     slug_da: String
     slug_en: String
     name_da: String
     name_en: String
     description_da: String
     description_en: String
-    images: [String]
-    published: Boolean
   ): Category
   sortCategories(categories: [ID]): SuccessMessage
 
-  uploadImage(image: String!, largeImage: String!, categoryId: ID): Image!
+  uploadImage(
+    image: String!
+    largeImage: String!
+    categoryId: ID
+    productId: ID
+  ): Image!
   sortImages(images: [ID]): SuccessMessage
   deleteImage(id: ID!): Image
 
@@ -56,7 +62,7 @@ type Mutation {
     customizable: Boolean
     price: Int
     customPrice: Int
-    sorting: Int
+    images: [String]
     published: Boolean
 
     slug_da: String
@@ -106,6 +112,7 @@ type Product {
   customPrice: Int
   sorting: Int
   published: Boolean
+  images: [Image]
 
   slug_da: String
   slug_en: String

@@ -39,12 +39,33 @@ const mutations = {
       // category image
       const categoryId = args.categoryId
       delete args.categoryId
+      delete args.productId
       const image = await ctx.db.mutation.createImage(
         {
           data: {
             category: {
               connect: {
                 id: categoryId,
+              },
+            },
+            ...args,
+          },
+        },
+        info
+      )
+      return image
+    }
+    if (args.productId) {
+      // product image
+      const productId = args.productId
+      delete args.categoryId
+      delete args.productId
+      const image = await ctx.db.mutation.createImage(
+        {
+          data: {
+            product: {
+              connect: {
+                id: productId,
               },
             },
             ...args,

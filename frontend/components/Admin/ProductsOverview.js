@@ -13,7 +13,10 @@ const PRODUCTS_QUERY = gql`
 			published
 			code
 			name_da
-			sorting
+			images {
+				id
+				image
+			}
 		}
 	}
 `
@@ -106,8 +109,7 @@ const ProductsOverview = () => {
 							<StyledCard>
 								<a href={`/admin/product?id=${product.id}`}>
 									<div>
-										{/*<img src={data.images[0] ? data.images[0].image : null} />*/}
-										<img alt="" src={'/images/placeholder_product.png'} />
+										<img src={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
 									</div>
 
 									<div>
@@ -116,6 +118,7 @@ const ProductsOverview = () => {
 										</div>
 										<div className="meta">{product.code}</div>
 										<div className="meta">{product.price}</div>
+										<div className="meta">{!product.published && <Icon name="inactive" size="md" />}</div>
 									</div>
 								</a>
 							</StyledCard>

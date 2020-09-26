@@ -6,8 +6,8 @@ import arrayMove from 'array-move'
 import { useState, useEffect } from 'react'
 
 const UPLOAD_IMAGE_MUTATION = gql`
-	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: ID) {
-		uploadImage(image: $image, largeImage: $largeImage, categoryId: $categoryId) {
+	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: ID, $productId: ID) {
+		uploadImage(image: $image, largeImage: $largeImage, categoryId: $categoryId, productId: $productId) {
 			id
 			image
 			largeImage
@@ -65,7 +65,11 @@ const ImageUploader = props => {
 		const files = e.target.files
 		const data = new FormData()
 		data.append('file', files[0])
-		data.append('upload_preset', 'kuraitis_category')
+		if (props.categoryId) {
+			data.append('upload_preset', 'kuraitis_category')
+		} else if (props.productId) {
+			data.append('upload_preset', 'kuraitis_product')
+		}
 		const res = await fetch(cloudinaryUrl, {
 			method: 'POST',
 			body: data,
@@ -75,12 +79,17 @@ const ImageUploader = props => {
 		let variables = {
 			image: file.secure_url,
 			largeImage: file.eager[0].secure_url,
-			categoryId: props.id,
 		}
+		if (props.categoryId) {
+			variables.categoryId = props.categoryId
+		} else if (props.productId) {
+			variables.productId = props.productId
+		}
+
 		// register the uploaded asset
 		await uploadImage({
 			variables,
-			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.id } }],
+			refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
 		})
 			.catch(error => {
 				console.log(error)
@@ -112,7 +121,7 @@ const ImageUploader = props => {
 			variables: {
 				id: imageId,
 			},
-			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.id } }],
+			refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
 		})
 	}
 
