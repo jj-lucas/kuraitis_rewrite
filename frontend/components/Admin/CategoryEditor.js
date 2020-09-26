@@ -54,7 +54,7 @@ const DELETE_CATEGORY_MUTATION = gql`
 const CategoryEditor = props => {
 	const [changes, setChanges] = React.useState({})
 
-	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(CATEGORY_BY_ID, {
+	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(CATEGORY_BY_ID_QUERY, {
 		variables: { id: props.query.id },
 	})
 
@@ -107,17 +107,37 @@ const CategoryEditor = props => {
 				<>
 					<h1>Edit category: {category.name_da}</h1>
 
-					<ImageUploader categoryId={props.query.id} images={category.images} queryToRefetch={CATEGORY_BY_ID} />
+					<ImageUploader categoryId={props.query.id} images={category.images} queryToRefetch={CATEGORY_BY_ID_QUERY} />
 
 					<Form
 						onSubmit={async e => {
 							e.preventDefault()
 							const updates = { ...category, ...changes }
+
+							// frontend validation
+							if (updates.published) {
+								// make a list of required fields for a product to be published
+								let necessaryFields = []
+								for (const fields of ['slug', 'name'].map(f => languages.map(l => `${f}_${l.id}`))) {
+									necessaryFields.push(...fields)
+								}
+								for (const field of necessaryFields) {
+									if (!updates[field]) {
+										throw new Error(`You cannot publish a category without a ${field}`)
+									}
+								}
+
+								if (!updates.images || !updates.images.length) {
+									throw new Error(`You cannot publish a category without images`)
+								}
+							}
+
 							delete updates.__typename
 							delete updates.images
+
 							await updateCategory({
 								variables: updates,
-								refetchQueries: [{ query: CATEGORY_BY_ID, variables: { id: props.query.id } }],
+								refetchQueries: [{ query: CATEGORY_BY_ID_QUERY, variables: { id: props.query.id } }],
 							}).catch(error => {
 								console.log(error)
 							})
