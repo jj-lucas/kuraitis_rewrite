@@ -1,11 +1,10 @@
-import { PageAdmin } from '../../components'
+import { PageAdmin, ProductsOverview } from '../../components'
 
-const AdminProductsPage = () => {
-	return (
-		<PageAdmin>
-			<h1>Products</h1>
-		</PageAdmin>
-	)
-}
+const AdminProductsPage = () => (
+	<PageAdmin>
+		<h1>Products overview</h1>
+		<ProductsOverview />
+	</PageAdmin>
+)
 
 export default AdminProductsPage

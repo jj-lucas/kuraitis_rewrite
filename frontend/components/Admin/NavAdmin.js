@@ -7,8 +7,8 @@ import { LogoutButton } from '../../components'
 const links = [
 	{ label: 'Dashboard', path: '/admin' },
 	{ label: 'Categories', path: '/admin/categories' },
-	{ label: 'Reports', path: '/admin/reports' },
 	{ label: 'Products', path: '/admin/products' },
+	{ label: 'Reports', path: '/admin/reports' },
 ]
 
 const StyledNav = styled.nav`

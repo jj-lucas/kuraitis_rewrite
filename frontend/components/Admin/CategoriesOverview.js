@@ -1,8 +1,7 @@
-import { Icon } from '../../components'
+import { Icon, SortableList, SortableItem } from '../../components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import styled from 'styled-components'
 import Link from 'next/link'
-import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 import arrayMove from 'array-move'
 import { useState, useEffect } from 'react'
 
@@ -38,51 +37,6 @@ const SORT_CATEGORIES_MUTATION = gql`
 		}
 	}
 `
-
-const StyledList = styled.ul`
-	list-style: none;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-gap: 30px;
-`
-
-const StyledTile = styled.li`
-	overflow: auto;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
-	h3 {
-	}
-	img {
-		float: left;
-
-		margin: ${props => props.theme.spacing.sm};
-		width: 100px;
-		min-width: 100px;
-	}
-	.bubble {
-		float: right;
-		width: 5px;
-		background: green;
-	}
-`
-
-const Tile = ({ data }) => (
-	<StyledTile>
-		<Link href={`/admin/category?id=${data.id}`}>
-			<a>
-				<img src={data.images[0] ? data.images[0].image : null} />
-				<h3>{data.name_da || 'New category'}</h3>
-				{!data.published && <Icon name="inactive" size="lg" />}
-			</a>
-		</Link>
-	</StyledTile>
-)
-
-const SortableItem = SortableElement(props => <Tile {...props}>{props.children}</Tile>)
-
-const SortableList = SortableContainer(({ children }) => {
-	return <StyledList>{children}</StyledList>
-})
 
 const Button = styled.button`
 	cursor: pointer;
@@ -128,9 +82,24 @@ const CategoriesOverview = () => {
 	}
 
 	return (
-		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd}>
+		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={4}>
 			{categories &&
-				categories.map((category, index) => <SortableItem key={category.id} index={index} data={category} />)}
+				categories.map((category, index) => (
+					<SortableItem key={category.id} index={index} data={category}>
+						<a href={`/admin/category?id=${category.id}`}>
+							<div>
+								<img alt="" src={category.images[0] ? category.images[0].image : '/images/placeholder_category.png'} />
+							</div>
+
+							<div>
+								<div className="meta">
+									<h3>{category.name_da || 'New category'}</h3>
+								</div>
+								<div className="meta">{!category.published && <Icon name="inactive" size="md" />}</div>
+							</div>
+						</a>
+					</SortableItem>
+				))}
 			<Button onClick={initializeCategory}>
 				<Icon name="add" size="lg" />
 			</Button>

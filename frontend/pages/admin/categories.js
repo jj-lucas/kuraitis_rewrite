@@ -2,7 +2,7 @@ import { PageAdmin, CategoriesOverview } from '../../components'
 
 const AdminCategoriesPage = () => (
 	<PageAdmin>
-		<h1>Category editor</h1>
+		<h1>Categories overview</h1>
 		<CategoriesOverview />
 	</PageAdmin>
 )
