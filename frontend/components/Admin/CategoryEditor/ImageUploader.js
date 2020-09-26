@@ -25,7 +25,7 @@ const DELETE_IMAGE_MUTATION = gql`
 `
 
 const SORT_IMAGES_MUTATION = gql`
-	mutation SORT_IMAGES_MUTATION($images: [String]) {
+	mutation SORT_IMAGES_MUTATION($images: [ID]) {
 		sortCategoryImages(images: $images) {
 			message
 		}

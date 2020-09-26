@@ -38,12 +38,14 @@ type Mutation {
     published: Boolean
   ): Category
 
+  sortCategories(categories: [ID]): SuccessMessage
+
   uploadCategoryImage(
     image: String!
     largeImage: String!
     categoryId: String!
   ): Image!
-  sortCategoryImages(images: [String]): SuccessMessage
+  sortCategoryImages(images: [ID]): SuccessMessage
   deleteCategoryImage(id: ID!): Image
 
   createReport(image: String, url: String!, message: String!): Report

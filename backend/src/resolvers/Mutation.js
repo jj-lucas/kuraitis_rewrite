@@ -114,6 +114,21 @@ const mutations = {
     )
   },
 
+  async sortCategories(parent, args, ctx, info) {
+    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
+
+    const categories = args.categories
+    categories.map(async (id, index) => {
+      await ctx.db.mutation.updateCategory({
+        where: { id },
+        data: { sorting: index + 1 },
+      })
+    })
+    return {
+      message: 'Categories sorted',
+    }
+  },
+
   async uploadCategoryImage(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 

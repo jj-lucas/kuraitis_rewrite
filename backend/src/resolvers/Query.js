@@ -69,7 +69,7 @@ const Query = {
 
   async categories(parent, args, ctx, info) {
     // get all categories
-    const categories = await ctx.db.query.categories()
+    const categories = await ctx.db.query.categories({ orderBy: 'sorting_ASC' })
     // iterate and enrich with images
     categories.map((category, index) => {
       const images = ctx.db.query.images(
