@@ -100,7 +100,7 @@ const CategoriesOverview = () => {
 		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={4}>
 			{categories &&
 				categories.map((category, index) => (
-					<SortableItem key={category.id} index={index} data={category}>
+					<SortableItem key={category.id} index={index}>
 						<StyledCard>
 							<a href={`/admin/category?id=${category.id}`}>
 								<div>

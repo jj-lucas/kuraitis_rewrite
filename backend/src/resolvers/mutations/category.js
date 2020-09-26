@@ -54,49 +54,6 @@ const categoryMutations = {
       message: 'Categories sorted',
     }
   },
-
-  async uploadCategoryImage(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
-
-    const categoryId = args.categoryId
-    delete args.categoryId
-    const image = await ctx.db.mutation.createImage(
-      {
-        data: {
-          category: {
-            connect: {
-              id: categoryId,
-            },
-          },
-          ...args,
-        },
-      },
-      info
-    )
-    return image
-  },
-
-  async sortCategoryImages(parent, args, ctx, info) {
-    hasPermissions(ctx, [])
-
-    const images = args.images
-    images.map(async (id, index) => {
-      await ctx.db.mutation.updateImage({
-        where: { id },
-        data: { sorting: index + 1 },
-      })
-    })
-    return {
-      message: 'Images sorted',
-    }
-  },
-
-  async deleteCategoryImage(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
-
-    const where = { id: args.id }
-    return ctx.db.mutation.deleteImage({ where }, info)
-  },
 }
 
 module.exports = categoryMutations

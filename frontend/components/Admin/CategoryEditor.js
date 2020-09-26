@@ -1,7 +1,6 @@
-import { DisplayError, Form } from '../../../components'
-import { ImageUploader } from '.'
+import { DisplayError, Form, ImageUploader } from '../../components'
 import { useQuery, useMutation, gql } from '@apollo/client'
-import { languages } from '../../../config'
+import { languages } from '../../config'
 
 const SINGLE_CATEGORY_QUERY = gql`
 	query SINGLE_CATEGORY_QUERY($id: ID!) {
@@ -9,7 +8,7 @@ const SINGLE_CATEGORY_QUERY = gql`
 			id
 			published
             ${languages.map(lang => 'name_' + lang.id)}
-            ${languages.map(lang => 'slug_' + lang.id)}
+            ${languages.map(lang => 'slug_' + lang.id)} 
             ${languages.map(lang => 'description_' + lang.id)}
             images {
 				id

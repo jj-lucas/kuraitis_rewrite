@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 import { useMutation, gql } from '@apollo/client'
-import { cloudinaryUrl } from '../../../config'
-import { Icon, Form, DisplayError } from '../../../components'
-import { SortableContainer, SortableElement } from 'react-sortable-hoc'
+import { cloudinaryUrl } from '../../config'
+import { Icon, Form, DisplayError, SortableList, SortableItem } from '../../components'
 import arrayMove from 'array-move'
 import { useState, useEffect } from 'react'
 
 const UPLOAD_IMAGE_MUTATION = gql`
-	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: String!) {
-		uploadCategoryImage(image: $image, largeImage: $largeImage, categoryId: $categoryId) {
+	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: ID) {
+		uploadImage(image: $image, largeImage: $largeImage, categoryId: $categoryId) {
 			id
 			image
 			largeImage
@@ -18,7 +17,7 @@ const UPLOAD_IMAGE_MUTATION = gql`
 
 const DELETE_IMAGE_MUTATION = gql`
 	mutation DELETE_IMAGE_MUTATION($id: ID!) {
-		deleteCategoryImage(id: $id) {
+		deleteImage(id: $id) {
 			id
 		}
 	}
@@ -26,27 +25,14 @@ const DELETE_IMAGE_MUTATION = gql`
 
 const SORT_IMAGES_MUTATION = gql`
 	mutation SORT_IMAGES_MUTATION($images: [ID]) {
-		sortCategoryImages(images: $images) {
+		sortImages(images: $images) {
 			message
 		}
 	}
 `
 
-const SortableItem = SortableElement(({ children }) => <Tile>{children}</Tile>)
-
-const SortableList = SortableContainer(({ children }) => {
-	return <Drawer>{children}</Drawer>
-})
-
-const Drawer = styled.div`
-	background: ${props => props.theme.colors.lightGray};
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-`
-
 const Tile = styled.div`
 	position: relative;
-	margin: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.sm} 0 0;
 	box-shadow: ${props => props.theme.boxShadow.md};
 
 	img {
@@ -55,7 +41,7 @@ const Tile = styled.div`
 		background: ${props => props.theme.colors.lightGray};
 	}
 
-	a {
+	.remove {
 		position: absolute;
 		top: 5px;
 		right: 5px;
@@ -73,7 +59,9 @@ const ImageUploader = props => {
 		setImages(props.images)
 	}, [props.images])
 
-	const uploadFile = async e => {
+	const id = props.categoryId || props.productId || null
+
+	const onFileUpload = async e => {
 		const files = e.target.files
 		const data = new FormData()
 		data.append('file', files[0])
@@ -84,14 +72,15 @@ const ImageUploader = props => {
 		})
 		const file = await res.json()
 
+		let variables = {
+			image: file.secure_url,
+			largeImage: file.eager[0].secure_url,
+			categoryId: props.id,
+		}
 		// register the uploaded asset
 		await uploadImage({
-			variables: {
-				image: file.secure_url,
-				largeImage: file.eager[0].secure_url,
-				categoryId: props.categoryId,
-			},
-			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.categoryId } }],
+			variables,
+			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.id } }],
 		})
 			.catch(error => {
 				console.log(error)
@@ -114,7 +103,7 @@ const ImageUploader = props => {
 				console.log(error)
 			})
 			.then(response => {
-				console.log(response.data.sortCategoryImages.message)
+				console.log(response.data.sortImages.message)
 			})
 	}
 
@@ -123,34 +112,40 @@ const ImageUploader = props => {
 			variables: {
 				id: imageId,
 			},
-			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.categoryId } }],
+			refetchQueries: [{ query: props.queryToRefetch, variables: { id: props.id } }],
 		})
 	}
 
+	const loading = loadingUpload || loadingDelete || loadingSort
+	const error = errorUpload || errorDelete || errorSort
+
 	return (
 		<Form>
-			<fieldset disabled={loadingUpload || loadingDelete} aria-busy={loadingUpload || loadingDelete}>
-				<DisplayError error={errorUpload || errorDelete} />
+			<fieldset disabled={loading} aria-busy={loading}>
+				<DisplayError error={error} />
 
 				<h3>Images</h3>
 				<label htmlFor="file">
 					Image
-					<input type="file" id="file" name="file" placeholder="Upload an image" onChange={uploadFile} />
+					<input type="file" id="file" name="file" placeholder="Upload an image" onChange={onFileUpload} />
 				</label>
 
 				<SortableList onSortEnd={onSortEnd} axis="xy" distance={1}>
 					{images &&
 						images.map((image, index) => (
 							<SortableItem key={image.id} index={index}>
-								<img src={image.image} />
-								<a
-									href="#"
-									onClick={e => {
-										e.preventDefault()
-										onImageDelete(image.id)
-									}}>
-									<Icon name="cross" size="md" inverted />
-								</a>
+								<Tile>
+									<img src={image.image} />
+									<a
+										className="remove"
+										href="#"
+										onClick={e => {
+											e.preventDefault()
+											onImageDelete(image.id)
+										}}>
+										<Icon name="cross" size="md" inverted />
+									</a>
+								</Tile>
 							</SortableItem>
 						))}
 				</SortableList>

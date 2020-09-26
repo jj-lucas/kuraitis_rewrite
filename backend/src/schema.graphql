@@ -41,13 +41,9 @@ type Mutation {
   ): Category
   sortCategories(categories: [ID]): SuccessMessage
 
-  uploadCategoryImage(
-    image: String!
-    largeImage: String!
-    categoryId: String!
-  ): Image!
-  sortCategoryImages(images: [ID]): SuccessMessage
-  deleteCategoryImage(id: ID!): Image
+  uploadImage(image: String!, largeImage: String!, categoryId: ID): Image!
+  sortImages(images: [ID]): SuccessMessage
+  deleteImage(id: ID!): Image
 
   createReport(image: String, url: String!, message: String!): Report
   deleteReport(id: ID!): Report

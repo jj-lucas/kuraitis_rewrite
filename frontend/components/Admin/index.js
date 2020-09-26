@@ -1,5 +1,6 @@
 export * from './CategoryEditor'
 export * from './CategoriesOverview'
+export * from './ImageUploader'
 export * from './LoginForm'
 export * from './LogoutButton'
 export * from './NavAdmin'

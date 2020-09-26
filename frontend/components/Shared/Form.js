@@ -24,7 +24,7 @@ const Form = styled.form`
 	input,
 	textarea,
 	select {
-		width: 100%;
+		width: calc(100% - 10px); /*matches padding on sides*/
 		padding: ${props => props.theme.spacing.xs};
 		border: 1px solid ${props => props.theme.colors.gray};
 		&:focus {
