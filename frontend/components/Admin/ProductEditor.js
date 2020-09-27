@@ -55,9 +55,9 @@ const UPDATE_PRODUCT_MUTATION = gql`
 	}
 `
 
-const DELETE_CATEGORY_MUTATION = gql`
-	mutation DELETE_CATEGORY_MUTATION($id: ID!) {
-		deleteCategory(id: $id) {
+const DELETE_PRODUCT_MUTATION = gql`
+	mutation DELETDELETE_PRODUCT_MUTATIONE_CATEGORY_MUTATION($id: ID!) {
+		deleteProduct(id: $id) {
 			id
 		}
 	}
@@ -71,7 +71,7 @@ const ProductEditor = props => {
 	})
 
 	const [updateProduct, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_PRODUCT_MUTATION)
-	const [deleteCategory, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_CATEGORY_MUTATION)
+	const [deleteProduct, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_PRODUCT_MUTATION)
 
 	const handleChange = e => {
 		const { name, type, value } = e.target
@@ -98,14 +98,15 @@ const ProductEditor = props => {
 			...changes,
 			categories: categories ? categories.map(cat => cat.value) : [],
 		})
+		console.log(categories ? categories.map(cat => cat.value) : [])
 	}
 
 	const handleDelete = async e => {
 		e.preventDefault()
-		if (confirm('Are you sure you want to delete this category?')) {
-			await deleteCategory({
+		if (confirm('Are you sure you want to delete this product?')) {
+			await deleteProduct({
 				variables: {
-					id: props.query.idd,
+					id: props.query.id,
 				},
 			}).then(() => {
 				window.location = '/admin/products'
@@ -115,7 +116,7 @@ const ProductEditor = props => {
 
 	const onSubmit = async e => {
 		e.preventDefault()
-		const updates = { ...product, ...changes }
+		const updates = { ...product, categories: product.categories.map(cat => cat.id), ...changes }
 
 		// frontend validation
 		try {
