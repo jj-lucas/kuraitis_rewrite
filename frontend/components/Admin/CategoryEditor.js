@@ -25,7 +25,6 @@ const UPDATE_CATEGORY_MUTATION = gql`
         ${languages.map(lang => '$slug_' + lang.id + ': String,')}
         ${languages.map(lang => '$name_' + lang.id + ': String,')}
         ${languages.map(lang => '$description_' + lang.id + ': String,')}
-        $images: [String]
         ) {
 		updateCategory(
 			id: $id,
@@ -33,7 +32,6 @@ const UPDATE_CATEGORY_MUTATION = gql`
             ${languages.map(lang => 'slug_' + lang.id + ': $slug_' + lang.id + ',')}
             ${languages.map(lang => 'name_' + lang.id + ': $name_' + lang.id + ',')}
             ${languages.map(lang => 'description_' + lang.id + ': $description_' + lang.id + ',')}
-            images: $images
         ) {
 			id
             ${languages.map(lang => 'name_' + lang.id)}
