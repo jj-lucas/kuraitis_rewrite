@@ -35,6 +35,7 @@ type Category {
   id: ID! @id
   sorting: Int
   published: Boolean @default(value: false)
+  products: [Product]
 
   slug_da: String @unique
   slug_en: String @unique

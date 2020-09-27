@@ -85,6 +85,7 @@ type Category {
   sorting: Int
   published: Boolean
   images: [Image]
+  products: [Product]
 
   slug_da: String
   slug_en: String
