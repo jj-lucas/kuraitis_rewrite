@@ -14,13 +14,6 @@ type Query {
   product(id: ID, code: String): Product
 }
 
-type Image {
-  id: ID!
-  image: String!
-  largeImage: String!
-  category: Category
-}
-
 type Mutation {
   signup(email: String!, password: String!, name: String!): User!
   signin(email: String!, password: String!): User!
@@ -31,6 +24,7 @@ type Mutation {
   updateCategory(
     id: ID!
     published: Boolean
+    images: [ID]
 
     slug_da: String
     slug_en: String
@@ -47,13 +41,12 @@ type Mutation {
     categoryId: ID
     productId: ID
   ): Image!
-  sortImages(images: [ID]): SuccessMessage
   deleteImage(id: ID!): Image
 
   createReport(image: String, url: String!, message: String!): Report
   deleteReport(id: ID!): Report
 
-  createProduct: Product!
+  createProduct(category: ID): Product!
   deleteProduct(id: ID!): Product
   updateProduct(
     id: ID!
@@ -63,6 +56,7 @@ type Mutation {
     customPrice: Int
     published: Boolean
     categories: [ID]
+    images: [ID]
 
     slug_da: String
     slug_en: String
@@ -78,47 +72,4 @@ type User {
   name: String!
   email: String!
   permissions: [Permission!]!
-}
-
-type Category {
-  id: ID!
-  sorting: Int
-  published: Boolean
-  images: [Image]
-  products: [Product]
-
-  slug_da: String
-  slug_en: String
-  name_da: String
-  name_en: String
-  description_da: String
-  description_en: String
-}
-
-type Report {
-  id: ID!
-  createdAt: DateTime!
-  resolvedAt: DateTime
-  image: String
-  url: String!
-  message: String!
-}
-
-type Product {
-  id: ID!
-  code: String
-  customizable: Boolean
-  price: Int
-  customPrice: Int
-  sorting: Int
-  published: Boolean
-  images: [Image]
-  categories: [Category]
-
-  slug_da: String
-  slug_en: String
-  name_da: String
-  name_en: String
-  description_da: String
-  description_en: String
 }

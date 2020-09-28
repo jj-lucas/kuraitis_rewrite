@@ -13,31 +13,31 @@ const PRODUCTS_QUERY = gql`
 			published
 			code
 			name_da
-			images {
+			categories {
+				id
+			}
+			images(orderBy: sorting_ASC) {
 				id
 				image
+			}
+		}
+		categories {
+			id
+			name_da
+			products {
+				id
 			}
 		}
 	}
 `
 
-/*
-const CREATE_CATEGORY_MUTATION = gql`
-	mutation CREATE_CATEGORY_MUTATION {
-		createCategory {
+const CREATE_PRODUCT_MUTATION = gql`
+	mutation CREATE_PRODUCT_MUTATION($category: ID) {
+		createProduct(category: $category) {
 			id
 		}
 	}
 `
-
-const SORT_CATEGORIES_MUTATION = gql`
-	mutation SORT_CATEGORIES_MUTATION($categories: [ID]) {
-		sortCategories(categories: $categories) {
-			message
-		}
-	}
-`
-*/
 
 const Button = styled.button`
 	cursor: pointer;
@@ -59,77 +59,95 @@ const StyledCard = styled.div`
 
 const ProductsOverview = () => {
 	const { loading, error, data } = useQuery(PRODUCTS_QUERY)
-	// const [createCategory, { loading: loadingCreate, error: errorCreate }] = useMutation(CREATE_CATEGORY_MUTATION)
-	// const [sortCategories, { loading: loadingSort, error: errorSort }] = useMutation(SORT_CATEGORIES_MUTATION)
 
+	if (loading) return <p>Loading</p>
+
+	const products = data.products
+	const categories = data.categories
+
+	const uncategorizedProducts = products.filter(function (product) {
+		console.log(product)
+		return !product.categories.length
+	})
+
+	return (
+		<>
+			{categories.map(category => {
+				if (category.products.length) {
+					let productsForCategory = products.filter(function (p) {
+						return category.products.map(c => c.id).includes(p.id)
+					})
+					return (
+						<>
+							<h2>{category.name_da}</h2>
+							<CategoryOfProducts products={productsForCategory} category={category.id} />
+						</>
+					)
+				}
+			})}
+			{uncategorizedProducts && (
+				<>
+					<h2>Uncategorized</h2>
+					<CategoryOfProducts products={uncategorizedProducts} />
+				</>
+			)}
+		</>
+	)
+}
+
+const CategoryOfProducts = props => {
 	const [products, setProducts] = useState([])
 
+	const [createProduct, { loading: loadingCreate, error: errorCreate }] = useMutation(CREATE_PRODUCT_MUTATION)
+
 	useEffect(() => {
-		if (data && data.products) setProducts(data.products)
-	}, [data])
+		if (props.products) setProducts(props.products)
+	}, [props.products])
 
-	const initializeProduct = async e => {
+	const initializeProduct = async (e, categoryId) => {
 		e.preventDefault()
-		/*
-        await createCategory()
-			.catch(error => {
-				console.log(error)
-			})
-			.then(response => {
-				window.location = `/admin/category?id=${response.data.createCategory.id}`
-            })
-            */
-	}
 
-	/*
-	const onSortEnd = async ({ oldIndex, newIndex }) => {
-		const reorderedCategories = arrayMove(categories, oldIndex, newIndex)
-		setCategories(reorderedCategories)
-
-		await sortCategories({
+		await createProduct({
 			variables: {
-				categories: reorderedCategories.map(category => category.id),
+				category: props.category ? props.category : null,
 			},
 		})
 			.catch(error => {
 				console.log(error)
 			})
 			.then(response => {
-				console.log(response.data.sortCategories.message)
+				window.location = `/admin/product?id=${response.data.createProduct.id}`
 			})
-    }
-    */
+	}
 
 	return (
-		<>
-			<SortableList axis="xy" distance={1} /*onSortEnd={onSortEnd}*/>
-				{products &&
-					products.map((product, index) => (
-						<SortableItem key={product.id} index={index}>
-							<StyledCard>
-								<a href={`/admin/product?id=${product.id}`}>
-									<div>
-										<img src={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
-									</div>
+		<SortableList axis="xy" distance={1}>
+			{products &&
+				products.map((product, index) => (
+					<SortableItem key={product.id} index={index}>
+						<StyledCard>
+							<a href={`/admin/product?id=${product.id}`}>
+								<div>
+									<img src={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
+								</div>
 
-									<div>
-										<div className="meta">
-											<h3>{product.name_da || 'New product'}</h3>
-										</div>
-										<div className="meta">{product.code}</div>
-										<div className="meta">{product.price}</div>
-										<div className="meta">{!product.published && <Icon name="inactive" size="md" />}</div>
+								<div>
+									<div className="meta">
+										<h3>{product.name_da || 'New product'}</h3>
 									</div>
-								</a>
-							</StyledCard>
-						</SortableItem>
-					))}
+									<div className="meta">{product.code}</div>
+									<div className="meta">{product.price}</div>
+									<div className="meta">{!product.published && <Icon name="inactive" size="md" />}</div>
+								</div>
+							</a>
+						</StyledCard>
+					</SortableItem>
+				))}
 
-				<Button onClick={initializeProduct}>
-					<Icon name="add" size="lg" />
-				</Button>
-			</SortableList>
-		</>
+			<Button onClick={e => initializeProduct(e, props.category)}>
+				<Icon name="add" size="lg" />
+			</Button>
+		</SortableList>
 	)
 }
 

@@ -15,7 +15,7 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_da
 			name_en
 			sorting
-			images {
+			images(orderBy: sorting_ASC) {
 				image
 			}
 		}

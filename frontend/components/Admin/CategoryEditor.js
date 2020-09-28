@@ -1,13 +1,14 @@
 import { DisplayError, Form, ImageUploader } from '../../components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { languages } from '../../config'
+import { useState, useEffect } from 'react'
 
 const CATEGORY_BY_ID_QUERY = gql`
 	query CATEGORY_BY_ID_QUERY($id: ID!) {
 		category(id: $id ) {
 			id
 			published
-            images {
+            images(orderBy:sorting_ASC) {
 				id
                 image
             }
@@ -22,6 +23,7 @@ const UPDATE_CATEGORY_MUTATION = gql`
 	mutation UPDATE_CATEGORY_MUTATION(
         $id: ID!,
 		$published: Boolean, 
+        $images: [ID],
         ${languages.map(lang => '$slug_' + lang.id + ': String,')}
         ${languages.map(lang => '$name_' + lang.id + ': String,')}
         ${languages.map(lang => '$description_' + lang.id + ': String,')}
@@ -29,6 +31,7 @@ const UPDATE_CATEGORY_MUTATION = gql`
 		updateCategory(
 			id: $id,
 			published: $published,
+            images: $images,
             ${languages.map(lang => 'slug_' + lang.id + ': $slug_' + lang.id + ',')}
             ${languages.map(lang => 'name_' + lang.id + ': $name_' + lang.id + ',')}
             ${languages.map(lang => 'description_' + lang.id + ': $description_' + lang.id + ',')}
@@ -57,6 +60,17 @@ const CategoryEditor = props => {
 	})
 	const [updateCategory, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CATEGORY_MUTATION)
 	const [deleteCategory, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_CATEGORY_MUTATION)
+
+	const [images, setImages] = useState([])
+
+	const category = dataQuery && dataQuery.category
+	const loading = loadingQuery || loadingUpdate || loadingDelete
+
+	useEffect(() => {
+		if (category && category.images) {
+			setImages(category.images)
+		}
+	}, [category])
 
 	const handleChange = e => {
 		const { name, type, value } = e.target
@@ -94,6 +108,7 @@ const CategoryEditor = props => {
 	const onSubmit = async e => {
 		e.preventDefault()
 		const updates = { ...category, ...changes }
+		updates.images = images.map(image => image.id)
 
 		// frontend validation
 		if (updates.published) {
@@ -114,7 +129,6 @@ const CategoryEditor = props => {
 		}
 
 		delete updates.__typename
-		delete updates.images
 
 		await updateCategory({
 			variables: updates,
@@ -126,9 +140,6 @@ const CategoryEditor = props => {
 
 	if (loadingQuery) return <p>Loading</p>
 
-	const category = dataQuery && dataQuery.category
-	const loading = loadingQuery || loadingUpdate || loadingDelete
-
 	return (
 		<>
 			{!category && <p>No category found for ID {props.query.id}</p>}
@@ -136,7 +147,12 @@ const CategoryEditor = props => {
 				<>
 					<h1>Edit category: {category.name_da}</h1>
 
-					<ImageUploader categoryId={props.query.id} images={category.images} queryToRefetch={CATEGORY_BY_ID_QUERY} />
+					<ImageUploader
+						images={images}
+						setImages={setImages}
+						categoryId={props.query.id}
+						queryToRefetch={CATEGORY_BY_ID_QUERY}
+					/>
 
 					<Form onSubmit={onSubmit}>
 						{languages.map(lang => (

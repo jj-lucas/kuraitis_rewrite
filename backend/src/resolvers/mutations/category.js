@@ -24,8 +24,27 @@ const categoryMutations = {
   async updateCategory(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 
+    // sort images
+    const images = args.images
+    images.map(async (id, index) => {
+      await ctx.db.mutation.updateImage({
+        where: { id },
+        data: { sorting: index + 1 },
+      })
+    })
+
     // take a copy of updates
-    const updates = { ...args }
+    const updates = {
+      ...args,
+      images: {
+        set:
+          args.images &&
+          args.images.map((id) => {
+            return { id }
+          }),
+      },
+    }
+
     // remove the ID from the updates
     delete updates.id
     // run the update method

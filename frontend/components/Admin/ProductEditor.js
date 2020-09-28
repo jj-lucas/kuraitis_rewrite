@@ -2,6 +2,7 @@ import { DisplayError, Form, ImageUploader } from '../../components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { languages } from '../../config'
 import Select from 'react-select'
+import { useState, useEffect } from 'react'
 
 const PRODUCT_BY_ID_QUERY = gql`
 	query PRODUCT_BY_ID_QUERY($id: ID!) {
@@ -9,7 +10,7 @@ const PRODUCT_BY_ID_QUERY = gql`
 			id
 			code
             published
-			images {
+			images(orderBy:sorting_ASC) {
 				id
 				image
 			}
@@ -33,7 +34,8 @@ const UPDATE_PRODUCT_MUTATION = gql`
         $id: ID!,
         $code: String,
 		$published: Boolean, 
-        $categories: [ID]
+        $categories: [ID],
+        $images: [ID],
         ${languages.map(lang => '$slug_' + lang.id + ': String,')}
         ${languages.map(lang => '$name_' + lang.id + ': String,')}
         ${languages.map(lang => '$description_' + lang.id + ': String,')}
@@ -43,6 +45,7 @@ const UPDATE_PRODUCT_MUTATION = gql`
             code: $code,
 			published: $published,
             categories: $categories,
+            images: $images,
             ${languages.map(lang => 'slug_' + lang.id + ': $slug_' + lang.id + ',')}
             ${languages.map(lang => 'name_' + lang.id + ': $name_' + lang.id + ',')}
             ${languages.map(lang => 'description_' + lang.id + ': $description_' + lang.id + ',')}
@@ -69,9 +72,19 @@ const ProductEditor = props => {
 	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(PRODUCT_BY_ID_QUERY, {
 		variables: { id: props.query.id },
 	})
-
 	const [updateProduct, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_PRODUCT_MUTATION)
 	const [deleteProduct, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_PRODUCT_MUTATION)
+
+	const [images, setImages] = useState([])
+
+	const product = dataQuery && dataQuery.product
+	const loading = loadingQuery || loadingUpdate || loadingDelete
+
+	useEffect(() => {
+		if (product && product.images) {
+			setImages(product.images)
+		}
+	}, [product])
 
 	const handleChange = e => {
 		const { name, type, value } = e.target
@@ -117,6 +130,7 @@ const ProductEditor = props => {
 	const onSubmit = async e => {
 		e.preventDefault()
 		const updates = { ...product, categories: product.categories.map(cat => cat.id), ...changes }
+		updates.images = images.map(image => image.id)
 
 		// frontend validation
 		try {
@@ -142,7 +156,6 @@ const ProductEditor = props => {
 		}
 
 		delete updates.__typename
-		delete updates.images
 
 		await updateProduct({
 			variables: updates,
@@ -152,9 +165,6 @@ const ProductEditor = props => {
 
 	if (loadingQuery) return <p>Loading</p>
 
-	const product = dataQuery && dataQuery.product
-	const loading = loadingQuery || loadingUpdate || loadingDelete
-
 	return (
 		<>
 			{!product && <p>No product found for ID {props.query.id}</p>}
@@ -162,14 +172,26 @@ const ProductEditor = props => {
 				<>
 					<h1>Edit product: {product.name_da}</h1>
 
-					<ImageUploader productId={props.query.id} images={product.images} queryToRefetch={PRODUCT_BY_ID_QUERY} />
+					<ImageUploader
+						images={images}
+						setImages={setImages}
+						productId={props.query.id}
+						queryToRefetch={PRODUCT_BY_ID_QUERY}
+					/>
 
 					<Form onSubmit={onSubmit}>
 						<fieldset disabled={loading} aria-busy={loading}>
 							<h3>Details</h3>
 							<label htmlFor="code">
 								Code
-								<input type="text" id="code" name="code" defaultValue={product['code']} onChange={handleChange} />
+								<input
+									type="text"
+									required
+									id="code"
+									name="code"
+									defaultValue={product['code']}
+									onChange={handleChange}
+								/>
 							</label>
 							<label htmlFor="categories">
 								Categories

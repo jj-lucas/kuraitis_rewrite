@@ -36,6 +36,7 @@ type Category {
   sorting: Int
   published: Boolean @default(value: false)
   products: [Product]
+  images: [Image]
 
   slug_da: String @unique
   slug_en: String @unique
@@ -63,6 +64,7 @@ type Product {
   sorting: Int
   published: Boolean @default(value: false)
   categories: [Category]
+  images: [Image]
 
   slug_da: String @unique
   slug_en: String @unique

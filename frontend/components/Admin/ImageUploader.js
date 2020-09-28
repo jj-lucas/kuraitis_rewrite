@@ -3,7 +3,6 @@ import { useMutation, gql } from '@apollo/client'
 import { cloudinaryUrl } from '../../config'
 import { Icon, Form, DisplayError, SortableList, SortableItem } from '../../components'
 import arrayMove from 'array-move'
-import { useState, useEffect } from 'react'
 
 const UPLOAD_IMAGE_MUTATION = gql`
 	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: ID, $productId: ID) {
@@ -19,14 +18,6 @@ const DELETE_IMAGE_MUTATION = gql`
 	mutation DELETE_IMAGE_MUTATION($id: ID!) {
 		deleteImage(id: $id) {
 			id
-		}
-	}
-`
-
-const SORT_IMAGES_MUTATION = gql`
-	mutation SORT_IMAGES_MUTATION($images: [ID]) {
-		sortImages(images: $images) {
-			message
 		}
 	}
 `
@@ -51,13 +42,6 @@ const Tile = styled.div`
 const ImageUploader = props => {
 	const [uploadImage, { loading: loadingUpload, error: errorUpload }] = useMutation(UPLOAD_IMAGE_MUTATION)
 	const [deleteImage, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_IMAGE_MUTATION)
-	const [sortImages, { loading: loadingSort, error: errorSort }] = useMutation(SORT_IMAGES_MUTATION)
-
-	const [images, setImages] = useState([])
-
-	useEffect(() => {
-		setImages(props.images)
-	}, [props.images])
 
 	const id = props.categoryId || props.productId || null
 
@@ -100,20 +84,8 @@ const ImageUploader = props => {
 	}
 
 	const onSortEnd = async ({ oldIndex, newIndex }) => {
-		const reorderedImages = arrayMove(images, oldIndex, newIndex)
-		setImages(reorderedImages)
-
-		await sortImages({
-			variables: {
-				images: reorderedImages.map(image => image.id),
-			},
-		})
-			.catch(error => {
-				console.log(error)
-			})
-			.then(response => {
-				console.log(response.data.sortImages.message)
-			})
+		const reorderedImages = arrayMove(props.images, oldIndex, newIndex)
+		props.setImages(reorderedImages)
 	}
 
 	const onImageDelete = async imageId => {
@@ -125,8 +97,8 @@ const ImageUploader = props => {
 		})
 	}
 
-	const loading = loadingUpload || loadingDelete || loadingSort
-	const error = errorUpload || errorDelete || errorSort
+	const loading = loadingUpload || loadingDelete
+	const error = errorUpload || errorDelete
 
 	return (
 		<Form>
@@ -140,8 +112,8 @@ const ImageUploader = props => {
 				</label>
 
 				<SortableList onSortEnd={onSortEnd} axis="xy" distance={1}>
-					{images &&
-						images.map((image, index) => (
+					{props.images &&
+						props.images.map((image, index) => (
 							<SortableItem key={image.id} index={index}>
 								<Tile>
 									<img src={image.image} />

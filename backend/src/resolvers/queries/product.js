@@ -3,30 +3,7 @@ const hasPermissions = require('../../lib/hasPermissions')
 const productQueries = {
   async products(parent, args, ctx, info) {
     // get all products
-    const products = await ctx.db.query.products({ orderBy: 'sorting_ASC' })
-    // iterate and enrich with images
-    products.map((product, index) => {
-      const images = ctx.db.query.images(
-        {
-          where: {
-            product: {
-              id: product.id,
-            },
-          },
-          orderBy: 'sorting_ASC',
-        },
-        `{
-          id
-          sorting
-          image
-          largeImage
-        }
-        `
-      )
-      products[index].images = images
-    })
-
-    return products
+    return await ctx.db.query.products({ orderBy: 'sorting_ASC' }, info)
   },
 
   async product(parent, args, ctx, info) {
@@ -50,7 +27,7 @@ const productQueries = {
     }
 
     // get by ID
-    const product = await ctx.db.query.product(
+    return await ctx.db.query.product(
       {
         where: {
           id: idToLookFor,
@@ -58,26 +35,6 @@ const productQueries = {
       },
       info
     )
-
-    const images = await ctx.db.query.images(
-      {
-        where: {
-          product: {
-            id: idToLookFor,
-          },
-        },
-        orderBy: 'sorting_ASC',
-      },
-      `{
-            sorting
-            id
-            image
-            largeImage
-          }
-          `
-    )
-
-    return { ...product, images: [...images] }
   },
 }
 

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sun Sep 27 2020 21:43:49 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Sep 28 2020 19:00:26 GMT+0200 (Central European Summer Time)
 
 type AggregateCategory {
   count: Int!
@@ -31,6 +31,7 @@ type Category implements Node {
   sorting: Int
   published: Boolean
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product!]
+  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image!]
   slug_da: String
   slug_en: String
   name_da: String
@@ -60,6 +61,7 @@ input CategoryCreateInput {
   description_da: String
   description_en: String
   products: ProductCreateManyWithoutCategoriesInput
+  images: ImageCreateManyWithoutCategoryInput
 }
 
 input CategoryCreateManyWithoutProductsInput {
@@ -67,9 +69,22 @@ input CategoryCreateManyWithoutProductsInput {
   connect: [CategoryWhereUniqueInput!]
 }
 
-input CategoryCreateOneInput {
-  create: CategoryCreateInput
+input CategoryCreateOneWithoutImagesInput {
+  create: CategoryCreateWithoutImagesInput
   connect: CategoryWhereUniqueInput
+}
+
+input CategoryCreateWithoutImagesInput {
+  id: ID
+  sorting: Int
+  published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  products: ProductCreateManyWithoutCategoriesInput
 }
 
 input CategoryCreateWithoutProductsInput {
@@ -82,6 +97,7 @@ input CategoryCreateWithoutProductsInput {
   name_en: String
   description_da: String
   description_en: String
+  images: ImageCreateManyWithoutCategoryInput
 }
 
 """An edge in a connection."""
@@ -480,18 +496,6 @@ input CategorySubscriptionWhereInput {
   node: CategoryWhereInput
 }
 
-input CategoryUpdateDataInput {
-  sorting: Int
-  published: Boolean
-  slug_da: String
-  slug_en: String
-  name_da: String
-  name_en: String
-  description_da: String
-  description_en: String
-  products: ProductUpdateManyWithoutCategoriesInput
-}
-
 input CategoryUpdateInput {
   sorting: Int
   published: Boolean
@@ -502,6 +506,7 @@ input CategoryUpdateInput {
   description_da: String
   description_en: String
   products: ProductUpdateManyWithoutCategoriesInput
+  images: ImageUpdateManyWithoutCategoryInput
 }
 
 input CategoryUpdateManyDataInput {
@@ -543,13 +548,25 @@ input CategoryUpdateManyWithWhereNestedInput {
   data: CategoryUpdateManyDataInput!
 }
 
-input CategoryUpdateOneInput {
-  create: CategoryCreateInput
+input CategoryUpdateOneWithoutImagesInput {
+  create: CategoryCreateWithoutImagesInput
   connect: CategoryWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: CategoryUpdateDataInput
-  upsert: CategoryUpsertNestedInput
+  update: CategoryUpdateWithoutImagesDataInput
+  upsert: CategoryUpsertWithoutImagesInput
+}
+
+input CategoryUpdateWithoutImagesDataInput {
+  sorting: Int
+  published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  products: ProductUpdateManyWithoutCategoriesInput
 }
 
 input CategoryUpdateWithoutProductsDataInput {
@@ -561,6 +578,7 @@ input CategoryUpdateWithoutProductsDataInput {
   name_en: String
   description_da: String
   description_en: String
+  images: ImageUpdateManyWithoutCategoryInput
 }
 
 input CategoryUpdateWithWhereUniqueWithoutProductsInput {
@@ -568,9 +586,9 @@ input CategoryUpdateWithWhereUniqueWithoutProductsInput {
   data: CategoryUpdateWithoutProductsDataInput!
 }
 
-input CategoryUpsertNestedInput {
-  update: CategoryUpdateDataInput!
-  create: CategoryCreateInput!
+input CategoryUpsertWithoutImagesInput {
+  update: CategoryUpdateWithoutImagesDataInput!
+  create: CategoryCreateWithoutImagesInput!
 }
 
 input CategoryUpsertWithWhereUniqueWithoutProductsInput {
@@ -897,6 +915,9 @@ input CategoryWhereInput {
   products_every: ProductWhereInput
   products_some: ProductWhereInput
   products_none: ProductWhereInput
+  images_every: ImageWhereInput
+  images_some: ImageWhereInput
+  images_none: ImageWhereInput
 }
 
 input CategoryWhereUniqueInput {
@@ -931,8 +952,34 @@ input ImageCreateInput {
   image: String!
   largeImage: String!
   sorting: Int
-  category: CategoryCreateOneInput
-  product: ProductCreateOneInput
+  category: CategoryCreateOneWithoutImagesInput
+  product: ProductCreateOneWithoutImagesInput
+}
+
+input ImageCreateManyWithoutCategoryInput {
+  create: [ImageCreateWithoutCategoryInput!]
+  connect: [ImageWhereUniqueInput!]
+}
+
+input ImageCreateManyWithoutProductInput {
+  create: [ImageCreateWithoutProductInput!]
+  connect: [ImageWhereUniqueInput!]
+}
+
+input ImageCreateWithoutCategoryInput {
+  id: ID
+  image: String!
+  largeImage: String!
+  sorting: Int
+  product: ProductCreateOneWithoutImagesInput
+}
+
+input ImageCreateWithoutProductInput {
+  id: ID
+  image: String!
+  largeImage: String!
+  sorting: Int
+  category: CategoryCreateOneWithoutImagesInput
 }
 
 """An edge in a connection."""
@@ -960,6 +1007,159 @@ type ImagePreviousValues {
   image: String!
   largeImage: String!
   sorting: Int
+}
+
+input ImageScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ImageScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ImageScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ImageScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
+  sorting: Int
+
+  """All values that are not equal to given value."""
+  sorting_not: Int
+
+  """All values that are contained in given list."""
+  sorting_in: [Int!]
+
+  """All values that are not contained in given list."""
+  sorting_not_in: [Int!]
+
+  """All values less than the given value."""
+  sorting_lt: Int
+
+  """All values less than or equal the given value."""
+  sorting_lte: Int
+
+  """All values greater than the given value."""
+  sorting_gt: Int
+
+  """All values greater than or equal the given value."""
+  sorting_gte: Int
 }
 
 type ImageSubscriptionPayload {
@@ -1003,14 +1203,85 @@ input ImageUpdateInput {
   image: String
   largeImage: String
   sorting: Int
-  category: CategoryUpdateOneInput
-  product: ProductUpdateOneInput
+  category: CategoryUpdateOneWithoutImagesInput
+  product: ProductUpdateOneWithoutImagesInput
+}
+
+input ImageUpdateManyDataInput {
+  image: String
+  largeImage: String
+  sorting: Int
 }
 
 input ImageUpdateManyMutationInput {
   image: String
   largeImage: String
   sorting: Int
+}
+
+input ImageUpdateManyWithoutCategoryInput {
+  create: [ImageCreateWithoutCategoryInput!]
+  connect: [ImageWhereUniqueInput!]
+  set: [ImageWhereUniqueInput!]
+  disconnect: [ImageWhereUniqueInput!]
+  delete: [ImageWhereUniqueInput!]
+  update: [ImageUpdateWithWhereUniqueWithoutCategoryInput!]
+  updateMany: [ImageUpdateManyWithWhereNestedInput!]
+  deleteMany: [ImageScalarWhereInput!]
+  upsert: [ImageUpsertWithWhereUniqueWithoutCategoryInput!]
+}
+
+input ImageUpdateManyWithoutProductInput {
+  create: [ImageCreateWithoutProductInput!]
+  connect: [ImageWhereUniqueInput!]
+  set: [ImageWhereUniqueInput!]
+  disconnect: [ImageWhereUniqueInput!]
+  delete: [ImageWhereUniqueInput!]
+  update: [ImageUpdateWithWhereUniqueWithoutProductInput!]
+  updateMany: [ImageUpdateManyWithWhereNestedInput!]
+  deleteMany: [ImageScalarWhereInput!]
+  upsert: [ImageUpsertWithWhereUniqueWithoutProductInput!]
+}
+
+input ImageUpdateManyWithWhereNestedInput {
+  where: ImageScalarWhereInput!
+  data: ImageUpdateManyDataInput!
+}
+
+input ImageUpdateWithoutCategoryDataInput {
+  image: String
+  largeImage: String
+  sorting: Int
+  product: ProductUpdateOneWithoutImagesInput
+}
+
+input ImageUpdateWithoutProductDataInput {
+  image: String
+  largeImage: String
+  sorting: Int
+  category: CategoryUpdateOneWithoutImagesInput
+}
+
+input ImageUpdateWithWhereUniqueWithoutCategoryInput {
+  where: ImageWhereUniqueInput!
+  data: ImageUpdateWithoutCategoryDataInput!
+}
+
+input ImageUpdateWithWhereUniqueWithoutProductInput {
+  where: ImageWhereUniqueInput!
+  data: ImageUpdateWithoutProductDataInput!
+}
+
+input ImageUpsertWithWhereUniqueWithoutCategoryInput {
+  where: ImageWhereUniqueInput!
+  update: ImageUpdateWithoutCategoryDataInput!
+  create: ImageCreateWithoutCategoryInput!
+}
+
+input ImageUpsertWithWhereUniqueWithoutProductInput {
+  where: ImageWhereUniqueInput!
+  update: ImageUpdateWithoutProductDataInput!
+  create: ImageCreateWithoutProductInput!
 }
 
 input ImageWhereInput {
@@ -1181,33 +1452,33 @@ scalar Long
 type Mutation {
   createUser(data: UserCreateInput!): User!
   createImage(data: ImageCreateInput!): Image!
-  createReport(data: ReportCreateInput!): Report!
   createCategory(data: CategoryCreateInput!): Category!
+  createReport(data: ReportCreateInput!): Report!
   createProduct(data: ProductCreateInput!): Product!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
-  updateReport(data: ReportUpdateInput!, where: ReportWhereUniqueInput!): Report
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateReport(data: ReportUpdateInput!, where: ReportWhereUniqueInput!): Report
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   deleteUser(where: UserWhereUniqueInput!): User
   deleteImage(where: ImageWhereUniqueInput!): Image
-  deleteReport(where: ReportWhereUniqueInput!): Report
   deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteReport(where: ReportWhereUniqueInput!): Report
   deleteProduct(where: ProductWhereUniqueInput!): Product
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
-  upsertReport(where: ReportWhereUniqueInput!, create: ReportCreateInput!, update: ReportUpdateInput!): Report!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  upsertReport(where: ReportWhereUniqueInput!, create: ReportCreateInput!, update: ReportUpdateInput!): Report!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
-  updateManyReports(data: ReportUpdateManyMutationInput!, where: ReportWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  updateManyReports(data: ReportUpdateManyMutationInput!, where: ReportWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
-  deleteManyReports(where: ReportWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  deleteManyReports(where: ReportWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
 }
 
@@ -1261,6 +1532,7 @@ type Product implements Node {
   sorting: Int
   published: Boolean
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
+  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image!]
   slug_da: String
   slug_en: String
   name_da: String
@@ -1294,6 +1566,7 @@ input ProductCreateInput {
   description_da: String
   description_en: String
   categories: CategoryCreateManyWithoutProductsInput
+  images: ImageCreateManyWithoutProductInput
 }
 
 input ProductCreateManyWithoutCategoriesInput {
@@ -1301,8 +1574,8 @@ input ProductCreateManyWithoutCategoriesInput {
   connect: [ProductWhereUniqueInput!]
 }
 
-input ProductCreateOneInput {
-  create: ProductCreateInput
+input ProductCreateOneWithoutImagesInput {
+  create: ProductCreateWithoutImagesInput
   connect: ProductWhereUniqueInput
 }
 
@@ -1320,6 +1593,24 @@ input ProductCreateWithoutCategoriesInput {
   name_en: String
   description_da: String
   description_en: String
+  images: ImageCreateManyWithoutProductInput
+}
+
+input ProductCreateWithoutImagesInput {
+  id: ID
+  code: String
+  customizable: Boolean
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  categories: CategoryCreateManyWithoutProductsInput
 }
 
 """An edge in a connection."""
@@ -1818,22 +2109,6 @@ input ProductSubscriptionWhereInput {
   node: ProductWhereInput
 }
 
-input ProductUpdateDataInput {
-  code: String
-  customizable: Boolean
-  price: Int
-  customPrice: Int
-  sorting: Int
-  published: Boolean
-  slug_da: String
-  slug_en: String
-  name_da: String
-  name_en: String
-  description_da: String
-  description_en: String
-  categories: CategoryUpdateManyWithoutProductsInput
-}
-
 input ProductUpdateInput {
   code: String
   customizable: Boolean
@@ -1848,6 +2123,7 @@ input ProductUpdateInput {
   description_da: String
   description_en: String
   categories: CategoryUpdateManyWithoutProductsInput
+  images: ImageUpdateManyWithoutProductInput
 }
 
 input ProductUpdateManyDataInput {
@@ -1897,13 +2173,13 @@ input ProductUpdateManyWithWhereNestedInput {
   data: ProductUpdateManyDataInput!
 }
 
-input ProductUpdateOneInput {
-  create: ProductCreateInput
+input ProductUpdateOneWithoutImagesInput {
+  create: ProductCreateWithoutImagesInput
   connect: ProductWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: ProductUpdateDataInput
-  upsert: ProductUpsertNestedInput
+  update: ProductUpdateWithoutImagesDataInput
+  upsert: ProductUpsertWithoutImagesInput
 }
 
 input ProductUpdateWithoutCategoriesDataInput {
@@ -1919,6 +2195,23 @@ input ProductUpdateWithoutCategoriesDataInput {
   name_en: String
   description_da: String
   description_en: String
+  images: ImageUpdateManyWithoutProductInput
+}
+
+input ProductUpdateWithoutImagesDataInput {
+  code: String
+  customizable: Boolean
+  price: Int
+  customPrice: Int
+  sorting: Int
+  published: Boolean
+  slug_da: String
+  slug_en: String
+  name_da: String
+  name_en: String
+  description_da: String
+  description_en: String
+  categories: CategoryUpdateManyWithoutProductsInput
 }
 
 input ProductUpdateWithWhereUniqueWithoutCategoriesInput {
@@ -1926,9 +2219,9 @@ input ProductUpdateWithWhereUniqueWithoutCategoriesInput {
   data: ProductUpdateWithoutCategoriesDataInput!
 }
 
-input ProductUpsertNestedInput {
-  update: ProductUpdateDataInput!
-  create: ProductCreateInput!
+input ProductUpsertWithoutImagesInput {
+  update: ProductUpdateWithoutImagesDataInput!
+  create: ProductCreateWithoutImagesInput!
 }
 
 input ProductUpsertWithWhereUniqueWithoutCategoriesInput {
@@ -2343,6 +2636,9 @@ input ProductWhereInput {
   categories_every: CategoryWhereInput
   categories_some: CategoryWhereInput
   categories_none: CategoryWhereInput
+  images_every: ImageWhereInput
+  images_some: ImageWhereInput
+  images_none: ImageWhereInput
 }
 
 input ProductWhereUniqueInput {
@@ -2355,18 +2651,18 @@ input ProductWhereUniqueInput {
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
-  reports(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Report]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  reports(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Report]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   user(where: UserWhereUniqueInput!): User
   image(where: ImageWhereUniqueInput!): Image
-  report(where: ReportWhereUniqueInput!): Report
   category(where: CategoryWhereUniqueInput!): Category
+  report(where: ReportWhereUniqueInput!): Report
   product(where: ProductWhereUniqueInput!): Product
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
-  reportsConnection(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReportConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  reportsConnection(where: ReportWhereInput, orderBy: ReportOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReportConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
 
   """Fetches an object given its ID"""
@@ -2709,8 +3005,8 @@ input ReportWhereUniqueInput {
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
-  report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
 }
 

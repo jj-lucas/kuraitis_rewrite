@@ -22,7 +22,7 @@ const categoryQueries = {
     }
 
     // get by ID
-    const category = await ctx.db.query.category(
+    return await ctx.db.query.category(
       {
         where: {
           id: idToLookFor,
@@ -30,55 +30,11 @@ const categoryQueries = {
       },
       info
     )
-
-    const images = await ctx.db.query.images(
-      {
-        where: {
-          category: {
-            id: args.id,
-          },
-        },
-        orderBy: 'sorting_ASC',
-      },
-      `{
-            sorting
-            id
-            image
-            largeImage
-          }
-          `
-    )
-    return { ...category, images: [...images] }
   },
 
   async categories(parent, args, ctx, info) {
     // get all categories
-    const categories = await ctx.db.query.categories(
-      { orderBy: 'sorting_ASC' },
-      info
-    )
-    // iterate and enrich with images
-    categories.map((category, index) => {
-      const images = ctx.db.query.images(
-        {
-          where: {
-            category: {
-              id: category.id,
-            },
-          },
-          orderBy: 'sorting_ASC',
-        },
-        `{
-              id
-              sorting
-              image
-              largeImage
-            }
-            `
-      )
-      categories[index].images = images
-    })
-    return categories
+    return await ctx.db.query.categories({ orderBy: 'sorting_ASC' }, info)
   },
 }
 

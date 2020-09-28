@@ -4,7 +4,18 @@ const productMutations = {
   async createProduct(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'PRODUCTCREATE'])
 
-    return await ctx.db.mutation.createProduct({ data: {} }, info)
+    return await ctx.db.mutation.createProduct(
+      {
+        data: {
+          categories: args.category
+            ? {
+                connect: [{ id: args.category }],
+              }
+            : null,
+        },
+      },
+      info
+    )
   },
 
   async deleteProduct(parent, args, ctx, info) {
@@ -17,14 +28,32 @@ const productMutations = {
   async updateProduct(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'PRODUCTUPDATE'])
 
+    // sort images
+    const images = args.images
+    images.map(async (id, index) => {
+      await ctx.db.mutation.updateImage({
+        where: { id },
+        data: { sorting: index + 1 },
+      })
+    })
+
     // take a copy of updates
     const updates = {
       ...args,
-      code: args.code.toUpperCase(),
+      code: args.code ? args.code.toUpperCase() : null,
       categories: {
-        set: args.categories.map((cat) => {
-          return { id: cat }
-        }),
+        set:
+          args.categories &&
+          args.categories.map((cat) => {
+            return { id: cat }
+          }),
+      },
+      images: {
+        set:
+          args.images &&
+          args.images.map((id) => {
+            return { id }
+          }),
       },
     }
 
