@@ -9,9 +9,13 @@ type Query {
   categories: [Category]!
   category(id: ID, slug_da: String, slug_en: String): Category
   me: User
-  reports: [Report]!
+  reports(where: ReportWhereInput, orderBy: ReportOrderByInput): [Report]!
   products: [Product]!
   product(id: ID, code: String): Product
+  attributes(
+    where: AttributeWhereInput
+    orderBy: AttributeOrderByInput
+  ): [Attribute]!
 }
 
 type Mutation {
@@ -57,6 +61,8 @@ type Mutation {
     published: Boolean
     categories: [ID]
     images: [ID]
+    selectedAttributes: String
+    skuData: String
 
     slug_da: String
     slug_en: String
@@ -65,6 +71,9 @@ type Mutation {
     description_da: String
     description_en: String
   ): Product
+
+  createSKU(data: SKUCreateInput!): SKU!
+  updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
 }
 
 type User {

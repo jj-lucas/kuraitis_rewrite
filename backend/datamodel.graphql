@@ -10,6 +10,7 @@ enum Permission {
   PRODUCTCREATE
   PRODUCTDELETE
   PRODUCTUPDATE
+  VARIANT
 }
 
 type User {
@@ -60,11 +61,12 @@ type Product {
   code: String @unique
   customizable: Boolean @default(value: true)
   price: Int
-  customPrice: Int
   sorting: Int
   published: Boolean @default(value: false)
   categories: [Category]
   images: [Image]
+  skus: [SKU!]!
+  selectedAttributes: String
 
   slug_da: String @unique
   slug_en: String @unique
@@ -72,4 +74,19 @@ type Product {
   name_en: String
   description_da: String
   description_en: String
+}
+
+type SKU {
+  id: ID! @id
+  sku: String! @unique
+  product: Product!
+  price: Int
+  image: Image
+}
+
+type Attribute {
+  id: ID! @id
+  name: String! # "SIZE"
+  options: String! # "Small|Large"
+  position: Int!
 }

@@ -26,8 +26,27 @@ const productQueries = {
       if (!idToLookFor) return null
     }
 
+    const eligibleSKUs = await ctx.db.query.sKUs(
+      {
+        where: {
+          product: {
+            id: args.id,
+          },
+        },
+      },
+      `{
+        id
+        sku
+        price
+        image {
+          id
+          image
+        }
+      }`
+    )
+
     // get by ID
-    return await ctx.db.query.product(
+    const product = await ctx.db.query.product(
       {
         where: {
           id: idToLookFor,
@@ -35,6 +54,11 @@ const productQueries = {
       },
       info
     )
+
+    return {
+      ...product,
+      skus: eligibleSKUs,
+    }
   },
 }
 

@@ -147,14 +147,14 @@ const CategoryEditor = props => {
 				<>
 					<h1>Edit category: {category.name_da}</h1>
 
-					<ImageUploader
-						images={images}
-						setImages={setImages}
-						categoryId={props.query.id}
-						queryToRefetch={CATEGORY_BY_ID_QUERY}
-					/>
-
 					<Form onSubmit={onSubmit}>
+						<ImageUploader
+							images={images}
+							setImages={setImages}
+							categoryId={props.query.id}
+							queryToRefetch={CATEGORY_BY_ID_QUERY}
+						/>
+
 						{languages.map(lang => (
 							<div key={lang.id}>
 								<h3>{lang.pretty}</h3>

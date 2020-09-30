@@ -28,6 +28,35 @@ const productMutations = {
   async updateProduct(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'PRODUCTUPDATE'])
 
+    // delete all SKUs relate to this products
+    await ctx.db.mutation.deleteManySKUs({
+      where: {
+        product: {
+          id: args.id,
+        },
+      },
+    })
+
+    // generate SKUs based on the provided info
+    const SKUs = JSON.parse(args.skuData)
+    SKUs.map(async (entry) => {
+      ctx.db.mutation.createSKU({
+        data: {
+          sku: entry.sku,
+          price: parseInt(entry.price, 10) | null,
+          product: {
+            connect: {
+              id: args.id,
+            },
+          },
+          image: null,
+        },
+      })
+    })
+
+    // clean up skuData
+    delete args.skuData
+
     // sort images
     const images = args.images
     images.map(async (id, index) => {
@@ -70,70 +99,6 @@ const productMutations = {
       info
     )
   },
-
-  /*
- 
-
- 
-
-  async sortCategories(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
-
-    const categories = args.categories
-    categories.map(async (id, index) => {
-      await ctx.db.mutation.updateCategory({
-        where: { id },
-        data: { sorting: index + 1 },
-      })
-    })
-    return {
-      message: 'Categories sorted',
-    }
-  },
-
-  async uploadCategoryImage(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
-
-    const categoryId = args.categoryId
-    delete args.categoryId
-    const image = await ctx.db.mutation.createImage(
-      {
-        data: {
-          category: {
-            connect: {
-              id: categoryId,
-            },
-          },
-          ...args,
-        },
-      },
-      info
-    )
-    return image
-  },
-
-  async sortCategoryImages(parent, args, ctx, info) {
-    hasPermissions(ctx, [])
-
-    const images = args.images
-    images.map(async (id, index) => {
-      await ctx.db.mutation.updateImage({
-        where: { id },
-        data: { sorting: index + 1 },
-      })
-    })
-    return {
-      message: 'Images sorted',
-    }
-  },
-
-  async deleteCategoryImage(parent, args, ctx, info) {
-    hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
-
-    const where = { id: args.id }
-    return ctx.db.mutation.deleteImage({ where }, info)
-  },
-  */
 }
 
 module.exports = productMutations

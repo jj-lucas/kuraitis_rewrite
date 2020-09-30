@@ -1,4 +1,4 @@
-import { DisplayError, Form, ImageUploader } from '../../components'
+import { DisplayError, Form, ImageUploader, ProductVariants } from '../../components'
 import { useQuery, useMutation, gql } from '@apollo/client'
 import { languages } from '../../config'
 import Select from 'react-select'
@@ -10,6 +10,7 @@ const PRODUCT_BY_ID_QUERY = gql`
 			id
 			code
             published
+			price
 			images(orderBy:sorting_ASC) {
 				id
 				image
@@ -18,6 +19,16 @@ const PRODUCT_BY_ID_QUERY = gql`
                 id
                 name_da
             }
+			skus {
+				id
+				sku
+				price
+				image {
+					id
+					image
+				}
+			}
+			selectedAttributes
             ${languages.map(lang => 'name_' + lang.id)}
             ${languages.map(lang => 'slug_' + lang.id)} 
             ${languages.map(lang => 'description_' + lang.id)}
@@ -26,6 +37,11 @@ const PRODUCT_BY_ID_QUERY = gql`
             id
             name_da
         }
+		attributes(orderBy: position_ASC) {
+			id
+			name
+			options
+		}
 	}
 `
 
@@ -36,6 +52,9 @@ const UPDATE_PRODUCT_MUTATION = gql`
 		$published: Boolean, 
         $categories: [ID],
         $images: [ID],
+        $price: Int,
+		$selectedAttributes: String,
+		$skuData: String, 
         ${languages.map(lang => '$slug_' + lang.id + ': String,')}
         ${languages.map(lang => '$name_' + lang.id + ': String,')}
         ${languages.map(lang => '$description_' + lang.id + ': String,')}
@@ -46,6 +65,9 @@ const UPDATE_PRODUCT_MUTATION = gql`
 			published: $published,
             categories: $categories,
             images: $images,
+			price: $price,
+			selectedAttributes: $selectedAttributes,
+			skuData: $skuData,
             ${languages.map(lang => 'slug_' + lang.id + ': $slug_' + lang.id + ',')}
             ${languages.map(lang => 'name_' + lang.id + ': $name_' + lang.id + ',')}
             ${languages.map(lang => 'description_' + lang.id + ': $description_' + lang.id + ',')}
@@ -76,6 +98,8 @@ const ProductEditor = props => {
 	const [deleteProduct, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_PRODUCT_MUTATION)
 
 	const [images, setImages] = useState([])
+	const [SKUs, setSKUs] = useState([])
+	const [selectedAttributes, setSelectedAttributes] = React.useState({})
 
 	const product = dataQuery && dataQuery.product
 	const loading = loadingQuery || loadingUpdate || loadingDelete
@@ -83,6 +107,12 @@ const ProductEditor = props => {
 	useEffect(() => {
 		if (product && product.images) {
 			setImages(product.images)
+		}
+		if (product && product.selectedAttributes) {
+			setSelectedAttributes(JSON.parse(product.selectedAttributes))
+		}
+		if (product && product.skus) {
+			setSKUs(product.skus)
 		}
 	}, [product])
 
@@ -111,7 +141,6 @@ const ProductEditor = props => {
 			...changes,
 			categories: categories ? categories.map(cat => cat.value) : [],
 		})
-		console.log(categories ? categories.map(cat => cat.value) : [])
 	}
 
 	const handleDelete = async e => {
@@ -131,12 +160,14 @@ const ProductEditor = props => {
 		e.preventDefault()
 		const updates = { ...product, categories: product.categories.map(cat => cat.id), ...changes }
 		updates.images = images.map(image => image.id)
+		updates.selectedAttributes = JSON.stringify(selectedAttributes)
+		updates.skuData = JSON.stringify(SKUs)
 
 		// frontend validation
 		try {
 			if (updates.published) {
 				// make a list of required fields for a product to be published
-				let necessaryFields = ['code']
+				let necessaryFields = ['code', 'price']
 				for (const fields of ['slug', 'name', 'description'].map(f => languages.map(l => `${f}_${l.id}`))) {
 					necessaryFields.push(...fields)
 				}
@@ -172,14 +203,14 @@ const ProductEditor = props => {
 				<>
 					<h1>Edit product: {product.name_da}</h1>
 
-					<ImageUploader
-						images={images}
-						setImages={setImages}
-						productId={props.query.id}
-						queryToRefetch={PRODUCT_BY_ID_QUERY}
-					/>
-
 					<Form onSubmit={onSubmit}>
+						<ImageUploader
+							images={images}
+							setImages={setImages}
+							productId={props.query.id}
+							queryToRefetch={PRODUCT_BY_ID_QUERY}
+						/>
+
 						<fieldset disabled={loading} aria-busy={loading}>
 							<h3>Details</h3>
 							<label htmlFor="code">
@@ -208,11 +239,26 @@ const ProductEditor = props => {
 									})}
 								/>
 							</label>
+							<label htmlFor="price">
+								Price
+								<input type="number" id="price" name="price" defaultValue={product['price']} onChange={handleChange} />
+							</label>
 						</fieldset>
+
+						<ProductVariants
+							productCode={product.code}
+							SKUs={SKUs}
+							setSKUs={setSKUs}
+							selectedAttributes={selectedAttributes}
+							setSelectedAttributes={setSelectedAttributes}
+							availableAttributes={dataQuery.attributes}
+							defaultPrice={changes.price || product.price || null}
+						/>
+
 						{languages.map(lang => (
 							<div key={lang.id}>
-								<h3>{lang.pretty}</h3>
 								<fieldset disabled={loading} aria-busy={loading}>
+									<h3>{lang.pretty}</h3>
 									<label htmlFor={`slug_${lang.id}`}>
 										Slug
 										<input
@@ -251,6 +297,7 @@ const ProductEditor = props => {
 								</fieldset>
 							</div>
 						))}
+
 						<fieldset disabled={loading} aria-busy={loading}>
 							<label htmlFor="published">
 								<input

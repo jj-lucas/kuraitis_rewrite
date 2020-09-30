@@ -25,14 +25,9 @@ const Query = {
   },
 
   // REPORT
-  async reports(parent, args, ctx, info) {
-    return ctx.db.query.reports(
-      {
-        where: {},
-      },
-      info
-    )
-  },
+  reports: forwardTo('db'),
+
+  attributes: forwardTo('db'),
 }
 
 module.exports = Query

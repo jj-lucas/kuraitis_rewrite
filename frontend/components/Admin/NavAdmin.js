@@ -13,6 +13,7 @@ const links = [
 
 const StyledNav = styled.nav`
 	width: 100%;
+	font-family: ${props => props.theme.typography.ff.oswald};
 
 	a {
 		display: inline-block;

@@ -14,9 +14,7 @@ const loading = keyframes`
 
 const Form = styled.form`
 	box-shadow: ${props => props.theme.boxShadow.sm};
-	background: ${props => props.theme.colors.lightGray};
 	border: 5px solid white;
-	padding: ${props => props.theme.spacing.base};
 	label {
 		display: block;
 		margin-bottom: ${props => props.theme.spacing.sm};
@@ -55,8 +53,14 @@ const Form = styled.form`
 		}
 	}
 	fieldset {
+		padding: ${props => props.theme.spacing.base};
+		margin: 0 0 7px;
 		border: 0;
-		padding: 0;
+		background: ${props => props.theme.colors.lightGray};
+
+		h3 {
+			margin-top: 0;
+		}
 
 		&[disabled] {
 			opacity: 0.5;

@@ -8,7 +8,7 @@ const PageAdmin = props => {
 			<GlobalStyle />
 			<Header />
 			<Meta />
-			<ContentSection>
+			<ContentSection className="admin">
 				<PleaseSignIn>
 					<NavAdmin />
 					{props.children}

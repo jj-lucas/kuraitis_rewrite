@@ -9,6 +9,10 @@ const GlobalStyle = createGlobalStyle`
         font-size: ${props => props.theme.typography.fs.base};
         line-height: 1.5;
     }
+    .admin {
+        font-family: ${props => props.theme.typography.ff.droid};
+        font-weight: ${props => props.theme.typography.fw.regular};
+    }
 	h1 {
 		font-size: ${props => props.theme.typography.fs.lg};
         

@@ -101,37 +101,35 @@ const ImageUploader = props => {
 	const error = errorUpload || errorDelete
 
 	return (
-		<Form>
-			<fieldset disabled={loading} aria-busy={loading}>
-				<DisplayError error={error} />
+		<fieldset disabled={loading} aria-busy={loading}>
+			<DisplayError error={error} />
 
-				<h3>Images</h3>
-				<label htmlFor="file">
-					Image
-					<input type="file" id="file" name="file" placeholder="Upload an image" onChange={onFileUpload} />
-				</label>
+			<h3>Images</h3>
+			<label htmlFor="file">
+				Image
+				<input type="file" id="file" name="file" placeholder="Upload an image" onChange={onFileUpload} />
+			</label>
 
-				<SortableList onSortEnd={onSortEnd} axis="xy" distance={1}>
-					{props.images &&
-						props.images.map((image, index) => (
-							<SortableItem key={image.id} index={index}>
-								<Tile>
-									<img src={image.image} />
-									<a
-										className="remove"
-										href="#"
-										onClick={e => {
-											e.preventDefault()
-											onImageDelete(image.id)
-										}}>
-										<Icon name="cross" size="md" inverted />
-									</a>
-								</Tile>
-							</SortableItem>
-						))}
-				</SortableList>
-			</fieldset>
-		</Form>
+			<SortableList onSortEnd={onSortEnd} axis="xy" distance={1}>
+				{props.images &&
+					props.images.map((image, index) => (
+						<SortableItem key={image.id} index={index}>
+							<Tile>
+								<img src={image.image} />
+								<a
+									className="remove"
+									href="#"
+									onClick={e => {
+										e.preventDefault()
+										onImageDelete(image.id)
+									}}>
+									<Icon name="cross" size="md" inverted />
+								</a>
+							</Tile>
+						</SortableItem>
+					))}
+			</SortableList>
+		</fieldset>
 	)
 }
 
