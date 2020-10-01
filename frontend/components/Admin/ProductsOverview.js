@@ -66,7 +66,6 @@ const ProductsOverview = () => {
 	const categories = data.categories
 
 	const uncategorizedProducts = products.filter(function (product) {
-		console.log(product)
 		return !product.categories.length
 	})
 
@@ -78,10 +77,10 @@ const ProductsOverview = () => {
 						return category.products.map(c => c.id).includes(p.id)
 					})
 					return (
-						<>
+						<div key={category.id}>
 							<h2>{category.name_da}</h2>
 							<CategoryOfProducts products={productsForCategory} category={category.id} />
-						</>
+						</div>
 					)
 				}
 			})}
