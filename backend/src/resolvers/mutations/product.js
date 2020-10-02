@@ -21,6 +21,15 @@ const productMutations = {
   async deleteProduct(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'PRODUCTDELETE'])
 
+    // delete all SKUs related to this product
+    await ctx.db.mutation.deleteManySKUs({
+      where: {
+        product: {
+          id: args.id,
+        },
+      },
+    })
+
     const where = { id: args.id }
     return ctx.db.mutation.deleteProduct({ where }, info)
   },
@@ -28,7 +37,7 @@ const productMutations = {
   async updateProduct(parent, args, ctx, info) {
     hasPermissions(ctx, ['ADMIN', 'PRODUCTUPDATE'])
 
-    // delete all SKUs relate to this products
+    // delete all SKUs related to this product
     await ctx.db.mutation.deleteManySKUs({
       where: {
         product: {

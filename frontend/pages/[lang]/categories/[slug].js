@@ -1,17 +1,17 @@
-import { ContentSection, Page, CategoryOverview } from '../../../components'
+import { ContentSection, ProductsList, Page } from '../../../components'
 import { withLocale } from '../../../lib'
 import { useRouter } from 'next/router'
 
-const CategoryPage = props => {
+const CategoryProducts = props => {
 	const router = useRouter()
 	const { slug } = router.query
 	return (
 		<Page>
 			<ContentSection>
-				<CategoryOverview slug={slug} />
+				<ProductsList categorySlug={slug} />
 			</ContentSection>
 		</Page>
 	)
 }
 
-export default withLocale(CategoryPage)
+export default withLocale(CategoryProducts)

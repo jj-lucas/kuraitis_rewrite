@@ -104,10 +104,6 @@ const ProductEditor = props => {
 	const product = dataQuery && dataQuery.product
 	const loading = loadingQuery || loadingUpdate || loadingDelete
 
-	window.onbeforeunload = function () {
-		if (Object.keys(changes).length) return ''
-	}
-
 	useEffect(() => {
 		if (product && product.images) {
 			setImages(product.images)
@@ -195,6 +191,8 @@ const ProductEditor = props => {
 		await updateProduct({
 			variables: updates,
 			refetchQueries: [{ query: PRODUCT_BY_ID_QUERY, variables: { id: props.query.id } }],
+		}).then(() => {
+			window.location = '/admin/products'
 		})
 	}
 

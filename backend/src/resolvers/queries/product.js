@@ -3,7 +3,16 @@ const hasPermissions = require('../../lib/hasPermissions')
 const productQueries = {
   async products(parent, args, ctx, info) {
     // get all products
-    return await ctx.db.query.products({ orderBy: 'sorting_ASC' }, info)
+    let where = {}
+    if (args.categorySlug) {
+      where = {
+        categories_some: {
+          OR: [{ slug_en: args.categorySlug }, { slug_da: args.categorySlug }],
+        },
+      }
+    }
+
+    return await ctx.db.query.products({ where, orderBy: 'sorting_ASC' }, info)
   },
 
   async product(parent, args, ctx, info) {
@@ -16,10 +25,7 @@ const productQueries = {
             code: args.code,
           },
         },
-        `{
-              id
-            }
-            `
+        `{ id }`
       )
       idToLookFor = eligibleProducts.map((product) => product.id)[0]
 

@@ -50,6 +50,7 @@ const links = {
 		{ label: 'Markets', path: '/markets' },
 		{ label: 'FAQ', path: '/faq' },
 		{ label: 'Contact', path: '/contact' },
+		{ label: 'TESTS', path: '/tests' },
 	],
 	da: [
 		{ label: 'Hjem', path: '/' },
@@ -58,6 +59,7 @@ const links = {
 		{ label: 'Markeder', path: '/markeder' },
 		{ label: 'FAQ', path: '/faq' },
 		{ label: 'Kontakt', path: '/contact' },
+		{ label: 'TESTS', path: '/tests' },
 	],
 }
 

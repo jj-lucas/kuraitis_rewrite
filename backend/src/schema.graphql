@@ -10,7 +10,7 @@ type Query {
   category(id: ID, slug_da: String, slug_en: String): Category
   me: User
   reports(where: ReportWhereInput, orderBy: ReportOrderByInput): [Report]!
-  products: [Product]!
+  products(categorySlug: String): [Product]!
   product(id: ID, code: String): Product
   attributes(
     where: AttributeWhereInput
