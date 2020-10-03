@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 const StyledPicture = styled.picture`
 	position: relative;
+	display: block;
 
 	svg {
 		opacity: 0;

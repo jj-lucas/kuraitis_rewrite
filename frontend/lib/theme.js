@@ -10,7 +10,7 @@ const theme = {
 		info: '#fbd01e',
 		warning: '#ffad1e',
 	},
-	maxWidth: '1024px',
+	maxWidth: '1400px',
 	maxLengthLine: '1024px',
 	breakpoints: {
 		xs: '375px',
@@ -33,6 +33,9 @@ const theme = {
 			md: '20px',
 			lg: '36px',
 			fill: 'auto',
+		},
+		productPage: {
+			thumbs: '100px',
 		},
 	},
 	typography: {

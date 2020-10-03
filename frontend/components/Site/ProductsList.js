@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { LocaleContext } from '../../lib'
 import { useQuery, gql } from '@apollo/client'
-import { prettyPrice } from '../../lib'
+import { prettyPrice, LocaleContext } from '../../lib'
+import { Picture } from '../../components'
 
 const PRODUCTS_QUERY = gql`
 	query PRODUCTS_QUERY($categorySlug: String) {
@@ -11,6 +11,8 @@ const PRODUCTS_QUERY = gql`
 			code
 			name_da
 			name_en
+			slug_da
+			slug_en
 			price
 			categories {
 				id
@@ -81,9 +83,12 @@ const CategoryOfProducts = ({ products }) => {
 			{products &&
 				products.map(product => (
 					<StyledCard key={product.id}>
-						<a href={locale == 'da' ? `produkt/${product.code}` : `product/${product.code}`}>
+						<a
+							href={`/${locale}/${locale == 'da' ? `produkt` : 'product'}/${product.code}/${
+								product[`slug_${locale}`]
+							}`}>
 							<div>
-								<img src={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
+								<Picture source={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
 							</div>
 
 							<div>
@@ -114,7 +119,10 @@ const ProductsList = ({ categorySlug }) => {
 	return (
 		<>
 			{categories.map(category => {
-				if (category.products.length && (!categorySlug || category[`slug_${locale}`] == categorySlug)) {
+				if (
+					category.products.length &&
+					(!categorySlug || category.slug_da == categorySlug || category.slug_en == categorySlug)
+				) {
 					let productsForCategory = products.filter(function (p) {
 						return category.products.map(c => c.id).includes(p.id)
 					})
