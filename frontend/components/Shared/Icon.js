@@ -15,6 +15,10 @@ const icons = {
 	add: (
 		<path d="M11 13H7a1 1 0 0 1 0-2h4V7a1 1 0 0 1 2 0v4h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1-2 0v-4z" fillRule="evenodd" />
 	),
+	chevronDown: <path d="M5.88 8L12 13.56 18.12 8 20 9.71 12 17 4 9.71z" fill-rule="evenodd" />,
+	chevronLeft: <path d="M17 5.88L15.29 4 8 12l7.29 8L17 18.12 11.44 12z" fill-rule="evenodd" />,
+	chevronRight: <path d="M8 5.88L9.71 4 17 12l-7.29 8L8 18.12 13.56 12z" fill-rule="evenodd" />,
+	chevronUp: <path d="M18.12 17L12 11.44 5.88 17 4 15.29 12 8l8 7.29z" fill-rule="evenodd" />,
 	checkmark: (
 		<path
 			d="m8.54311504 12.3835735-5.28442482-5.36473346-3.25869022 3.30821326 8.54311504 8.6729467 15.45688496-15.69178673-3.2586902-3.30821327z"
