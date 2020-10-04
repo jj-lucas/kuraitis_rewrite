@@ -11,11 +11,14 @@ const PRODUCT_BY_CODE = gql`
 			code
 			name_da
 			name_en
+			price
 			description_da
 			description_en
+			selectedAttributes
 			skus {
 				id
 				sku
+				price
 			}
 			images {
 				id
@@ -98,7 +101,7 @@ const Gallery = ({ product, className }) => {
 				}
 			}
 		}, 500)
-	})
+	}, [])
 
 	const { locale } = React.useContext(LocaleContext)
 
@@ -268,22 +271,124 @@ const StyledGallery = styled(Gallery)`
 	}
 `
 
-const Details = ({ product, className }) => {
+const Details = ({ product, className, setSKU, SKU }) => {
 	const { locale } = React.useContext(LocaleContext)
+	const [selectedAttributes, setSelectedAttributes] = useState({})
+	const [price, setPrice] = useState(0)
+
+	useEffect(() => {
+		const defaultState = {}
+		Object.keys(attributes).map(key => {
+			defaultState[key] = attributes[key][0].value
+		})
+		setSelectedAttributes(defaultState)
+		setPrice(product.price)
+	}, [])
+
+	useEffect(() => {
+		let SKU = product.code
+		Object.keys(attributes).map(key => {
+			SKU += `-${selectedAttributes[key]}`
+		})
+		setSKU(SKU)
+
+		// update price based on SKU
+		const variant = product.skus.find(variant => variant.sku.toUpperCase() === SKU)
+		if (variant && variant.price) {
+			if (price !== variant.price) {
+				setPrice(variant.price)
+			}
+		} else {
+			setPrice(product.price)
+		}
+	}, [selectedAttributes])
+
+	const attributes = JSON.parse(product.selectedAttributes)
+
+	const changeSelectedAttributes = e => {
+		e.preventDefault()
+		const [key, value] = e.target.value.split('_')
+		const currentAttributes = { ...selectedAttributes }
+		currentAttributes[key] = value
+		setSelectedAttributes(currentAttributes)
+	}
+
 	return (
 		<div className={className}>
 			<h1>{product[`name_${locale}`]}</h1>
+			<h3>{prettyPrice(price, locale, 'DKK')}</h3>
+			<form>
+				<div className="variants">
+					{Object.keys(attributes).map(key => (
+						<div key={key}>
+							<span>{key}</span>
+							<select key={key} onChange={changeSelectedAttributes}>
+								{attributes[key].map(option => (
+									<option key={option.value} value={`${key}_${option.value}`}>
+										{option.value}
+									</option>
+								))}
+							</select>
+						</div>
+					))}
+				</div>
+				<button>Add to cart</button>
+			</form>
+			{product[`description_${locale}`].split('\n\n').map(paragraph => (
+				<p key={paragraph.substring(0, 10)}>{paragraph}</p>
+			))}
+			<p>SKU: {`${SKU}`}</p>
 		</div>
 	)
 }
 
 const StyledDetails = styled(Details)`
-	background: green;
-	width: 33%;
-	height: 500px;
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		width: 33%;
+		min-height: 500px;
+	}
+
+	.variants {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 30px;
+
+		div {
+			span {
+				display: block;
+			}
+
+			select {
+				width: 100%;
+				background-color: ${props => props.theme.colors.lightGray};
+				border: 1px solid ${props => props.theme.colors.lightishGray};
+				padding: 5px 7px;
+			}
+		}
+	}
+
+	button {
+		width: 100%;
+		margin-top: 15px;
+		padding: 15px 7px;
+		background-color: ${props => props.theme.colors.black};
+		color: ${props => props.theme.colors.lightGray};
+		cursor: pointer;
+		transition: opacity
+			${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.easeInOut}`};
+
+		&:hover {
+			opacity: 0.9;
+		}
+	}
+	p {
+		white-space: pre-wrap;
+	}
 `
 
 const ProductView = ({ code }) => {
+	const [SKU, setSKU] = useState('')
+
 	const { loading, error, data } = useQuery(PRODUCT_BY_CODE, {
 		variables: { code },
 	})
@@ -292,8 +397,8 @@ const ProductView = ({ code }) => {
 
 	return (
 		<Wrapper>
-			<StyledGallery product={data.product} offset={2} />
-			<StyledDetails product={data.product} />
+			<StyledGallery product={data.product} offset={2} SKU={SKU} />
+			<StyledDetails product={data.product} SKU={SKU} setSKU={setSKU} />
 		</Wrapper>
 	)
 }
