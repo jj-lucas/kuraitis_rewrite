@@ -1,5 +1,5 @@
 import { ContentSection, ProductView, Page } from '../../../../components'
-import { withLocale } from '../../../../lib'
+import { withLocale, withCurrency } from '../../../../lib'
 import { useRouter } from 'next/router'
 
 const ProductPage = props => {
@@ -14,4 +14,4 @@ const ProductPage = props => {
 	)
 }
 
-export default withLocale(ProductPage)
+export default withLocale(withCurrency(ProductPage))

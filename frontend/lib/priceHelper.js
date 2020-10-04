@@ -1,6 +1,9 @@
 const prettyPrice = (dkk, lang, currency) => {
-	if (currency == 'DKK') {
-		return `${dkk},- DKK`
+	switch (currency) {
+		case 'DKK':
+			return `${dkk},- DKK`
+		case 'USD':
+			return `${dkk} $`
 	}
 	return ''
 }

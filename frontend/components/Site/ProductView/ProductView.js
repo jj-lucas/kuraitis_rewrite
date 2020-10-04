@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import { prettyPrice, LocaleContext } from '../../../lib'
+import { prettyPrice, LocaleContext, CurrencyContext } from '../../../lib'
 import { useState, useEffect, useRef } from 'react'
 import { Picture, Icon } from '../../../components'
 
@@ -273,8 +273,11 @@ const StyledGallery = styled(Gallery)`
 
 const Details = ({ product, className, setSKU, SKU }) => {
 	const { locale } = React.useContext(LocaleContext)
+	const { currency } = React.useContext(CurrencyContext)
 	const [selectedAttributes, setSelectedAttributes] = useState({})
 	const [price, setPrice] = useState(0)
+
+	console.log('Currency: ', currency)
 
 	useEffect(() => {
 		const defaultState = {}
@@ -316,7 +319,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	return (
 		<div className={className}>
 			<h1>{product[`name_${locale}`]}</h1>
-			<h3>{prettyPrice(price, locale, 'DKK')}</h3>
+			<h3>{prettyPrice(price, locale, currency)}</h3>
 			<form>
 				<div className="variants">
 					{Object.keys(attributes).map(key => (

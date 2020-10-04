@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import { LanguageSelector, LogoutButton } from '../../components'
-import { LocaleContext } from '../../lib'
+import { LocaleContext, CurrencyContext } from '../../lib'
 
 const StyledHeader = styled.header`
 	background-color: ${props => props.theme.colors.lightGray};
@@ -61,8 +61,16 @@ const Burger = styled.div`
 	margin: ${props => props.theme.spacing.sm};
 `
 
+const CurrencySelector = styled.select``
+
 const Header = props => {
 	const { locale } = React.useContext(LocaleContext)
+	const { currency, setCurrency } = React.useContext(CurrencyContext)
+
+	const onChangeCurrency = e => {
+		setCurrency(e.target.value)
+		localStorage.setItem('currency', e.target.value)
+	}
 	return (
 		<StyledHeader>
 			<Inner>
@@ -80,6 +88,10 @@ const Header = props => {
 					</Link>
 				</Center>
 				<Right>
+					<CurrencySelector onChange={onChangeCurrency} value={currency}>
+						<option value="DKK">DKK</option>
+						<option value="USD">USD</option>
+					</CurrencySelector>
 					{locale && <LanguageSelector />}
 					{props.toggleRightDrawer && <UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>}
 				</Right>
