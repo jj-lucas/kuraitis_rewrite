@@ -1,5 +1,5 @@
 import { ContentSection, ProductsList, Page } from '../../components'
-import { withLocale } from '../../lib'
+import { withCurrency, withLocale } from '../../lib'
 
 const Products = props => (
 	<Page>
@@ -9,4 +9,4 @@ const Products = props => (
 	</Page>
 )
 
-export default withLocale(Products)
+export default withLocale(withCurrency(Products))

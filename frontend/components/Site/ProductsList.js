@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import { prettyPrice, LocaleContext } from '../../lib'
+import { prettyPrice, LocaleContext, CurrencyContext } from '../../lib'
 import { Picture } from '../../components'
 
 const PRODUCTS_QUERY = gql`
@@ -13,7 +13,12 @@ const PRODUCTS_QUERY = gql`
 			name_en
 			slug_da
 			slug_en
-			price
+			price {
+				DKK
+				USD
+				EUR
+				GBP
+			}
 			categories {
 				id
 			}
@@ -78,6 +83,7 @@ const StyledCard = styled.li`
 
 const CategoryOfProducts = ({ products }) => {
 	const { locale } = React.useContext(LocaleContext)
+	const { currency } = React.useContext(CurrencyContext)
 	return (
 		<StyledList>
 			{products &&
@@ -95,7 +101,7 @@ const CategoryOfProducts = ({ products }) => {
 								<div className="meta">
 									<h3>{product[`name_${locale}`]}</h3>
 								</div>
-								<div className="meta">{prettyPrice(product.price, 'DKK')}</div>
+								<div className="meta">{prettyPrice(product.price && product.price[currency], currency)}</div>
 							</div>
 						</a>
 					</StyledCard>
@@ -108,10 +114,9 @@ const ProductsList = ({ categorySlug }) => {
 	const { loading, error, data } = useQuery(PRODUCTS_QUERY, {
 		variables: { categorySlug },
 	})
+	const { locale } = React.useContext(LocaleContext)
 
 	if (loading) return <p>Loading</p>
-
-	const { locale } = React.useContext(LocaleContext)
 
 	const products = data.products
 	const categories = data.categories

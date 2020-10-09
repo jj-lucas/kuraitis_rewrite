@@ -287,8 +287,6 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	const [selectedAttributes, setSelectedAttributes] = useState({})
 	const [price, setPrice] = useState(0)
 
-	console.log('Currency: ', currency)
-
 	useEffect(() => {
 		const defaultState = {}
 		Object.keys(attributes).map(key => {
@@ -312,7 +310,6 @@ const Details = ({ product, className, setSKU, SKU }) => {
 				setPrice(variant.price[currency])
 			}
 		} else {
-			console.log(product.price)
 			setPrice(product.price[currency])
 		}
 	}, [selectedAttributes])
@@ -325,7 +322,6 @@ const Details = ({ product, className, setSKU, SKU }) => {
 				setPrice(variant.price[currency])
 			}
 		} else {
-			console.log(product.price)
 			setPrice(product.price[currency])
 		}
 	}, [currency])
@@ -359,7 +355,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 						</div>
 					))}
 				</div>
-				<button>Add to cart</button>
+				<button>{locale == 'da' ? 'Læg i indkøbskurv' : 'Add to cart'}</button>
 			</form>
 			{product[`description_${locale}`].split('\n\n').map(paragraph => (
 				<p key={paragraph.substring(0, 10)}>{paragraph}</p>
