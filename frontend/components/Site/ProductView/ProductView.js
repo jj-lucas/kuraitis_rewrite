@@ -11,14 +11,24 @@ const PRODUCT_BY_CODE = gql`
 			code
 			name_da
 			name_en
-			price
+			price {
+				DKK
+				USD
+				EUR
+				GBP
+			}
 			description_da
 			description_en
 			selectedAttributes
 			skus {
 				id
 				sku
-				price
+				price {
+					DKK
+					USD
+					EUR
+					GBP
+				}
 			}
 			images {
 				id
@@ -285,7 +295,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 			defaultState[key] = attributes[key][0].value
 		})
 		setSelectedAttributes(defaultState)
-		setPrice(product.price)
+		setPrice(product.price[currency])
 	}, [])
 
 	useEffect(() => {
@@ -297,14 +307,28 @@ const Details = ({ product, className, setSKU, SKU }) => {
 
 		// update price based on SKU
 		const variant = product.skus.find(variant => variant.sku.toUpperCase() === SKU)
-		if (variant && variant.price) {
-			if (price !== variant.price) {
-				setPrice(variant.price)
+		if (variant && variant.price && variant.price[currency]) {
+			if (price[currency] !== variant.price[currency]) {
+				setPrice(variant.price[currency])
 			}
 		} else {
-			setPrice(product.price)
+			console.log(product.price)
+			setPrice(product.price[currency])
 		}
 	}, [selectedAttributes])
+
+	useEffect(() => {
+		// update price based on SKU
+		const variant = product.skus.find(variant => variant.sku.toUpperCase() === SKU)
+		if (variant && variant.price && variant.price[currency]) {
+			if (price[currency] !== variant.price[currency]) {
+				setPrice(variant.price[currency])
+			}
+		} else {
+			console.log(product.price)
+			setPrice(product.price[currency])
+		}
+	}, [currency])
 
 	const attributes = JSON.parse(product.selectedAttributes)
 
@@ -319,7 +343,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	return (
 		<div className={className}>
 			<h1>{product[`name_${locale}`]}</h1>
-			<h3>{prettyPrice(price, locale, currency)}</h3>
+			<h3>{prettyPrice(price, currency)}</h3>
 			<form>
 				<div className="variants">
 					{Object.keys(attributes).map(key => (

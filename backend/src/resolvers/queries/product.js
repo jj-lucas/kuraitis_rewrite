@@ -36,21 +36,25 @@ const productQueries = {
       {
         where: {
           product: {
-            id: args.id,
+            id: idToLookFor,
           },
         },
       },
       `{
         id
         sku
-        price
+        price {
+          DKK
+          USD
+          EUR
+          GBP
+        }
         image {
           id
           image
         }
       }`
     )
-
     // get by ID
     const product = await ctx.db.query.product(
       {

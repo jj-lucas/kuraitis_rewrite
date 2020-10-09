@@ -10,7 +10,9 @@ const PRODUCT_BY_ID_QUERY = gql`
 			id
 			code
             published
-			price
+			price {
+				DKK
+			}
 			images(orderBy:sorting_ASC) {
 				id
 				image
@@ -22,7 +24,9 @@ const PRODUCT_BY_ID_QUERY = gql`
 			skus {
 				id
 				sku
-				price
+				price { 
+					DKK
+				}
 				image {
 					id
 					image
@@ -130,10 +134,19 @@ const ProductEditor = props => {
 				val = value
 				break
 		}
-		setChanges({
-			...changes,
-			[name]: val,
-		})
+		if (name === 'price') {
+			setChanges({
+				...changes,
+				price: {
+					DKK: val,
+				},
+			})
+		} else {
+			setChanges({
+				...changes,
+				[name]: val,
+			})
+		}
 	}
 
 	const handleCategoryChange = categories => {
@@ -162,6 +175,7 @@ const ProductEditor = props => {
 		updates.images = images.map(image => image.id)
 		updates.selectedAttributes = JSON.stringify(selectedAttributes)
 		updates.skuData = JSON.stringify(SKUs)
+		updates.price = updates.price ? updates.price.DKK : null
 
 		// frontend validation
 		try {
@@ -192,7 +206,7 @@ const ProductEditor = props => {
 			variables: updates,
 			refetchQueries: [{ query: PRODUCT_BY_ID_QUERY, variables: { id: props.query.id } }],
 		}).then(() => {
-			window.location = '/admin/products'
+			// window.location = '/admin/products'
 		})
 	}
 
@@ -243,7 +257,13 @@ const ProductEditor = props => {
 							</label>
 							<label htmlFor="price">
 								Price
-								<input type="number" id="price" name="price" defaultValue={product['price']} onChange={handleChange} />
+								<input
+									type="number"
+									id="price"
+									name="price"
+									defaultValue={(product['price'] && product['price'].DKK) || null}
+									onChange={handleChange}
+								/>
 							</label>
 						</fieldset>
 
@@ -254,7 +274,7 @@ const ProductEditor = props => {
 							selectedAttributes={selectedAttributes}
 							setSelectedAttributes={setSelectedAttributes}
 							availableAttributes={dataQuery.attributes}
-							defaultPrice={changes.price || product.price || null}
+							defaultPrice={(changes.price && changes.price.DKK) || (product.price && product.price.DKK) || null}
 						/>
 
 						{languages.map(lang => (

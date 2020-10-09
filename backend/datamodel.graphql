@@ -60,7 +60,7 @@ type Product {
   id: ID! @id
   code: String @unique
   customizable: Boolean @default(value: true)
-  price: Int
+  price: Price
   sorting: Int
   published: Boolean @default(value: false)
   categories: [Category]
@@ -80,7 +80,7 @@ type SKU {
   id: ID! @id
   sku: String! @unique
   product: Product!
-  price: Int
+  price: Price
   image: Image
 }
 
@@ -89,4 +89,12 @@ type Attribute {
   name: String! # "SIZE"
   options: String! # "Small|Large"
   position: Int!
+}
+
+type Price {
+  id: ID! @id
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
 }

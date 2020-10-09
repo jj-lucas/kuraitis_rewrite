@@ -1,4 +1,6 @@
 const hasPermissions = require('../../lib/hasPermissions')
+const makeMultiPrice = require('../../lib/utils')
+const axios = require('axios')
 
 const productMutations = {
   async createProduct(parent, args, ctx, info) {
@@ -47,12 +49,22 @@ const productMutations = {
     })
 
     // generate SKUs based on the provided info
-    const SKUs = JSON.parse(args.skuData)
+    const SKUs = args.skuData ? JSON.parse(args.skuData) : []
+
+    const resp = await axios.get(
+      'https://api.exchangeratesapi.io/latest?symbols=USD,EUR,GBP&base=DKK'
+    )
+    const conversionRates = resp.data.rates
+
     SKUs.map(async (entry) => {
       ctx.db.mutation.createSKU({
         data: {
           sku: entry.sku,
-          price: parseInt(entry.price, 10) | null,
+          price: entry.price
+            ? {
+                create: { ...makeMultiPrice(entry.price.DKK, conversionRates) },
+              }
+            : null,
           product: {
             connect: {
               id: args.id,
@@ -67,7 +79,7 @@ const productMutations = {
     delete args.skuData
 
     // sort images
-    const images = args.images
+    const images = args.images ? args.images : []
     images.map(async (id, index) => {
       await ctx.db.mutation.updateImage({
         where: { id },
@@ -78,6 +90,11 @@ const productMutations = {
     // take a copy of updates
     const updates = {
       ...args,
+      price: args.price
+        ? {
+            create: { ...makeMultiPrice(args.price, conversionRates) },
+          }
+        : null,
       code: args.code ? args.code.toUpperCase() : null,
       categories: {
         set:

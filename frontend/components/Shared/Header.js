@@ -90,7 +90,9 @@ const Header = props => {
 				<Right>
 					<CurrencySelector onChange={onChangeCurrency} value={currency}>
 						<option value="DKK">DKK</option>
-						<option value="USD">USD</option>
+						<option value="USD">$ USD</option>
+						<option value="EUR">€ EUR</option>
+						<option value="GBP">£ GBP</option>
 					</CurrencySelector>
 					{locale && <LanguageSelector />}
 					{props.toggleRightDrawer && <UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>}

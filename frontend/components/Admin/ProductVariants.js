@@ -46,7 +46,9 @@ const StyledSKU = styled.li`
 const SKU = ({ sku, defaultPrice, onChangeSku, value }) => {
 	const onChange = e => {
 		onChangeSku(sku, {
-			price: e.target.value,
+			price: {
+				DKK: e.target.value,
+			},
 		})
 	}
 
@@ -107,8 +109,8 @@ const ProductVariants = props => {
 			const existingSku = SKUs.find(existing => existing.sku === sku)
 			return {
 				sku,
-				price: existingSku ? existingSku.price | null : null,
-				image: existingSku ? existingSku.image | null : null,
+				price: existingSku ? existingSku.price : null,
+				image: existingSku ? existingSku.image : null,
 			}
 		})
 
@@ -204,7 +206,7 @@ const ProductVariants = props => {
 							key={entry.sku}
 							sku={entry.sku}
 							defaultPrice={defaultPrice}
-							value={entry.price}
+							value={(entry.price && entry.price.DKK) || null}
 							onChangeSku={onChangeSku}
 						/>
 					))}

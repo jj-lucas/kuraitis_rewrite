@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Wed Sep 30 2020 18:38:54 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Oct 09 2020 21:39:36 GMT+0200 (Central European Summer Time)
 
 type AggregateAttribute {
   count: Int!
@@ -10,6 +10,10 @@ type AggregateCategory {
 }
 
 type AggregateImage {
+  count: Int!
+}
+
+type AggregatePrice {
   count: Int!
 }
 
@@ -1748,6 +1752,7 @@ type Mutation {
   createProduct(data: ProductCreateInput!): Product!
   createSKU(data: SKUCreateInput!): SKU!
   createAttribute(data: AttributeCreateInput!): Attribute!
+  createPrice(data: PriceCreateInput!): Price!
   createImage(data: ImageCreateInput!): Image!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
@@ -1755,6 +1760,7 @@ type Mutation {
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
   updateAttribute(data: AttributeUpdateInput!, where: AttributeWhereUniqueInput!): Attribute
+  updatePrice(data: PriceUpdateInput!, where: PriceWhereUniqueInput!): Price
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   deleteUser(where: UserWhereUniqueInput!): User
   deleteCategory(where: CategoryWhereUniqueInput!): Category
@@ -1762,6 +1768,7 @@ type Mutation {
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteSKU(where: SKUWhereUniqueInput!): SKU
   deleteAttribute(where: AttributeWhereUniqueInput!): Attribute
+  deletePrice(where: PriceWhereUniqueInput!): Price
   deleteImage(where: ImageWhereUniqueInput!): Image
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
@@ -1769,6 +1776,7 @@ type Mutation {
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertSKU(where: SKUWhereUniqueInput!, create: SKUCreateInput!, update: SKUUpdateInput!): SKU!
   upsertAttribute(where: AttributeWhereUniqueInput!, create: AttributeCreateInput!, update: AttributeUpdateInput!): Attribute!
+  upsertPrice(where: PriceWhereUniqueInput!, create: PriceCreateInput!, update: PriceUpdateInput!): Price!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
@@ -1776,6 +1784,7 @@ type Mutation {
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManySKUs(data: SKUUpdateManyMutationInput!, where: SKUWhereInput): BatchPayload!
   updateManyAttributes(data: AttributeUpdateManyMutationInput!, where: AttributeWhereInput): BatchPayload!
+  updateManyPrices(data: PriceUpdateManyMutationInput!, where: PriceWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
@@ -1783,6 +1792,7 @@ type Mutation {
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManySKUs(where: SKUWhereInput): BatchPayload!
   deleteManyAttributes(where: AttributeWhereInput): BatchPayload!
+  deleteManyPrices(where: PriceWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
 }
 
@@ -1828,11 +1838,287 @@ enum Permission {
   VARIANT
 }
 
+type Price implements Node {
+  id: ID!
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
+}
+
+"""A connection to a list of items."""
+type PriceConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PriceEdge]!
+  aggregate: AggregatePrice!
+}
+
+input PriceCreateInput {
+  id: ID
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
+}
+
+input PriceCreateOneInput {
+  create: PriceCreateInput
+  connect: PriceWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type PriceEdge {
+  """The item at the end of the edge."""
+  node: Price!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PriceOrderByInput {
+  id_ASC
+  id_DESC
+  DKK_ASC
+  DKK_DESC
+  USD_ASC
+  USD_DESC
+  EUR_ASC
+  EUR_DESC
+  GBP_ASC
+  GBP_DESC
+}
+
+type PricePreviousValues {
+  id: ID!
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
+}
+
+type PriceSubscriptionPayload {
+  mutation: MutationType!
+  node: Price
+  updatedFields: [String!]
+  previousValues: PricePreviousValues
+}
+
+input PriceSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PriceSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PriceSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PriceSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PriceWhereInput
+}
+
+input PriceUpdateDataInput {
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
+}
+
+input PriceUpdateInput {
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
+}
+
+input PriceUpdateManyMutationInput {
+  DKK: Int
+  USD: Int
+  EUR: Int
+  GBP: Int
+}
+
+input PriceUpdateOneInput {
+  create: PriceCreateInput
+  connect: PriceWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: PriceUpdateDataInput
+  upsert: PriceUpsertNestedInput
+}
+
+input PriceUpsertNestedInput {
+  update: PriceUpdateDataInput!
+  create: PriceCreateInput!
+}
+
+input PriceWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PriceWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PriceWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PriceWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  DKK: Int
+
+  """All values that are not equal to given value."""
+  DKK_not: Int
+
+  """All values that are contained in given list."""
+  DKK_in: [Int!]
+
+  """All values that are not contained in given list."""
+  DKK_not_in: [Int!]
+
+  """All values less than the given value."""
+  DKK_lt: Int
+
+  """All values less than or equal the given value."""
+  DKK_lte: Int
+
+  """All values greater than the given value."""
+  DKK_gt: Int
+
+  """All values greater than or equal the given value."""
+  DKK_gte: Int
+  USD: Int
+
+  """All values that are not equal to given value."""
+  USD_not: Int
+
+  """All values that are contained in given list."""
+  USD_in: [Int!]
+
+  """All values that are not contained in given list."""
+  USD_not_in: [Int!]
+
+  """All values less than the given value."""
+  USD_lt: Int
+
+  """All values less than or equal the given value."""
+  USD_lte: Int
+
+  """All values greater than the given value."""
+  USD_gt: Int
+
+  """All values greater than or equal the given value."""
+  USD_gte: Int
+  EUR: Int
+
+  """All values that are not equal to given value."""
+  EUR_not: Int
+
+  """All values that are contained in given list."""
+  EUR_in: [Int!]
+
+  """All values that are not contained in given list."""
+  EUR_not_in: [Int!]
+
+  """All values less than the given value."""
+  EUR_lt: Int
+
+  """All values less than or equal the given value."""
+  EUR_lte: Int
+
+  """All values greater than the given value."""
+  EUR_gt: Int
+
+  """All values greater than or equal the given value."""
+  EUR_gte: Int
+  GBP: Int
+
+  """All values that are not equal to given value."""
+  GBP_not: Int
+
+  """All values that are contained in given list."""
+  GBP_in: [Int!]
+
+  """All values that are not contained in given list."""
+  GBP_not_in: [Int!]
+
+  """All values less than the given value."""
+  GBP_lt: Int
+
+  """All values less than or equal the given value."""
+  GBP_lte: Int
+
+  """All values greater than the given value."""
+  GBP_gt: Int
+
+  """All values greater than or equal the given value."""
+  GBP_gte: Int
+}
+
+input PriceWhereUniqueInput {
+  id: ID
+}
+
 type Product implements Node {
   id: ID!
   code: String
   customizable: Boolean
-  price: Int
+  price: Price
   sorting: Int
   published: Boolean
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
@@ -1861,7 +2147,6 @@ input ProductCreateInput {
   id: ID
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -1871,6 +2156,7 @@ input ProductCreateInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceCreateOneInput
   categories: CategoryCreateManyWithoutProductsInput
   images: ImageCreateManyWithoutProductInput
   skus: SKUCreateManyWithoutProductInput
@@ -1895,7 +2181,6 @@ input ProductCreateWithoutCategoriesInput {
   id: ID
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -1905,6 +2190,7 @@ input ProductCreateWithoutCategoriesInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceCreateOneInput
   images: ImageCreateManyWithoutProductInput
   skus: SKUCreateManyWithoutProductInput
 }
@@ -1913,7 +2199,6 @@ input ProductCreateWithoutImagesInput {
   id: ID
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -1923,6 +2208,7 @@ input ProductCreateWithoutImagesInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceCreateOneInput
   categories: CategoryCreateManyWithoutProductsInput
   skus: SKUCreateManyWithoutProductInput
 }
@@ -1931,7 +2217,6 @@ input ProductCreateWithoutSkusInput {
   id: ID
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -1941,6 +2226,7 @@ input ProductCreateWithoutSkusInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceCreateOneInput
   categories: CategoryCreateManyWithoutProductsInput
   images: ImageCreateManyWithoutProductInput
 }
@@ -1961,8 +2247,6 @@ enum ProductOrderByInput {
   code_DESC
   customizable_ASC
   customizable_DESC
-  price_ASC
-  price_DESC
   sorting_ASC
   sorting_DESC
   published_ASC
@@ -1987,7 +2271,6 @@ type ProductPreviousValues {
   id: ID!
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2092,28 +2375,6 @@ input ProductScalarWhereInput {
 
   """All values that are not equal to given value."""
   customizable_not: Boolean
-  price: Int
-
-  """All values that are not equal to given value."""
-  price_not: Int
-
-  """All values that are contained in given list."""
-  price_in: [Int!]
-
-  """All values that are not contained in given list."""
-  price_not_in: [Int!]
-
-  """All values less than the given value."""
-  price_lt: Int
-
-  """All values less than or equal the given value."""
-  price_lte: Int
-
-  """All values greater than the given value."""
-  price_gt: Int
-
-  """All values greater than or equal the given value."""
-  price_gte: Int
   sorting: Int
 
   """All values that are not equal to given value."""
@@ -2462,7 +2723,6 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2472,6 +2732,7 @@ input ProductUpdateInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceUpdateOneInput
   categories: CategoryUpdateManyWithoutProductsInput
   images: ImageUpdateManyWithoutProductInput
   skus: SKUUpdateManyWithoutProductInput
@@ -2480,7 +2741,6 @@ input ProductUpdateInput {
 input ProductUpdateManyDataInput {
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2495,7 +2755,6 @@ input ProductUpdateManyDataInput {
 input ProductUpdateManyMutationInput {
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2543,7 +2802,6 @@ input ProductUpdateOneWithoutImagesInput {
 input ProductUpdateWithoutCategoriesDataInput {
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2553,6 +2811,7 @@ input ProductUpdateWithoutCategoriesDataInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceUpdateOneInput
   images: ImageUpdateManyWithoutProductInput
   skus: SKUUpdateManyWithoutProductInput
 }
@@ -2560,7 +2819,6 @@ input ProductUpdateWithoutCategoriesDataInput {
 input ProductUpdateWithoutImagesDataInput {
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2570,6 +2828,7 @@ input ProductUpdateWithoutImagesDataInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceUpdateOneInput
   categories: CategoryUpdateManyWithoutProductsInput
   skus: SKUUpdateManyWithoutProductInput
 }
@@ -2577,7 +2836,6 @@ input ProductUpdateWithoutImagesDataInput {
 input ProductUpdateWithoutSkusDataInput {
   code: String
   customizable: Boolean
-  price: Int
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2587,6 +2845,7 @@ input ProductUpdateWithoutSkusDataInput {
   name_en: String
   description_da: String
   description_en: String
+  price: PriceUpdateOneInput
   categories: CategoryUpdateManyWithoutProductsInput
   images: ImageUpdateManyWithoutProductInput
 }
@@ -2705,28 +2964,6 @@ input ProductWhereInput {
 
   """All values that are not equal to given value."""
   customizable_not: Boolean
-  price: Int
-
-  """All values that are not equal to given value."""
-  price_not: Int
-
-  """All values that are contained in given list."""
-  price_in: [Int!]
-
-  """All values that are not contained in given list."""
-  price_not_in: [Int!]
-
-  """All values less than the given value."""
-  price_lt: Int
-
-  """All values less than or equal the given value."""
-  price_lte: Int
-
-  """All values greater than the given value."""
-  price_gt: Int
-
-  """All values greater than or equal the given value."""
-  price_gte: Int
   sorting: Int
 
   """All values that are not equal to given value."""
@@ -3033,6 +3270,7 @@ input ProductWhereInput {
 
   """All values not ending with the given string."""
   description_en_not_ends_with: String
+  price: PriceWhereInput
   categories_every: CategoryWhereInput
   categories_some: CategoryWhereInput
   categories_none: CategoryWhereInput
@@ -3058,6 +3296,7 @@ type Query {
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   sKUs(where: SKUWhereInput, orderBy: SKUOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SKU]!
   attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attribute]!
+  prices(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   user(where: UserWhereUniqueInput!): User
   category(where: CategoryWhereUniqueInput!): Category
@@ -3065,6 +3304,7 @@ type Query {
   product(where: ProductWhereUniqueInput!): Product
   sKU(where: SKUWhereUniqueInput!): SKU
   attribute(where: AttributeWhereUniqueInput!): Attribute
+  price(where: PriceWhereUniqueInput!): Price
   image(where: ImageWhereUniqueInput!): Image
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
@@ -3072,6 +3312,7 @@ type Query {
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   sKUsConnection(where: SKUWhereInput, orderBy: SKUOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SKUConnection!
   attributesConnection(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AttributeConnection!
+  pricesConnection(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PriceConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
 
   """Fetches an object given its ID"""
@@ -3415,7 +3656,7 @@ type SKU implements Node {
   id: ID!
   sku: String!
   product: Product!
-  price: Int
+  price: Price
   image: Image
 }
 
@@ -3432,8 +3673,8 @@ type SKUConnection {
 input SKUCreateInput {
   id: ID
   sku: String!
-  price: Int
   product: ProductCreateOneWithoutSkusInput!
+  price: PriceCreateOneInput
   image: ImageCreateOneInput
 }
 
@@ -3445,7 +3686,7 @@ input SKUCreateManyWithoutProductInput {
 input SKUCreateWithoutProductInput {
   id: ID
   sku: String!
-  price: Int
+  price: PriceCreateOneInput
   image: ImageCreateOneInput
 }
 
@@ -3463,14 +3704,11 @@ enum SKUOrderByInput {
   id_DESC
   sku_ASC
   sku_DESC
-  price_ASC
-  price_DESC
 }
 
 type SKUPreviousValues {
   id: ID!
   sku: String!
-  price: Int
 }
 
 input SKUScalarWhereInput {
@@ -3562,28 +3800,6 @@ input SKUScalarWhereInput {
 
   """All values not ending with the given string."""
   sku_not_ends_with: String
-  price: Int
-
-  """All values that are not equal to given value."""
-  price_not: Int
-
-  """All values that are contained in given list."""
-  price_in: [Int!]
-
-  """All values that are not contained in given list."""
-  price_not_in: [Int!]
-
-  """All values less than the given value."""
-  price_lt: Int
-
-  """All values less than or equal the given value."""
-  price_lte: Int
-
-  """All values greater than the given value."""
-  price_gt: Int
-
-  """All values greater than or equal the given value."""
-  price_gte: Int
 }
 
 type SKUSubscriptionPayload {
@@ -3625,19 +3841,17 @@ input SKUSubscriptionWhereInput {
 
 input SKUUpdateInput {
   sku: String
-  price: Int
   product: ProductUpdateOneRequiredWithoutSkusInput
+  price: PriceUpdateOneInput
   image: ImageUpdateOneInput
 }
 
 input SKUUpdateManyDataInput {
   sku: String
-  price: Int
 }
 
 input SKUUpdateManyMutationInput {
   sku: String
-  price: Int
 }
 
 input SKUUpdateManyWithoutProductInput {
@@ -3659,7 +3873,7 @@ input SKUUpdateManyWithWhereNestedInput {
 
 input SKUUpdateWithoutProductDataInput {
   sku: String
-  price: Int
+  price: PriceUpdateOneInput
   image: ImageUpdateOneInput
 }
 
@@ -3763,29 +3977,8 @@ input SKUWhereInput {
 
   """All values not ending with the given string."""
   sku_not_ends_with: String
-  price: Int
-
-  """All values that are not equal to given value."""
-  price_not: Int
-
-  """All values that are contained in given list."""
-  price_in: [Int!]
-
-  """All values that are not contained in given list."""
-  price_not_in: [Int!]
-
-  """All values less than the given value."""
-  price_lt: Int
-
-  """All values less than or equal the given value."""
-  price_lte: Int
-
-  """All values greater than the given value."""
-  price_gt: Int
-
-  """All values greater than or equal the given value."""
-  price_gte: Int
   product: ProductWhereInput
+  price: PriceWhereInput
   image: ImageWhereInput
 }
 
@@ -3801,6 +3994,7 @@ type Subscription {
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   sKU(where: SKUSubscriptionWhereInput): SKUSubscriptionPayload
   attribute(where: AttributeSubscriptionWhereInput): AttributeSubscriptionPayload
+  price(where: PriceSubscriptionWhereInput): PriceSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
 }
 

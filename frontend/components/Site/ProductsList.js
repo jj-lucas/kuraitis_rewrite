@@ -95,7 +95,7 @@ const CategoryOfProducts = ({ products }) => {
 								<div className="meta">
 									<h3>{product[`name_${locale}`]}</h3>
 								</div>
-								<div className="meta">{prettyPrice(product.price, locale, 'DKK')}</div>
+								<div className="meta">{prettyPrice(product.price, 'DKK')}</div>
 							</div>
 						</a>
 					</StyledCard>

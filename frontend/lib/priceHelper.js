@@ -1,9 +1,13 @@
-const prettyPrice = (dkk, lang, currency) => {
+const prettyPrice = (amount, currency) => {
 	switch (currency) {
 		case 'DKK':
-			return `${dkk},- DKK`
+			return `${amount},- DKK`
 		case 'USD':
-			return `${dkk} $`
+			return `${amount} $`
+		case 'EUR':
+			return `${amount} €`
+		case 'GBP':
+			return `${amount} £`
 	}
 	return ''
 }
