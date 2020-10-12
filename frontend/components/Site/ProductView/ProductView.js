@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import { prettyPrice, LocaleContext, CurrencyContext } from '../../../lib'
+import { prettyPrice, LocaleContext, CurrencyContext, translate } from '../../../lib'
 import { useState, useEffect, useRef } from 'react'
 import { Picture, Icon } from '../../../components'
 
@@ -344,11 +344,11 @@ const Details = ({ product, className, setSKU, SKU }) => {
 				<div className="variants">
 					{Object.keys(attributes).map(key => (
 						<div key={key}>
-							<span>{key}</span>
+							<span>{translate(key, locale).toUpperCase()}</span>
 							<select key={key} onChange={changeSelectedAttributes}>
 								{attributes[key].map(option => (
 									<option key={option.value} value={`${key}_${option.value}`}>
-										{option.value}
+										{translate(option.value, locale).toUpperCase()}
 									</option>
 								))}
 							</select>

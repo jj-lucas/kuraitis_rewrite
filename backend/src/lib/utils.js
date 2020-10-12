@@ -6,4 +6,6 @@ const makeMultiPrice = (dkk, conversionRates) => {
     GBP: parseInt(parseInt(dkk, 10) * conversionRates.GBP, 10) | null,
   }
 }
-module.exports = makeMultiPrice
+module.exports = {
+  makeMultiPrice,
+}
