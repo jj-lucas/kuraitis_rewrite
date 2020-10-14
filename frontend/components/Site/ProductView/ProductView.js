@@ -300,7 +300,9 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	useEffect(() => {
 		const defaultState = {}
 		Object.keys(attributes).map(key => {
-			defaultState[key] = attributes[key][0].value
+			if (attributes[key][0]) {
+				defaultState[key] = attributes[key][0].value
+			}
 		})
 		setSelectedAttributes(defaultState)
 		setPrice(product.price[currency])
@@ -309,7 +311,9 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	useEffect(() => {
 		let SKU = product.code
 		Object.keys(attributes).map(key => {
-			SKU += `-${selectedAttributes[key]}`
+			if (key in selectedAttributes) {
+				SKU += `-${selectedAttributes[key]}`
+			}
 		})
 		setSKU(SKU)
 
@@ -352,18 +356,21 @@ const Details = ({ product, className, setSKU, SKU }) => {
 			<h3>{prettyPrice(price, currency)}</h3>
 			<form>
 				<div className="variants">
-					{Object.keys(attributes).map(key => (
-						<div key={key}>
-							<span>{translate(key, locale).toUpperCase()}</span>
-							<select key={key} onChange={changeSelectedAttributes}>
-								{attributes[key].map(option => (
-									<option key={option.value} value={`${key}_${option.value}`}>
-										{translate(option.value, locale).toUpperCase()}
-									</option>
-								))}
-							</select>
-						</div>
-					))}
+					{Object.keys(attributes).map(key => {
+						if (key in selectedAttributes)
+							return (
+								<div key={key}>
+									<span>{translate(key, locale).toUpperCase()}</span>
+									<select key={key} onChange={changeSelectedAttributes}>
+										{attributes[key].map(option => (
+											<option key={option.value} value={`${key}_${option.value}`}>
+												{translate(option.value, locale).toUpperCase()}
+											</option>
+										))}
+									</select>
+								</div>
+							)
+					})}
 				</div>
 				<button>{translate('add_to_cart', locale)}</button>
 			</form>
