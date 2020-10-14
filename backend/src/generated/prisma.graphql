@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Fri Oct 09 2020 21:39:36 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Oct 14 2020 18:27:56 GMT+0200 (Central European Summer Time)
 
 type AggregateAttribute {
   count: Int!
@@ -2119,6 +2119,7 @@ type Product implements Node {
   code: String
   customizable: Boolean
   price: Price
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category!]
@@ -2147,6 +2148,7 @@ input ProductCreateInput {
   id: ID
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2181,6 +2183,7 @@ input ProductCreateWithoutCategoriesInput {
   id: ID
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2199,6 +2202,7 @@ input ProductCreateWithoutImagesInput {
   id: ID
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2217,6 +2221,7 @@ input ProductCreateWithoutSkusInput {
   id: ID
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2247,6 +2252,8 @@ enum ProductOrderByInput {
   code_DESC
   customizable_ASC
   customizable_DESC
+  hasMultiplePrices_ASC
+  hasMultiplePrices_DESC
   sorting_ASC
   sorting_DESC
   published_ASC
@@ -2271,6 +2278,7 @@ type ProductPreviousValues {
   id: ID!
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2375,6 +2383,10 @@ input ProductScalarWhereInput {
 
   """All values that are not equal to given value."""
   customizable_not: Boolean
+  hasMultiplePrices: Boolean
+
+  """All values that are not equal to given value."""
+  hasMultiplePrices_not: Boolean
   sorting: Int
 
   """All values that are not equal to given value."""
@@ -2723,6 +2735,7 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateInput {
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2741,6 +2754,7 @@ input ProductUpdateInput {
 input ProductUpdateManyDataInput {
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2755,6 +2769,7 @@ input ProductUpdateManyDataInput {
 input ProductUpdateManyMutationInput {
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2802,6 +2817,7 @@ input ProductUpdateOneWithoutImagesInput {
 input ProductUpdateWithoutCategoriesDataInput {
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2819,6 +2835,7 @@ input ProductUpdateWithoutCategoriesDataInput {
 input ProductUpdateWithoutImagesDataInput {
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2836,6 +2853,7 @@ input ProductUpdateWithoutImagesDataInput {
 input ProductUpdateWithoutSkusDataInput {
   code: String
   customizable: Boolean
+  hasMultiplePrices: Boolean
   sorting: Int
   published: Boolean
   selectedAttributes: String
@@ -2964,6 +2982,10 @@ input ProductWhereInput {
 
   """All values that are not equal to given value."""
   customizable_not: Boolean
+  hasMultiplePrices: Boolean
+
+  """All values that are not equal to given value."""
+  hasMultiplePrices_not: Boolean
   sorting: Int
 
   """All values that are not equal to given value."""

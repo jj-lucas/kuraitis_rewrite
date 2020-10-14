@@ -19,6 +19,10 @@ const translations = {
 		en: 'black',
 		da: 'sort',
 	},
+	add_to_cart: {
+		en: 'Add to cart',
+		da: 'Læg i indkøbskurv',
+	},
 }
 
 export const translate = (str, locale) => {

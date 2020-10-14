@@ -56,7 +56,12 @@ const productMutations = {
     )
     const conversionRates = resp.data.rates
 
+    let hasMultiplePrices = false
+
     SKUs.map(async (entry) => {
+      if (entry.price && entry.price !== args.price) {
+        hasMultiplePrices = true
+      }
       ctx.db.mutation.createSKU({
         data: {
           sku: entry.sku,
@@ -95,6 +100,7 @@ const productMutations = {
             create: { ...makeMultiPrice(args.price, conversionRates) },
           }
         : null,
+      hasMultiplePrices: hasMultiplePrices,
       code: args.code ? args.code.toUpperCase() : null,
       categories: {
         set:

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useQuery, gql } from '@apollo/client'
-import { prettyPrice, LocaleContext, CurrencyContext } from '../../lib'
+import { prettyPrice, fromPrice, LocaleContext, CurrencyContext } from '../../lib'
 import { Picture } from '../../components'
 
 const PRODUCTS_QUERY = gql`
@@ -19,6 +19,7 @@ const PRODUCTS_QUERY = gql`
 				EUR
 				GBP
 			}
+			hasMultiplePrices
 			categories {
 				id
 			}
@@ -101,7 +102,10 @@ const CategoryOfProducts = ({ products }) => {
 								<div className="meta">
 									<h3>{product[`name_${locale}`]}</h3>
 								</div>
-								<div className="meta">{prettyPrice(product.price && product.price[currency], currency)}</div>
+								<div className="meta">
+									{fromPrice(product.hasMultiplePrices, locale)}
+									{prettyPrice(product.price && product.price[currency], currency)}
+								</div>
 							</div>
 						</a>
 					</StyledCard>

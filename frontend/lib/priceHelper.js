@@ -12,4 +12,17 @@ const prettyPrice = (amount, currency) => {
 	return ''
 }
 
-export { prettyPrice }
+const fromPrice = (hasMultiplePrices, locale) => {
+	if (!hasMultiplePrices) return ''
+
+	switch (locale) {
+		case 'da':
+			return 'fra '
+		case 'en':
+			return 'from '
+	}
+
+	return ''
+}
+
+export { prettyPrice, fromPrice }

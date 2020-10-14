@@ -61,6 +61,7 @@ type Product {
   code: String @unique
   customizable: Boolean @default(value: true)
   price: Price
+  hasMultiplePrices: Boolean @default(value: false)
   sorting: Int
   published: Boolean @default(value: false)
   categories: [Category]

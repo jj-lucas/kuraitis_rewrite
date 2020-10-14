@@ -355,7 +355,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 						</div>
 					))}
 				</div>
-				<button>{locale == 'da' ? 'Læg i indkøbskurv' : 'Add to cart'}</button>
+				<button>{translate('add_to_cart', locale)}</button>
 			</form>
 			{product[`description_${locale}`].split('\n\n').map(paragraph => (
 				<p key={paragraph.substring(0, 10)}>{paragraph}</p>
