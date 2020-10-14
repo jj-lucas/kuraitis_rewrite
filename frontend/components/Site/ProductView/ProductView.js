@@ -3,6 +3,7 @@ import { useQuery, gql } from '@apollo/client'
 import { prettyPrice, LocaleContext, CurrencyContext, translate } from '../../../lib'
 import { useState, useEffect, useRef } from 'react'
 import { Picture, Icon } from '../../../components'
+import Head from 'next/head'
 
 const PRODUCT_BY_CODE = gql`
 	query PRODUCT_BY_CODE($code: String) {
@@ -428,6 +429,7 @@ const StyledDetails = styled(Details)`
 
 const ProductView = ({ code }) => {
 	const [SKU, setSKU] = useState('')
+	const { locale } = React.useContext(LocaleContext)
 
 	const { loading, error, data } = useQuery(PRODUCT_BY_CODE, {
 		variables: { code },
@@ -439,6 +441,9 @@ const ProductView = ({ code }) => {
 		<Wrapper>
 			<StyledGallery product={data.product} offset={2} SKU={SKU} />
 			<StyledDetails product={data.product} SKU={SKU} setSKU={setSKU} />
+			<Head>
+				<title>{data.product[`name_${locale}`]} | Sergio Kuraitis: Naturligt Design</title>
+			</Head>
 		</Wrapper>
 	)
 }
