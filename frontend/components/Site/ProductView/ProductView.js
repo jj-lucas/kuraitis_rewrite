@@ -29,6 +29,9 @@ const PRODUCT_BY_CODE = gql`
 					EUR
 					GBP
 				}
+				image {
+					id
+				}
 			}
 			images {
 				id
@@ -83,7 +86,7 @@ const GalleryButton = styled.a`
 	}
 `
 
-const Gallery = ({ product, className }) => {
+const Gallery = ({ product, className, SKU }) => {
 	const [selectedImageId, setSelectedImageId] = useState(product.images[0].id)
 	const [offset, setOffset] = useState(0)
 
@@ -112,6 +115,13 @@ const Gallery = ({ product, className }) => {
 			}
 		}, 500)
 	}, [])
+
+	useEffect(() => {
+		const sku = product.skus.find(sku => sku.sku === SKU)
+		if (sku && sku.image) {
+			setSelectedImageId(sku.image.id)
+		}
+	}, [SKU])
 
 	const { locale } = React.useContext(LocaleContext)
 

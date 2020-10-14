@@ -269,6 +269,7 @@ const ProductEditor = props => {
 
 						<ProductVariants
 							productCode={changes.code || product.code}
+							images={changes.images || product.images}
 							SKUs={SKUs}
 							setSKUs={setSKUs}
 							selectedAttributes={selectedAttributes}

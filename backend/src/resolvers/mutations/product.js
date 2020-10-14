@@ -75,7 +75,13 @@ const productMutations = {
               id: args.id,
             },
           },
-          image: null,
+          image: entry.image
+            ? {
+                connect: {
+                  id: entry.image.id,
+                },
+              }
+            : null,
         },
       })
     })
