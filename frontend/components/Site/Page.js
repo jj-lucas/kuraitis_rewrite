@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import Router from 'next/router'
 import NProgress from 'nprogress'
-import { Meta, Header, Footer, GlobalStyle } from '../../components'
+import { Meta, Header, Footer, GlobalStyle, Cart } from '../../components'
 import { Nav } from '.'
 import { theme } from '../../lib'
 
@@ -31,7 +31,7 @@ const RightDrawer = styled.aside`
 	right: ${props => (props.open ? 0 : '-200px')};
 	position: fixed;
 
-	width: 200px;
+	width: 400px;
 
 	transition: right 0.1s ease-in;
 
@@ -44,7 +44,7 @@ const InnerWrapper = styled.div`
 	position: ${props => (props.drawerOpen ? 'fixed' : 'relative')};
 
 	transform: translateX(
-		${props => (props.drawerOpen === 'left' ? '200px' : props.drawerOpen === 'right' ? '-200px' : 0)}
+		${props => (props.drawerOpen === 'left' ? '200px' : props.drawerOpen === 'right' ? '-400px' : 0)}
 	);
 	transition: all 0.1s ease-in;
 
@@ -108,6 +108,7 @@ const Page = props => {
 					<Footer />
 				</InnerWrapper>
 				<RightDrawer open={rightDrawerOpen}></RightDrawer>
+				<Cart />
 			</Wrapper>
 		</ThemeProvider>
 	)

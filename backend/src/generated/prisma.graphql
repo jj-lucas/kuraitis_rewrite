@@ -1,7 +1,11 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Wed Oct 14 2020 18:27:56 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Oct 21 2020 21:25:28 GMT+0200 (Central European Summer Time)
 
 type AggregateAttribute {
+  count: Int!
+}
+
+type AggregateCart {
   count: Int!
 }
 
@@ -293,6 +297,213 @@ input AttributeWhereUniqueInput {
 type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
+}
+
+type Cart implements Node {
+  id: ID!
+  createdAt: DateTime!
+  items: String
+}
+
+"""A connection to a list of items."""
+type CartConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [CartEdge]!
+  aggregate: AggregateCart!
+}
+
+input CartCreateInput {
+  id: ID
+  items: String
+}
+
+"""An edge in a connection."""
+type CartEdge {
+  """The item at the end of the edge."""
+  node: Cart!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum CartOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  items_ASC
+  items_DESC
+}
+
+type CartPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  items: String
+}
+
+type CartSubscriptionPayload {
+  mutation: MutationType!
+  node: Cart
+  updatedFields: [String!]
+  previousValues: CartPreviousValues
+}
+
+input CartSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CartSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CartSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CartSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: CartWhereInput
+}
+
+input CartUpdateInput {
+  items: String
+}
+
+input CartUpdateManyMutationInput {
+  items: String
+}
+
+input CartWhereInput {
+  """Logical AND on all given filters."""
+  AND: [CartWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [CartWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [CartWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  items: String
+
+  """All values that are not equal to given value."""
+  items_not: String
+
+  """All values that are contained in given list."""
+  items_in: [String!]
+
+  """All values that are not contained in given list."""
+  items_not_in: [String!]
+
+  """All values less than the given value."""
+  items_lt: String
+
+  """All values less than or equal the given value."""
+  items_lte: String
+
+  """All values greater than the given value."""
+  items_gt: String
+
+  """All values greater than or equal the given value."""
+  items_gte: String
+
+  """All values containing the given string."""
+  items_contains: String
+
+  """All values not containing the given string."""
+  items_not_contains: String
+
+  """All values starting with the given string."""
+  items_starts_with: String
+
+  """All values not starting with the given string."""
+  items_not_starts_with: String
+
+  """All values ending with the given string."""
+  items_ends_with: String
+
+  """All values not ending with the given string."""
+  items_not_ends_with: String
+}
+
+input CartWhereUniqueInput {
+  id: ID
 }
 
 type Category implements Node {
@@ -1752,6 +1963,7 @@ type Mutation {
   createProduct(data: ProductCreateInput!): Product!
   createSKU(data: SKUCreateInput!): SKU!
   createAttribute(data: AttributeCreateInput!): Attribute!
+  createCart(data: CartCreateInput!): Cart!
   createPrice(data: PriceCreateInput!): Price!
   createImage(data: ImageCreateInput!): Image!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -1760,6 +1972,7 @@ type Mutation {
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
   updateAttribute(data: AttributeUpdateInput!, where: AttributeWhereUniqueInput!): Attribute
+  updateCart(data: CartUpdateInput!, where: CartWhereUniqueInput!): Cart
   updatePrice(data: PriceUpdateInput!, where: PriceWhereUniqueInput!): Price
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   deleteUser(where: UserWhereUniqueInput!): User
@@ -1768,6 +1981,7 @@ type Mutation {
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteSKU(where: SKUWhereUniqueInput!): SKU
   deleteAttribute(where: AttributeWhereUniqueInput!): Attribute
+  deleteCart(where: CartWhereUniqueInput!): Cart
   deletePrice(where: PriceWhereUniqueInput!): Price
   deleteImage(where: ImageWhereUniqueInput!): Image
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
@@ -1776,6 +1990,7 @@ type Mutation {
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertSKU(where: SKUWhereUniqueInput!, create: SKUCreateInput!, update: SKUUpdateInput!): SKU!
   upsertAttribute(where: AttributeWhereUniqueInput!, create: AttributeCreateInput!, update: AttributeUpdateInput!): Attribute!
+  upsertCart(where: CartWhereUniqueInput!, create: CartCreateInput!, update: CartUpdateInput!): Cart!
   upsertPrice(where: PriceWhereUniqueInput!, create: PriceCreateInput!, update: PriceUpdateInput!): Price!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -1784,6 +1999,7 @@ type Mutation {
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManySKUs(data: SKUUpdateManyMutationInput!, where: SKUWhereInput): BatchPayload!
   updateManyAttributes(data: AttributeUpdateManyMutationInput!, where: AttributeWhereInput): BatchPayload!
+  updateManyCarts(data: CartUpdateManyMutationInput!, where: CartWhereInput): BatchPayload!
   updateManyPrices(data: PriceUpdateManyMutationInput!, where: PriceWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
@@ -1792,6 +2008,7 @@ type Mutation {
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManySKUs(where: SKUWhereInput): BatchPayload!
   deleteManyAttributes(where: AttributeWhereInput): BatchPayload!
+  deleteManyCarts(where: CartWhereInput): BatchPayload!
   deleteManyPrices(where: PriceWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
 }
@@ -3318,6 +3535,7 @@ type Query {
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   sKUs(where: SKUWhereInput, orderBy: SKUOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SKU]!
   attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attribute]!
+  carts(where: CartWhereInput, orderBy: CartOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cart]!
   prices(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   user(where: UserWhereUniqueInput!): User
@@ -3326,6 +3544,7 @@ type Query {
   product(where: ProductWhereUniqueInput!): Product
   sKU(where: SKUWhereUniqueInput!): SKU
   attribute(where: AttributeWhereUniqueInput!): Attribute
+  cart(where: CartWhereUniqueInput!): Cart
   price(where: PriceWhereUniqueInput!): Price
   image(where: ImageWhereUniqueInput!): Image
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -3334,6 +3553,7 @@ type Query {
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   sKUsConnection(where: SKUWhereInput, orderBy: SKUOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SKUConnection!
   attributesConnection(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AttributeConnection!
+  cartsConnection(where: CartWhereInput, orderBy: CartOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CartConnection!
   pricesConnection(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PriceConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
 
@@ -4016,6 +4236,7 @@ type Subscription {
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   sKU(where: SKUSubscriptionWhereInput): SKUSubscriptionPayload
   attribute(where: AttributeSubscriptionWhereInput): AttributeSubscriptionPayload
+  cart(where: CartSubscriptionWhereInput): CartSubscriptionPayload
   price(where: PriceSubscriptionWhereInput): PriceSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
 }

@@ -16,6 +16,7 @@ type Query {
     where: AttributeWhereInput
     orderBy: AttributeOrderByInput
   ): [Attribute]!
+  cart: Cart
 }
 
 type Mutation {
@@ -74,6 +75,8 @@ type Mutation {
 
   createSKU(data: SKUCreateInput!): SKU!
   updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
+
+  updateCart(id: ID, items: [String!]): Cart!
 }
 
 type User {
@@ -81,4 +84,11 @@ type User {
   name: String!
   email: String!
   permissions: [Permission!]!
+}
+
+type Cart {
+  id: ID!
+  createdAt: DateTime!
+  skus: [SKU]
+  items: [String]
 }

@@ -1,4 +1,5 @@
 export * from './About'
+export * from './Cart'
 export * from './CategoriesList'
 export * from './CategoryOverview'
 export * from './Footer'

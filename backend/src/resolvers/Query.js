@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const { forwardTo } = require('prisma-binding')
 
 const Query = {
@@ -28,6 +29,85 @@ const Query = {
   reports: forwardTo('db'),
 
   attributes: forwardTo('db'),
+
+  async cart(parent, args, ctx, info) {
+    const { cartToken } = ctx.request.cookies
+    if (cartToken) {
+      try {
+        const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
+
+        // check if such a cart exists
+        const cart = await ctx.db.query.cart(
+          {
+            where: {
+              id: cartId,
+            },
+          },
+          `{ id items }`
+        )
+
+        // if it does, retrieve SKU data and parse items
+        if (cart) {
+          const result = {
+            ...cart,
+          }
+          if (cart.items) {
+            result.skus = await ctx.db.query.sKUs(
+              {
+                where: {
+                  sku_in: cart.items.split('|'),
+                },
+              },
+              `{
+                id
+                sku
+                price {
+                  DKK
+                  USD
+                  EUR
+                  GBP
+                }
+                product {
+                  price {
+                    DKK
+                    USD
+                    EUR
+                    GBP
+                  }
+                  images {
+                    image
+                  }
+                }
+                image {
+                  image
+                }
+              }`
+            )
+
+            // only pass items for which we have valid SKUs for
+            result.items = cart.items
+              ? cart.items
+                  .split('|')
+                  .filter((skuToFind) =>
+                    result.skus.find((sku) => skuToFind === sku.sku)
+                  )
+              : []
+          }
+
+          return result
+        } else {
+          // we requested a cart ID that does not exist, clear this invalid cart token
+          ctx.response.clearCookie('cartToken')
+        }
+      } catch (e) {
+        // clear this invalid cart token
+        ctx.response.clearCookie('cartToken')
+      }
+    }
+
+    // there was no cart token provided
+    return null
+  },
 }
 
 module.exports = Query

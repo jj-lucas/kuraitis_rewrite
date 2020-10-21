@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import { LanguageSelector, LogoutButton } from '../../components'
 import { LocaleContext, CurrencyContext } from '../../lib'
+import { useQuery, gql } from '@apollo/client'
 
 const StyledHeader = styled.header`
 	background-color: ${props => props.theme.colors.lightGray};
@@ -71,6 +72,7 @@ const Header = props => {
 		setCurrency(e.target.value)
 		localStorage.setItem('currency', e.target.value)
 	}
+
 	return (
 		<StyledHeader>
 			<Inner>

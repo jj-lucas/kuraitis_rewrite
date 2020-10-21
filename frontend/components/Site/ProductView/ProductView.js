@@ -1,6 +1,14 @@
 import styled from 'styled-components'
-import { useQuery, gql } from '@apollo/client'
-import { prettyPrice, LocaleContext, CurrencyContext, translate } from '../../../lib'
+import { useQuery, useMutation, gql } from '@apollo/client'
+import {
+	prettyPrice,
+	LocaleContext,
+	CurrencyContext,
+	CartContext,
+	CART_QUERY,
+	UPDATE_CART_MUTATION,
+	translate,
+} from '../../../lib'
 import { useState, useEffect, useRef } from 'react'
 import { Picture, Icon } from '../../../components'
 import Head from 'next/head'
@@ -295,8 +303,11 @@ const StyledGallery = styled(Gallery)`
 const Details = ({ product, className, setSKU, SKU }) => {
 	const { locale } = React.useContext(LocaleContext)
 	const { currency } = React.useContext(CurrencyContext)
+	const { cart } = React.useContext(CartContext)
 	const [selectedAttributes, setSelectedAttributes] = useState({})
 	const [price, setPrice] = useState(0)
+
+	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
 
 	useEffect(() => {
 		const defaultState = {}
@@ -351,6 +362,21 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		setSelectedAttributes(currentAttributes)
 	}
 
+	const addToCart = async e => {
+		e.preventDefault()
+		const sku = product.skus.find(sku => sku.sku === SKU).sku
+
+		await updateCart({
+			variables: {
+				...(cart ? { id: cart.id } : null),
+				items: [...(cart ? cart.items : []), sku],
+			},
+			refetchQueries: [{ query: CART_QUERY, variables: {} }],
+		}).then(() => {
+			// window.location = '/admin/products'
+		})
+	}
+
 	return (
 		<div className={className}>
 			<h1>{product[`name_${locale}`]}</h1>
@@ -373,7 +399,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 							)
 					})}
 				</div>
-				<button>{translate('add_to_cart', locale)}</button>
+				<button onClick={addToCart}>{translate('add_to_cart', locale)}</button>
 			</form>
 			{product[`description_${locale}`].split('\n\n').map(paragraph => (
 				<p key={paragraph.substring(0, 10)}>{paragraph}</p>
@@ -427,7 +453,7 @@ const StyledDetails = styled(Details)`
 	}
 `
 
-const ProductView = ({ code }) => {
+const ProductView = ({ code, cart }) => {
 	const [SKU, setSKU] = useState('')
 	const { locale } = React.useContext(LocaleContext)
 

@@ -14,11 +14,11 @@ class MyApp extends App {
 		pageProps.query = ctx.query
 		return { pageProps }
 	}
+
 	render() {
 		const { Component, pageProps } = this.props
 
 		const client = new ApolloClient({
-			ssrMode: true,
 			uri: process.env.NODE_ENV === 'development' ? apiUrlDev : apiUrlProd,
 			cache: new InMemoryCache(),
 			credentials: 'include',

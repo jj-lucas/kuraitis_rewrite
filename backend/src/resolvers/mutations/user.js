@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const hasPermissions = require('../../lib/hasPermissions')
 
 const userMutations = {
