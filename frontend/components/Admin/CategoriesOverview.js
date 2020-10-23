@@ -39,7 +39,7 @@ const SORT_CATEGORIES_MUTATION = gql`
 `
 
 const StyledCard = styled.div`
-	background: ${props => props.theme.colors.lightGray};
+	background: var(--lightGray);
 	padding: 0 0 ${props => props.theme.spacing.base};
 
 	h3 {

@@ -29,7 +29,7 @@ const Tile = styled.div`
 	img {
 		display: block;
 		width: 100%;
-		background: ${props => props.theme.colors.lightGray};
+		background: var(--lightGray);
 	}
 
 	.remove {

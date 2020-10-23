@@ -58,7 +58,7 @@ const StyledCard = styled.li`
 
 	a {
 		display: block;
-		color: ${props => props.theme.colors.black};
+		color: var(--black);
 
 		img {
 			transition: all ${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.easeInOut}`};

@@ -48,7 +48,7 @@ const StyledSKU = styled.li`
 	}
 
 	button.remove {
-		background: ${props => props.theme.colors.warning};
+		background: var(--warning);
 	}
 `
 

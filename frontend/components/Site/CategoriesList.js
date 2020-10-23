@@ -38,8 +38,8 @@ const Center = styled.div`
 
 const StyledTile = styled.a`
 	transition: all ${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.cubic}`};
-	border: 1px solid ${props => props.theme.colors.lightGray};
-	color: ${props => props.theme.colors.black};
+	border: 1px solid var(--lightGray);
+	color: var(--black);
 
 	.cta {
 		display: none;
@@ -64,7 +64,7 @@ const StyledTile = styled.a`
 	}
 
 	&:hover {
-		background: ${props => props.theme.colors.lightGray};
+		background: var(--lightGray);
 		img {
 			transform: scale(1.05) translateZ(0);
 		}

@@ -48,27 +48,27 @@ const StyledIcon = styled.svg`
 	${props =>
 		props.inverted &&
 		`
-        background-color: ${props.theme.colors.gray};
-        fill: ${props.theme.colors.lightGray};
+        background-color: var(--gray);
+        fill: var(--lightGray);
     `}
     
 	${props =>
 		props.positive &&
 		`
-        background-color: ${props.theme.colors.gray};
-        fill: ${props.theme.colors.positive};
+        background-color: var(--gray);
+        fill: var(--positive);
     `}
 	${props =>
 		props.negative &&
 		`
-        background-color: ${props.theme.colors.gray};
-        fill: ${props.theme.colors.negative};
+        background-color: var(--gray);
+        fill: var(--negative);
     `}
 	${props =>
 		props.warning &&
 		`
-        background-color: ${props.theme.colors.gray};
-        fill: ${props.theme.colors.warning};
+        background-color: var(--gray);
+        fill: var(--warning);
     `}
 `
 

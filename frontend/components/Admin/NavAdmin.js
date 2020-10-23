@@ -20,16 +20,16 @@ const StyledNav = styled.nav`
 
 		padding: ${props => props.theme.spacing.sm};
 
-		color: ${props => props.theme.colors.gray};
+		color: var(--gray);
 		transition: color 0.1s ease-in, background-color 0.1s ease-in;
 		text-transform: uppercase;
 
 		&:hover {
-			color: ${props => props.theme.colors.darkGray};
+			color: var(--darkGray);
 		}
 
 		&.selected {
-			color: ${props => props.theme.colors.blue};
+			color: var(--blue);
 		}
 	}
 `

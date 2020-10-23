@@ -49,7 +49,7 @@ const InnerWrapper = styled.div`
 	transition: all 0.1s ease-in;
 
 	background: white;
-	color: ${props => props.theme.colors.black};
+	color: var(--black);
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
 		width: 100%;

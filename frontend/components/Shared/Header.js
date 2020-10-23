@@ -5,7 +5,7 @@ import { LocaleContext, CurrencyContext } from '../../lib'
 import { useQuery, gql } from '@apollo/client'
 
 const StyledHeader = styled.header`
-	background-color: ${props => props.theme.colors.lightGray};
+	background-color: var(--lightGray);
 `
 const Inner = styled.div`
 	display: flex;
@@ -30,7 +30,7 @@ const Center = styled.span`
 
 		align-items: center;
 
-		color: ${props => props.theme.colors.black};
+		color: var(--black);
 		font-size: ${props => props.theme.typography.fs.lg};
 		font-weight: ${props => props.theme.typography.fw.light};
 		text-transform: uppercase;

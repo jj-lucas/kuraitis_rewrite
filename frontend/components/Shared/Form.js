@@ -24,10 +24,10 @@ const Form = styled.form`
 	select {
 		width: calc(100% - 10px); /*matches padding on sides*/
 		padding: ${props => props.theme.spacing.xs};
-		border: 1px solid ${props => props.theme.colors.gray};
+		border: 1px solid var(--gray);
 		&:focus {
 			outline: 0;
-			border-color: ${props => props.theme.colors.blue};
+			border-color: var(--blue);
 		}
 	}
 	input[type='checkbox'] {
@@ -39,16 +39,16 @@ const Form = styled.form`
 	input[type='submit'] {
 		width: auto;
 		color: white;
-		background: ${props => props.theme.colors.gray};
+		background: var(--gray);
 		border: 0;
 		padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
 		margin: 0 ${props => props.theme.spacing.sm} 0 0;
 
 		&[type='submit'] {
-			background: ${props => props.theme.colors.blue};
+			background: var(--blue);
 		}
 		&.warning {
-			background: ${props => props.theme.colors.warning};
+			background: var(--warning);
 			float: right;
 		}
 	}
@@ -56,7 +56,7 @@ const Form = styled.form`
 		padding: ${props => props.theme.spacing.base};
 		margin: 0 0 7px;
 		border: 0;
-		background: ${props => props.theme.colors.lightGray};
+		background: var(--lightGray);
 
 		h3 {
 			margin-top: 0;

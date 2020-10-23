@@ -65,8 +65,8 @@ const GalleryButton = styled.a`
 	display: flex;
 	justify-content: center;
 	text-align: center;
-	background: ${props => props.theme.colors.lightGray};
-	border: 1px solid ${props => props.theme.colors.lightishGray};
+	background: var(--lightGray);
+	border: 1px solid var(--lightishGray);
 	margin: 0 10px;
 	padding: 4px 0;
 
@@ -427,8 +427,8 @@ const StyledDetails = styled(Details)`
 
 			select {
 				width: 100%;
-				background-color: ${props => props.theme.colors.lightGray};
-				border: 1px solid ${props => props.theme.colors.lightishGray};
+				background-color: var(--lightGray);
+				border: 1px solid var(--lightishGray);
 				padding: 5px 7px;
 			}
 		}
@@ -438,8 +438,8 @@ const StyledDetails = styled(Details)`
 		width: 100%;
 		margin-top: 15px;
 		padding: 15px 7px;
-		background-color: ${props => props.theme.colors.black};
-		color: ${props => props.theme.colors.lightGray};
+		background-color: var(--black);
+		color: var(--lightGray);
 		cursor: pointer;
 		transition: opacity
 			${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.easeInOut}`};

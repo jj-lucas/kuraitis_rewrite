@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const StyledHeader = styled.header`
-	background-color: ${props => props.theme.colors.lightGray};
+	background-color: var(--lightGray);
 `
 const Inner = styled.div`
 	display: flex;

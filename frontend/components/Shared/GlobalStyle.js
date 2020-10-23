@@ -1,8 +1,20 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
+    :root {
+		--lightGray: #f8f8f8;
+		--lightishGray: #aaaaaa;
+		--gray: #1a1a1a99;
+		--darkGray: #1a1a1a;
+		--black: #393939;
+		--blue: #0394fc;
+		--negative: #ff421e;
+		--positive: #7ede28;
+		--info: #fbd01e;
+		--warning: #ffad1e;
+    }
     body {
-	    background-color: ${props => props.theme.colors.lightGray};
+	    background-color: var(--lightGray);
         font-family: ${props => props.theme.typography.ff.oswald};
         font-weight: ${props => props.theme.typography.fw.regular};
         font-style: normal;
@@ -32,18 +44,18 @@ const GlobalStyle = createGlobalStyle`
     }
     a {
         text-decoration: none;
-        color: ${props => props.theme.colors.blue};
+        color: var(--blue);
     }
     #nprogress .bar {
-        background: ${props => props.theme.colors.blue};
+        background: var(--blue);
         height:3px;
     }
     #nprogress .spinner-icon {
-        border-top-color: ${props => props.theme.colors.blue};
-        border-left-color: ${props => props.theme.colors.blue};
+        border-top-color: var(--blue);
+        border-left-color: var(--blue);
     }    
     #nprogress .peg {
-        box-shadow: 0 0 10px ${props => props.theme.colors.blue}, 0 0 5px ${props => props.theme.colors.blue};
+        box-shadow: 0 0 10px var(--blue), 0 0 5px var(--blue);
     }
 `
 
