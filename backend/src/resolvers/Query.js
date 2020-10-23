@@ -92,6 +92,8 @@ const Query = {
                     result.skus.find((sku) => skuToFind === sku.sku)
                   )
               : []
+          } else {
+            result.items = []
           }
 
           return result
