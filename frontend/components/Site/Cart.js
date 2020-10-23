@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import { CartContext, CurrencyContext, prettyPrice, UPDATE_CART_MUTATION, CART_QUERY } from '../../lib'
 import { useMutation } from '@apollo/client'
-import { Icon } from '../../components'
+import { XCircleIcon } from '@primer/octicons-react'
+import styled from 'styled-components'
+import { CartContext, CART_QUERY, CurrencyContext, prettyPrice, UPDATE_CART_MUTATION } from '../../lib'
 
 const StyledCart = styled.div`
 	position: fixed;
@@ -13,7 +13,6 @@ const StyledCart = styled.div`
 	background: white;
 	padding: ${props => props.theme.spacing.base};
 	box-shadow: ${props => props.theme.boxShadow.lg};
-	display: none;
 
 	img {
 		width: 50px;
@@ -51,13 +50,13 @@ const Cart = () => {
 								<img src={image} alt="" />
 								{prettyPrice(price[currency], currency)}
 								{sku}
-								<Icon
-									name="cross"
+								<span
 									onClick={e => {
 										e.preventDefault()
 										removeFromCart(index)
-									}}
-								/>
+									}}>
+									<XCircleIcon />
+								</span>
 							</li>
 						)
 					})}

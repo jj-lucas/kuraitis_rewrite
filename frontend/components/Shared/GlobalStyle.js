@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
 		--black: #393939;
 		--blue: #0394fc;
 		--negative: #ff421e;
-		--positive: #7ede28;
+		--positive: #9adb60;
 		--info: #fbd01e;
 		--warning: #ffad1e;
     }

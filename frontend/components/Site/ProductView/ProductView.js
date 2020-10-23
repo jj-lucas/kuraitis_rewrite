@@ -1,17 +1,18 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon } from '@primer/octicons-react'
+import Head from 'next/head'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { Picture } from '../../../components'
 import {
-	prettyPrice,
-	LocaleContext,
-	CurrencyContext,
 	CartContext,
 	CART_QUERY,
-	UPDATE_CART_MUTATION,
+	CurrencyContext,
+	LocaleContext,
+	prettyPrice,
 	translate,
+	UPDATE_CART_MUTATION,
 } from '../../../lib'
-import { useState, useEffect, useRef } from 'react'
-import { Picture, Icon } from '../../../components'
-import Head from 'next/head'
 
 const PRODUCT_BY_CODE = gql`
 	query PRODUCT_BY_CODE($code: String) {
@@ -69,6 +70,8 @@ const GalleryButton = styled.a`
 	border: 1px solid var(--lightishGray);
 	margin: 0 10px;
 	padding: 4px 0;
+	position: relative;
+	color: var(--black);
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
 		width: 100px;
@@ -83,6 +86,12 @@ const GalleryButton = styled.a`
     `}
 
 	@media (max-width: ${props => props.theme.breakpoints.sm}) {
+		svg {
+			position: absolute;
+			top: 50%;
+			-ms-transform: translateY(-50%);
+			transform: translateY(-50%);
+		}
 		&.verticalNav {
 			display: none;
 		}
@@ -161,10 +170,10 @@ const Gallery = ({ product, className, SKU }) => {
 			</div>
 			<div className="thumbs">
 				<GalleryButton className={'verticalNav'} href="#" onClick={onArrowUp} visible={offset > 0}>
-					<Icon name="chevronUp" />
+					<ChevronUpIcon size="medium" />
 				</GalleryButton>
 				<GalleryButton className={'horizontalNav'} href="#" onClick={onArrowUp} visible={offset > 0}>
-					<Icon name="chevronLeft" />
+					<ChevronLeftIcon size="medium" />
 				</GalleryButton>
 				<ul style={thumbsInView ? { height: `calc(84 * ${thumbsInView}px)` } : { height: 0 }} ref={refThumbs}>
 					{product.images.map((image, index) => (
@@ -195,14 +204,14 @@ const Gallery = ({ product, className, SKU }) => {
 					className={'verticalNav'}
 					onClick={onArrowDown}
 					visible={offset < Math.min(product.images.length - thumbsInView)}>
-					<Icon name="chevronDown" />
+					<ChevronDownIcon size="medium" />
 				</GalleryButton>
 				<GalleryButton
 					href="#"
 					className={'horizontalNav'}
 					onClick={onArrowDown}
 					visible={offset < Math.min(product.images.length - thumbsInView)}>
-					<Icon name="chevronRight" />
+					<ChevronRightIcon size="medium" />
 				</GalleryButton>
 			</div>
 		</div>
@@ -413,6 +422,7 @@ const StyledDetails = styled(Details)`
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
 		width: 33%;
 		min-height: 500px;
+		padding-left: 10px;
 	}
 
 	.variants {

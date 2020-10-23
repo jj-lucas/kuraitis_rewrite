@@ -1,10 +1,8 @@
-import { Icon, SortableList, SortableItem } from '../../components'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { DiffAddedIcon, DotFillIcon, DotIcon } from '@primer/octicons-react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
-import { SortableContainer, SortableElement } from 'react-sortable-hoc'
-import arrayMove from 'array-move'
-import { useState, useEffect } from 'react'
+import { SortableItem, SortableList } from '../../components'
 
 const PRODUCTS_QUERY = gql`
 	query PRODUCTS_QUERY {
@@ -45,7 +43,10 @@ const Button = styled.button`
 const StyledCard = styled.div`
 	background: var(--lightGray);
 	padding: 0 0 ${props => props.theme.spacing.base};
-
+	position: relative;
+	a {
+		color: var(--black);
+	}
 	h3 {
 		margin: 0;
 	}
@@ -55,6 +56,19 @@ const StyledCard = styled.div`
 	.meta {
 		padding: 0 ${props => props.theme.spacing.base};
 	}
+`
+const StyledDotActiveIcon = styled(DotFillIcon)`
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: var(--positive);
+`
+
+const StyledDotInactiveIcon = styled(DotIcon)`
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: var(--negative);
 `
 
 const ProductsOverview = () => {
@@ -136,15 +150,15 @@ const CategoryOfProducts = props => {
 									</div>
 									<div className="meta">{product.code}</div>
 									<div className="meta">{product.price}</div>
-									<div className="meta">{!product.published && <Icon name="inactive" size="md" />}</div>
 								</div>
+								{product.published ? <StyledDotActiveIcon size="medium" /> : <StyledDotInactiveIcon size="medium" />}
 							</a>
 						</StyledCard>
 					</SortableItem>
 				))}
 
 			<Button onClick={e => initializeProduct(e, props.category)}>
-				<Icon name="add" size="lg" />
+				<DiffAddedIcon size="medium" />
 			</Button>
 		</SortableList>
 	)

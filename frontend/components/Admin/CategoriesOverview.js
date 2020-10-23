@@ -1,9 +1,9 @@
-import { Icon, SortableList, SortableItem } from '../../components'
-import { useQuery, useMutation, gql } from '@apollo/client'
-import styled from 'styled-components'
-import Link from 'next/link'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { DiffAddedIcon, DotFillIcon, DotIcon } from '@primer/octicons-react'
 import arrayMove from 'array-move'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { SortableItem, SortableList } from '../../components'
 
 const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {
@@ -41,7 +41,10 @@ const SORT_CATEGORIES_MUTATION = gql`
 const StyledCard = styled.div`
 	background: var(--lightGray);
 	padding: 0 0 ${props => props.theme.spacing.base};
-
+	position: relative;
+	a {
+		color: var(--black);
+	}
 	h3 {
 		margin: 0;
 	}
@@ -51,6 +54,20 @@ const StyledCard = styled.div`
 	.meta {
 		padding: 0 ${props => props.theme.spacing.base};
 	}
+`
+
+const StyledDotActiveIcon = styled(DotFillIcon)`
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: var(--positive);
+`
+
+const StyledDotInactiveIcon = styled(DotIcon)`
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: var(--negative);
 `
 
 const Button = styled.button`
@@ -114,14 +131,14 @@ const CategoriesOverview = () => {
 									<div className="meta">
 										<h3>{category.name_da || 'New category'}</h3>
 									</div>
-									<div className="meta">{!category.published && <Icon name="inactive" size="md" />}</div>
 								</div>
 							</a>
+							{category.published ? <StyledDotActiveIcon size="medium" /> : <StyledDotInactiveIcon size="medium" />}
 						</StyledCard>
 					</SortableItem>
 				))}
 			<Button onClick={initializeCategory}>
-				<Icon name="add" size="lg" />
+				<DiffAddedIcon size="medium" />
 			</Button>
 		</SortableList>
 	)

@@ -1,8 +1,9 @@
-import styled from 'styled-components'
-import { useMutation, gql } from '@apollo/client'
-import { cloudinaryUrl } from '../../config'
-import { Icon, Form, DisplayError, SortableList, SortableItem } from '../../components'
+import { gql, useMutation } from '@apollo/client'
+import { TrashIcon } from '@primer/octicons-react'
 import arrayMove from 'array-move'
+import styled from 'styled-components'
+import { DisplayError, SortableItem, SortableList } from '../../components'
+import { cloudinaryUrl } from '../../config'
 
 const UPLOAD_IMAGE_MUTATION = gql`
 	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: ID, $productId: ID) {
@@ -34,9 +35,16 @@ const Tile = styled.div`
 
 	.remove {
 		position: absolute;
-		top: 5px;
-		right: 5px;
+		top: 10px;
+		right: 10px;
 	}
+`
+
+const StyledTrashIcon = styled(TrashIcon)`
+	background: white;
+	color: black;
+	padding: 3px;
+	border-radius: 11px;
 `
 
 const ImageUploader = props => {
@@ -123,7 +131,7 @@ const ImageUploader = props => {
 										e.preventDefault()
 										onImageDelete(image.id)
 									}}>
-									<Icon name="cross" size="md" inverted />
+									<StyledTrashIcon />
 								</a>
 							</Tile>
 						</SortableItem>

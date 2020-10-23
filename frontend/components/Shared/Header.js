@@ -1,8 +1,7 @@
-import styled from 'styled-components'
 import Link from 'next/link'
-import { LanguageSelector, LogoutButton } from '../../components'
-import { LocaleContext, CurrencyContext } from '../../lib'
-import { useQuery, gql } from '@apollo/client'
+import styled from 'styled-components'
+import { LanguageSelector } from '../../components'
+import { CurrencyContext, LocaleContext } from '../../lib'
 
 const StyledHeader = styled.header`
 	background-color: var(--lightGray);

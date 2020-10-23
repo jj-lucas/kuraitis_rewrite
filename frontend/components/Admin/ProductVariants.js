@@ -1,6 +1,6 @@
+import { TrashIcon } from '@primer/octicons-react'
 import Select from 'react-select'
 import styled from 'styled-components'
-import { Icon } from '../../components'
 
 const StyledFieldset = styled.fieldset`
 	button[type='submit'] {
@@ -52,6 +52,13 @@ const StyledSKU = styled.li`
 	}
 `
 
+const StyledTrashIcon = styled(TrashIcon)`
+	background: white;
+	color: black;
+	padding: 3px;
+	border-radius: 11px;
+	cursor: pointer;
+`
 const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) => {
 	const [showImageModal, setShowImageModal] = React.useState(false)
 
@@ -93,7 +100,11 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 				</span>
 				<span>
 					<button onClick={onChangeImage}>{image ? 'Change image' : 'Select image'}</button>
-					{image && <Icon name="cross" onClick={onDeleteImage} />}
+					{image && (
+						<span onClick={onDeleteImage}>
+							<StyledTrashIcon />
+						</span>
+					)}
 				</span>
 				<span>
 					<img src={image && image.image} />
