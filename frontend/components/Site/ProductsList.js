@@ -1,7 +1,7 @@
+import { gql, useQuery } from '@apollo/client'
 import styled from 'styled-components'
-import { useQuery, gql } from '@apollo/client'
-import { prettyPrice, fromPrice, LocaleContext, CurrencyContext } from '../../lib'
 import { Picture } from '../../components'
+import { CurrencyContext, fromPrice, LocaleContext, prettyPrice } from '../../lib'
 
 const PRODUCTS_QUERY = gql`
 	query PRODUCTS_QUERY($categorySlug: String) {
@@ -54,7 +54,7 @@ const StyledList = styled.ul`
 `
 
 const StyledCard = styled.li`
-	padding: ${props => props.theme.spacing.sm};
+	padding: 1rem;
 
 	a {
 		display: block;
@@ -77,7 +77,7 @@ const StyledCard = styled.li`
 		width: 100%;
 	}
 	.meta {
-		padding: 0 ${props => props.theme.spacing.base};
+		padding: 0 2rem;
 		font-weight: ${props => props.theme.typography.fw.semibold};
 	}
 `

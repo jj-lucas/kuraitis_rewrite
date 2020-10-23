@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
 import Router from 'next/router'
 import NProgress from 'nprogress'
-import { Meta, Header, Footer, GlobalStyle, Cart } from '../../components'
+import React, { useState } from 'react'
+import styled, { ThemeProvider } from 'styled-components'
 import { Nav } from '.'
+import { Cart, Footer, GlobalStyle, Header, Meta } from '../../components'
 import { theme } from '../../lib'
 
 const Wrapper = styled.div`
@@ -24,7 +24,7 @@ const LeftDrawer = styled.aside`
 		display: block;
 
 		font-size: ${props => props.theme.typography.fs.lg};
-		padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
+		padding: 1rem 2rem;
 	}
 `
 const RightDrawer = styled.aside`

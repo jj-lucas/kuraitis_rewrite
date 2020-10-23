@@ -1,7 +1,7 @@
-import React from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { CURRENT_USER_QUERY, User } from '../../components'
+import React from 'react'
 import styled from 'styled-components'
+import { CURRENT_USER_QUERY, User } from '../../components'
 
 const SIGNOUT_MUTATION = gql`
 	mutation SIGNOUT_MUTATION {
@@ -13,7 +13,7 @@ const SIGNOUT_MUTATION = gql`
 
 const StyledButton = styled.button`
 	float: right;
-	margin: ${props => props.theme.spacing.sm};
+	margin: 1rem;
 `
 
 const Button = () => {

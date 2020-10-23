@@ -52,13 +52,13 @@ const Right = styled.span`
 	text-align: right;
 `
 const Logo = styled.img`
-	margin: ${props => props.theme.spacing.sm};
+	margin: 1rem;
 `
 const UtilsBar = styled.div`
-	margin: ${props => props.theme.spacing.sm};
+	margin: 1rem;
 `
 const Burger = styled.div`
-	margin: ${props => props.theme.spacing.sm};
+	margin: 1rem;
 `
 
 const CurrencySelector = styled.select``

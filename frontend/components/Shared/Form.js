@@ -17,13 +17,13 @@ const Form = styled.form`
 	border: 5px solid white;
 	label {
 		display: block;
-		margin-bottom: ${props => props.theme.spacing.sm};
+		margin-bottom: 1rem;
 	}
 	input,
 	textarea,
 	select {
 		width: calc(100% - 10px); /*matches padding on sides*/
-		padding: ${props => props.theme.spacing.xs};
+		padding: 0.5rem;
 		border: 1px solid var(--gray);
 		&:focus {
 			outline: 0;
@@ -41,8 +41,8 @@ const Form = styled.form`
 		color: white;
 		background: var(--gray);
 		border: 0;
-		padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
-		margin: 0 ${props => props.theme.spacing.sm} 0 0;
+		padding: 1rem 2rem;
+		margin: 0 1rem 0 0;
 
 		&[type='submit'] {
 			background: var(--blue);
@@ -53,7 +53,7 @@ const Form = styled.form`
 		}
 	}
 	fieldset {
-		padding: ${props => props.theme.spacing.base};
+		padding: 2rem;
 		margin: 0 0 7px;
 		border: 0;
 		background: var(--lightGray);

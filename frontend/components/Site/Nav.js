@@ -1,9 +1,9 @@
-import styled from 'styled-components'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import Link from 'next/link'
-import { LocaleContext } from '../../lib'
+import styled from 'styled-components'
 import { User } from '../../components'
+import { LocaleContext } from '../../lib'
 
 const StyledNav = styled.nav`
 	width: 100%;
@@ -11,7 +11,7 @@ const StyledNav = styled.nav`
 	a {
 		display: inline-block;
 
-		padding: ${props => props.theme.spacing.sm};
+		padding: 1rem;
 
 		color: var(--gray);
 		transition: color 0.1s ease-in, background-color 0.1s ease-in;

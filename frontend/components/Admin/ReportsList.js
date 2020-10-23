@@ -1,6 +1,6 @@
-import { Button } from '../../components'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import styled from 'styled-components'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { Button } from '../../components'
 
 const REPORTS_QUERY = gql`
 	query REPORTS_QUERY {
@@ -21,7 +21,7 @@ const DELETE_REPORT_MUTATION = gql`
 	}
 `
 const Report = styled.div`
-	margin: ${props => props.theme.spacing.base};
+	margin: 2rem;
 	box-shadow: ${props => props.theme.boxShadow.md};
 	display: flex;
 	position: relative;
@@ -36,7 +36,7 @@ const Report = styled.div`
 
 	p {
 		vertical-align: top;
-		padding: ${props => props.theme.spacing.sm};
+		padding: 1rem;
 	}
 
 	.info {
@@ -48,7 +48,7 @@ const Report = styled.div`
 	.ctas {
 		position: absolute;
 		bottom: 0;
-		padding: ${props => props.theme.spacing.sm};
+		padding: 1rem;
 	}
 `
 

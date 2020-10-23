@@ -1,16 +1,4 @@
 const theme = {
-	colors: {
-		lightGray: '#f8f8f8',
-		lightishGray: '#aaaaaa',
-		gray: '#1a1a1a99',
-		darkGray: '#1a1a1a',
-		black: '#393939',
-		blue: '#0394fc',
-		negative: '#ff421e',
-		positive: '#7ede28',
-		info: '#fbd01e',
-		warning: '#ffad1e',
-	},
 	maxWidth: '1400px',
 	maxLengthLine: '1024px',
 	breakpoints: {
@@ -19,14 +7,6 @@ const theme = {
 		md: '1024px',
 		lg: '1260px',
 		xl: '1600px',
-	},
-	spacing: {
-		base: '20px',
-		xs: '5px', // /4
-		sm: '10px', // /2
-		lg: '40px', // *2
-		xl: '60px', // *3
-		xxl: '100px', // *5
 	},
 	sizes: {
 		icons: {

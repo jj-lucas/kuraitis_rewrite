@@ -13,6 +13,9 @@ const GlobalStyle = createGlobalStyle`
 		--info: #fbd01e;
 		--warning: #ffad1e;
     }
+    html {
+        font-size: 10px;
+    }
     body {
 	    background-color: var(--lightGray);
         font-family: ${props => props.theme.typography.ff.oswald};

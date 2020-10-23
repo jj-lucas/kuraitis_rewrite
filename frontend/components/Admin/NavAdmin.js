@@ -1,7 +1,7 @@
-import styled from 'styled-components'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import Link from 'next/link'
+import styled from 'styled-components'
 import { LogoutButton } from '../../components'
 
 const links = [
@@ -18,7 +18,7 @@ const StyledNav = styled.nav`
 	a {
 		display: inline-block;
 
-		padding: ${props => props.theme.spacing.sm};
+		padding: 1rem;
 
 		color: var(--gray);
 		transition: color 0.1s ease-in, background-color 0.1s ease-in;

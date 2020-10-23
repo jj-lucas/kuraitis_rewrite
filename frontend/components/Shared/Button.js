@@ -5,8 +5,8 @@ const Button = styled.button`
 	color: white;
 	background: var(--gray);
 	border: 0;
-	padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.base};
-	margin: 0 ${props => props.theme.spacing.sm} 0 0;
+	padding: 1rem 2rem;
+	margin: 0 1rem 0 0;
 
 	&[type='submit'] {
 		background: var(--blue);

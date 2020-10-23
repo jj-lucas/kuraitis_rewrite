@@ -11,7 +11,7 @@ const StyledCart = styled.div`
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background: white;
-	padding: ${props => props.theme.spacing.base};
+	padding: 2rem;
 	box-shadow: ${props => props.theme.boxShadow.lg};
 
 	img {

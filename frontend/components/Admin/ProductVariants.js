@@ -4,10 +4,10 @@ import styled from 'styled-components'
 
 const StyledFieldset = styled.fieldset`
 	button[type='submit'] {
-		margin-top: ${props => props.theme.spacing.base};
+		margin-top: 2rem;
 	}
 	.SKUs {
-		margin-top: ${props => props.theme.spacing.base};
+		margin-top: 2rem;
 	}
 `
 
@@ -278,7 +278,7 @@ const StyledImageModal = styled.div`
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background: white;
-	padding: ${props => props.theme.spacing.base};
+	padding: 2rem;
 	box-shadow: ${props => props.theme.boxShadow.lg};
 
 	&.active {

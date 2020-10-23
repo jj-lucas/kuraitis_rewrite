@@ -42,7 +42,7 @@ const Button = styled.button`
 `
 const StyledCard = styled.div`
 	background: var(--lightGray);
-	padding: 0 0 ${props => props.theme.spacing.base};
+	padding: 0 0 2rem;
 	position: relative;
 	a {
 		color: var(--black);
@@ -54,7 +54,7 @@ const StyledCard = styled.div`
 		width: 100%;
 	}
 	.meta {
-		padding: 0 ${props => props.theme.spacing.base};
+		padding: 0 2rem;
 	}
 `
 const StyledDotActiveIcon = styled(DotFillIcon)`
