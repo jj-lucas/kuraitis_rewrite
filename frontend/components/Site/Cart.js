@@ -13,6 +13,7 @@ const StyledCart = styled.div`
 	background: white;
 	padding: ${props => props.theme.spacing.base};
 	box-shadow: ${props => props.theme.boxShadow.lg};
+	display: none;
 
 	img {
 		width: 50px;
