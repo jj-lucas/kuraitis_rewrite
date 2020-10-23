@@ -1,27 +1,146 @@
 import { useMutation } from '@apollo/client'
-import { XCircleIcon } from '@primer/octicons-react'
+import { GiftIcon, HomeIcon as DeliveryIcon, SyncIcon as ReturnIcon, XCircleIcon, XIcon } from '@primer/octicons-react'
 import styled from 'styled-components'
-import { CartContext, CART_QUERY, CurrencyContext, prettyPrice, UPDATE_CART_MUTATION } from '../../lib'
+import {
+	CartContext,
+	CART_QUERY,
+	CurrencyContext,
+	LocaleContext,
+	prettyPrice,
+	translate,
+	UPDATE_CART_MUTATION,
+} from '../../lib'
+import { Form } from '../Shared'
 
 const StyledCart = styled.div`
 	position: fixed;
+	right: 0;
+	-ms-transform: translateX(100%);
+	transform: translateX(100%);
+	width: 100%;
+	height: 100vh;
 	z-index: 10;
-	width: 600px;
-	top: 50vh;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: white;
-	padding: 2rem;
+	overflow: auto;
+
 	box-shadow: ${props => props.theme.boxShadow.lg};
+	background: white;
+
+	transition: transform
+		${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.easeInOut}`};
+
+	${props =>
+		props.open &&
+		`
+	-ms-transform: translateX(0%);
+	transform: translateX(0%);
+	`}
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		width: 500px;
+	}
+
+	.wrapper {
+		padding: 2rem;
+	}
+
+	ul {
+		padding: 0;
+		margin-bottom: 0;
+	}
+
+	li {
+		border-top: 1px solid var(--black);
+		padding: 1rem 0;
+		list-style: none;
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		grid-gap: 2rem;
+
+		&:last-of-type {
+			border-bottom: 1px solid var(--black);
+		}
+
+		p {
+			margin: 0.5rem 0 0;
+		}
+		.image {
+			text-align: center;
+		}
+		.sku {
+			font-size: ${props => props.theme.typography.fs.sm};
+			font-weight: ${props => props.theme.typography.fw.bold};
+		}
+
+		.price {
+			font-size: ${props => props.theme.typography.fs.lg};
+			font-weight: ${props => props.theme.typography.fw.bold};
+		}
+
+		.remove {
+			margin-right: 2rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			a {
+				color: var(--gray);
+
+				&:hover {
+					color: var(--black);
+				}
+			}
+		}
+	}
+
+	.selling_points {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+
+		@media (max-width: ${props => props.theme.breakpoints.sm}) {
+			font-size: ${props => props.theme.typography.fs.sm};
+		}
+
+		span {
+			display: block;
+		}
+
+		p {
+			color: var(--lightishGray);
+			text-align: center;
+		}
+	}
+
+	.subtotal {
+		margin-top: 4rem;
+		font-size: ${props => props.theme.typography.fs.lg};
+		span {
+			font-weight: ${props => props.theme.typography.fw.light};
+		}
+	}
+
+	button[type='submit'] {
+		width: 100%;
+		padding: 2rem;
+		text-transform: uppercase;
+		cursor: pointer;
+		transition: opacity
+			${props => `${props.theme.transition.durations.short} ${props.theme.transition.types.easeInOut}`};
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
 
 	img {
-		width: 50px;
+		width: 100px;
 	}
 `
+
 const Cart = () => {
-	const { cart } = React.useContext(CartContext)
+	const { cart, cartOpen, setCartOpen } = React.useContext(CartContext)
 	const { currency } = React.useContext(CurrencyContext)
 	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
+	const { locale } = React.useContext(LocaleContext)
 
 	const removeFromCart = async index => {
 		await updateCart({
@@ -35,32 +154,90 @@ const Cart = () => {
 		})
 	}
 
+	const close = e => {
+		e.preventDefault()
+		setCartOpen(false)
+	}
+
+	const checkout = e => {
+		e.preventDefault()
+	}
+
+	let subtotal = 0
+	if (cart && cart.items) {
+		cart.items.map((sku, index) => {
+			const skuData = cart.skus.find(candidate => candidate.sku == sku)
+			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
+		})
+	}
+
 	return (
-		<StyledCart>
-			<h1>Cart</h1>
-			<ul>
-				{cart &&
-					cart.items &&
-					cart.items.map((sku, index) => {
-						const skuData = cart.skus.find(candidate => candidate.sku == sku)
-						const image = skuData.image ? skuData.image.image : skuData.product.images[0].image
-						const price = skuData.price || skuData.product.price
-						return (
-							<li key={index}>
-								<img src={image} alt="" />
-								{prettyPrice(price[currency], currency)}
-								{sku}
-								<span
-									onClick={e => {
-										e.preventDefault()
-										removeFromCart(index)
-									}}>
-									<XCircleIcon />
-								</span>
-							</li>
-						)
-					})}
-			</ul>
+		<StyledCart open={cartOpen}>
+			<div className="wrapper">
+				<div onClick={close}>
+					<XIcon size="medium" />
+				</div>
+				<h2>{translate('your_cart', locale)}</h2>
+				<ul>
+					{cart &&
+						cart.items &&
+						cart.items.map((sku, index) => {
+							const skuData = cart.skus.find(candidate => candidate.sku == sku)
+							const image = skuData.image ? skuData.image.image : skuData.product.images[0].image
+							const price = skuData.price || skuData.product.price
+							return (
+								<li key={index}>
+									<div class="image">
+										<img src={image} alt="" />
+									</div>
+									<div>
+										<p className="sku">{sku}</p>
+										<p className="name">{skuData.product[`name_${locale}`]}</p>
+										<p className="price">{prettyPrice(price[currency], currency)}</p>
+									</div>
+									<div className="remove">
+										<a
+											href="#"
+											onClick={e => {
+												e.preventDefault()
+												removeFromCart(index)
+											}}>
+											<XCircleIcon />
+										</a>
+									</div>
+								</li>
+							)
+						})}
+				</ul>
+				<div className="selling_points">
+					<p>
+						<span>
+							<DeliveryIcon />
+						</span>
+						{translate('free_delivery', locale)}
+					</p>
+					<p>
+						<span>
+							<GiftIcon />
+						</span>
+						{translate('gift_wrapping', locale)}
+					</p>
+					<p title={translate('customized_returns', locale)}>
+						<span>
+							<ReturnIcon />
+						</span>
+						{translate('returns_30_days', locale)}
+					</p>
+				</div>
+				<h3 className="subtotal">
+					{translate('subtotal', locale)}: <span>{prettyPrice(subtotal, currency)}</span>
+				</h3>
+				<Form>
+					<button type="submit" onClick={checkout}>
+						{translate('checkout', locale)}
+					</button>
+				</Form>
+			</div>
 		</StyledCart>
 	)
 }

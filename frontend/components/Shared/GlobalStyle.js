@@ -49,6 +49,9 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: none;
         color: var(--blue);
     }
+    button {
+        letter-spacing: 1px;
+    }
     #nprogress .bar {
         background: var(--blue);
         height:3px;

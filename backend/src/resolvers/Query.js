@@ -77,6 +77,8 @@ const Query = {
                   images {
                     image
                   }
+                  name_da
+                  name_en
                 }
                 image {
                   image
