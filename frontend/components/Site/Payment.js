@@ -9,11 +9,13 @@ const CREATE_ORDER_MUTATION = gql`
 	}
 `
 
-const Payment = ({ children, amount, image, currency, cartId, locale }) => {
+const Payment = ({ children, amount, image, currency, cartId, locale, shipping }) => {
 	const [createOrder] = useMutation(CREATE_ORDER_MUTATION)
 
+	console.log(shipping)
 	const onToken = async res => {
 		console.log('onToken called', res)
+
 		await createOrder({
 			variables: {
 				cartId,

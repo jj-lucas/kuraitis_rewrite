@@ -15,6 +15,7 @@
 		"array-move": "^3.0.1",
 		"babel-core": "^7.0.0-bridge.0",
 		"babel-plugin-styled-components": "^1.7.1",
+		"country-list-js": "^3.1.7",
 		"date-fns": "^2.0.0-alpha.7",
 		"downshift": "^2.2.3",
 		"enzyme": "^3.6.0",

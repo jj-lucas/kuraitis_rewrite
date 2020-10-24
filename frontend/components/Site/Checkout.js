@@ -1,4 +1,7 @@
+import { default as countriesList } from 'country-list-js'
+import React, { useContext, useRef, useState } from 'react'
 import { FiTruck as DeliveryIcon } from 'react-icons/fi'
+import { MdPinDrop as TrackIcon } from 'react-icons/md'
 import styled from 'styled-components'
 import { CartProductsList, Form, Payment } from '../../components'
 import { CartContext, CurrencyContext, LocaleContext, prettyPrice, translate } from '../../lib'
@@ -23,11 +26,44 @@ const StyledCheckout = styled.div`
 	}
 	${Form} {
 		width: 90%;
+
+		input,
+		select {
+			margin-bottom: 1rem;
+			background: transparent;
+			border: 0 none;
+			border-bottom: 1px solid #dbdbdb;
+			font-family: ${props => props.theme.typography.ff.droid};
+			font-weight: ${props => props.theme.typography.fw.regular};
+
+			&::placeholder {
+				color: var(--gray);
+				opacity: 0.6;
+			}
+		}
+
+		label {
+			display: inline;
+			font-family: ${props => props.theme.typography.ff.droid};
+			font-weight: ${props => props.theme.typography.fw.regular};
+		}
+
+		input[type='radio'] {
+			width: auto;
+			margin-right: 1rem;
+		}
+
+		div {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-gap: 2rem;
+		}
 	}
 	.total {
 		> div {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
+			padding-bottom: 1rem;
 
 			&:first-of-type {
 				border-bottom: 3px solid black;
@@ -36,14 +72,27 @@ const StyledCheckout = styled.div`
 		p,
 		strong {
 			vertical-align: top;
+			margin-bottom: 0;
 		}
 	}
 `
 
 const Checkout = () => {
-	const { locale } = React.useContext(LocaleContext)
-	const { cart } = React.useContext(CartContext)
-	const { currency, setCurrency } = React.useContext(CurrencyContext)
+	const { locale } = useContext(LocaleContext)
+	const { cart } = useContext(CartContext)
+	const { currency, setCurrency } = useContext(CurrencyContext)
+	const [formValid, setFormValid] = useState(false)
+
+	const [email, setEmail] = useState('')
+	const [name, setName] = useState('')
+	const [address, setAddress] = useState('')
+	const [address2, setAddress2] = useState('')
+	const [city, setCity] = useState('')
+	const [zip, setZip] = useState('')
+	const [country, setCountry] = useState('Denmark')
+	const [shipping, setShipping] = useState('standard')
+
+	const refForm = useRef(null)
 
 	let subtotal = 0
 	if (cart && cart.items) {
@@ -51,6 +100,10 @@ const Checkout = () => {
 			const skuData = cart.skus.find(candidate => candidate.sku == sku)
 			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
 		})
+	}
+
+	if (shipping === 'track_trace') {
+		subtotal += 40
 	}
 
 	if (!cart || !cart.items) {
@@ -62,6 +115,12 @@ const Checkout = () => {
 		)
 	}
 
+	const onShippingChange = e => {
+		setShipping(e.target.value)
+	}
+
+	console.log(cart)
+
 	return (
 		<StyledCheckout>
 			<div>
@@ -69,19 +128,130 @@ const Checkout = () => {
 			</div>
 			<div className="main">
 				<div className="details">
-					<Form>
-						<Payment
-							cartId={cart.id}
-							amount={subtotal}
-							locale={locale}
-							currency={currency}
-							image={
-								'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=640:*'
-							}>
-							<button type="submit" onClick={e => e.preventDefault()}>
-								{translate('checkout', locale)}
-							</button>
-						</Payment>
+					<Form
+						ref={refForm}
+						onChange={() => {
+							setFormValid(refForm.current.checkValidity())
+						}}
+						onSubmit={e => {
+							e.preventDefault()
+						}}>
+						<fieldset>
+							<h3>Customer information</h3>
+							<div>
+								<input
+									name="email"
+									placeholder="Email Address"
+									type="email"
+									required
+									onChange={e => setEmail(e.target.value)}
+									value={email}
+								/>
+							</div>
+						</fieldset>
+						<fieldset>
+							<h3>Shipping address</h3>
+							<div>
+								<input
+									name="name"
+									placeholder="Recipient Name"
+									type="text"
+									required
+									onChange={e => setName(e.target.value)}
+									value={name}
+								/>
+							</div>
+							<div>
+								<input
+									name="address"
+									placeholder="Address"
+									type="text"
+									required
+									onChange={e => setAddress(e.target.value)}
+									value={address}
+								/>
+								<input
+									name="address2"
+									placeholder="Apt, suite, etc."
+									type="text"
+									onChange={e => setAddress2(e.target.value)}
+									value={address2}
+								/>
+							</div>
+							<div>
+								<input
+									name="city"
+									placeholder="City"
+									type="text"
+									required
+									onChange={e => setCity(e.target.value)}
+									value={city}
+								/>
+								<input
+									name="zipcode"
+									placeholder="ZIP"
+									type="text"
+									required
+									onChange={e => setZip(e.target.value)}
+									value={zip}
+								/>
+							</div>
+							<div>
+								<select required onChange={e => setCountry(e.target.value)} value={country}>
+									{countriesList.names().map(name => (
+										<option key={name}>{name}</option>
+									))}
+								</select>
+							</div>
+						</fieldset>
+						<fieldset>
+							<h3>Shipping method</h3>
+							<label htmlFor="shipping_standard">
+								<input
+									id="shipping_standard"
+									type="radio"
+									name="shipping"
+									value="standard"
+									checked={shipping === 'standard'}
+									onChange={onShippingChange}
+								/>
+								<strong>Standard </strong>(Free shipping, not trackable)
+							</label>
+							<br />
+							<label htmlFor="shipping_track_trace">
+								<input
+									type="radio"
+									id="shipping_track_trace"
+									name="shipping"
+									value="track_trace"
+									checked={shipping === 'track_trace'}
+									onChange={onShippingChange}
+								/>
+								<strong>Track & Trace </strong>(+40 DKK)
+							</label>
+						</fieldset>
+						{formValid ? (
+							<Payment
+								cartId={cart.id}
+								amount={subtotal}
+								locale={locale}
+								currency={currency}
+								shipping={{
+									email,
+									name,
+									address,
+									address2,
+									city,
+									zip,
+									country,
+									shipping,
+								}}
+								image={'/logo.png'}>
+								<button type="submit">{translate('checkout', locale)}</button>
+							</Payment>
+						) : (
+							<button type="submit">{translate('checkout', locale)}</button>
+						)}
 					</Form>
 				</div>
 				<div className="items">
@@ -89,11 +259,28 @@ const Checkout = () => {
 					<CartProductsList cart={cart} />
 					<div className="total">
 						<div>
-							<p title={translate('choose_track_trace', locale)}>
-								<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
-								<strong> Standard delivery</strong>
-							</p>
-							<p>Free</p>
+							{shipping === 'standard' ? (
+								<>
+									<p title={translate('choose_track_trace', locale)}>
+										<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
+										<strong> Standard delivery</strong>
+									</p>
+									<p>Free</p>
+								</>
+							) : (
+								<>
+									<p>
+										<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
+										<strong> Standard delivery</strong>
+									</p>
+									<p>Free</p>
+									<p>
+										<TrackIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
+										<strong> Track & Trace</strong>
+									</p>
+									<p>40,- DKK</p>
+								</>
+							)}
 						</div>
 						<div>
 							<h2>{translate('total', locale)}</h2>
