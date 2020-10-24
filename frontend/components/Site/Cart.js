@@ -251,11 +251,13 @@ const Cart = () => {
 				<h3 className="subtotal">
 					{translate('subtotal', locale)}: <span>{prettyPrice(subtotal, currency)}</span>
 				</h3>
-				<Form>
-					<button type="submit" onClick={checkout}>
-						{translate('checkout', locale)}
-					</button>
-				</Form>
+				{subtotal ? (
+					<Form>
+						<button type="submit" onClick={checkout}>
+							{translate('checkout', locale)}
+						</button>
+					</Form>
+				) : null}
 			</div>
 		</StyledCart>
 	)
