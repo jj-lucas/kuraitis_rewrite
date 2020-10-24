@@ -79,6 +79,7 @@ const Query = {
                   }
                   name_da
                   name_en
+                  selectedAttributes
                 }
                 image {
                   image

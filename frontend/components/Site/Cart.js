@@ -138,7 +138,7 @@ const StyledCart = styled.div`
 	}
 
 	img {
-		width: 100px;
+		width: 164px;
 	}
 `
 
@@ -191,6 +191,11 @@ const Cart = () => {
 							const skuData = cart.skus.find(candidate => candidate.sku == sku)
 							const image = skuData.image ? skuData.image.image : skuData.product.images[0].image
 							const price = skuData.price || skuData.product.price
+
+							const selectedAttributes = JSON.parse(skuData.product.selectedAttributes)
+							const attributesInSku = Object.keys(selectedAttributes).filter(
+								attribute => selectedAttributes[attribute].length
+							)
 							return (
 								<li key={index}>
 									<div class="image">
@@ -199,6 +204,14 @@ const Cart = () => {
 									<div>
 										<p className="sku">{sku}</p>
 										<p className="name">{skuData.product[`name_${locale}`]}</p>
+										{attributesInSku.map((attribute, index) => {
+											return (
+												<p key={attribute + index}>
+													<strong>{translate(attribute, locale, 'capitalize')}: </strong>
+													{translate(sku.split('-')[index + 1], locale, 'capitalize')}
+												</p>
+											)
+										})}
 										<p className="price">{prettyPrice(price[currency], currency)}</p>
 									</div>
 									<div className="remove">
