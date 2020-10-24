@@ -44,8 +44,12 @@ const translations = {
 		da: '30 dages returret*',
 	},
 	customized_returns: {
-		en: 'THe return right does not include customized products',
-		da: 'Returret inkluderer ikke tilpassede produkter',
+		en: 'The return right does not include customized products',
+		da: 'Returret inkluderer ikke customiserede produkter',
+	},
+	currency: {
+		en: 'Currency',
+		da: 'Valuta',
 	},
 }
 

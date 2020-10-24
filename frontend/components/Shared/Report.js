@@ -1,7 +1,7 @@
-import { User } from '.'
-import { DeviceCameraIcon } from '@primer/octicons-react'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { MdError } from 'react-icons/md'
 import styled from 'styled-components'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { User } from '.'
 
 const REPORTS_QUERY = gql`
 	query REPORTS_QUERY {
@@ -23,7 +23,7 @@ const CREATE_REPORT_MUTATION = gql`
 	}
 `
 
-const StyledIcon = styled(DeviceCameraIcon)`
+const StyledIcon = styled(MdError)`
 	position: absolute;
 	top: 10px;
 	left: calc(50% - 8px);
@@ -86,7 +86,7 @@ const Report = props => {
 					<>
 						{(me.permissions.includes('ADMIN') || me.permissions.includes('REPORTCREATE')) && (
 							<span onClick={onClick}>
-								<StyledIcon size="small" reported={props.image in existingReports} />
+								<StyledIcon size={20} reported={props.image in existingReports} />
 							</span>
 						)}
 					</>

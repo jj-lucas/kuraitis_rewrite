@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 import { User } from '../../components'
-import { LocaleContext } from '../../lib'
+import { CurrencyContext, LocaleContext, translate } from '../../lib'
 
 const StyledNav = styled.nav`
 	width: 100%;
@@ -63,8 +63,28 @@ const links = {
 	],
 }
 
+const CurrencySelector = styled.select`
+	margin-left: 1rem;
+`
+
+const MobileCurrency = styled.p`
+	padding: 0 2rem;
+	color: var(--gray);
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		display: none;
+	}
+`
+
 const Nav = ({ className, children }) => {
 	const { locale } = React.useContext(LocaleContext)
+	const { currency, setCurrency } = React.useContext(CurrencyContext)
+
+	const onChangeCurrency = e => {
+		setCurrency(e.target.value)
+		localStorage.setItem('currency', e.target.value)
+	}
+
 	return (
 		<StyledNav className={className}>
 			{links[locale].map(link => (
@@ -85,6 +105,15 @@ const Nav = ({ className, children }) => {
 					)
 				}
 			</User>
+			<MobileCurrency>
+				{translate('currency', locale)}:
+				<CurrencySelector onChange={onChangeCurrency} value={currency}>
+					<option value="DKK">DKK</option>
+					<option value="USD">$ USD</option>
+					<option value="EUR">€ EUR</option>
+					<option value="GBP">£ GBP</option>
+				</CurrencySelector>
+			</MobileCurrency>
 		</StyledNav>
 	)
 }

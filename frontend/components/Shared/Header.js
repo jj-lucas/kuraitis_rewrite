@@ -1,7 +1,7 @@
 import Link from 'next/link'
+import { MdClose, MdMenu } from 'react-icons/md'
 import styled from 'styled-components'
-import { LanguageSelector } from '../../components'
-import { CurrencyContext, LocaleContext } from '../../lib'
+import { Toolbox } from './Toolbox'
 
 const StyledHeader = styled.header`
 	background-color: var(--lightGray);
@@ -54,29 +54,24 @@ const Right = styled.span`
 const Logo = styled.img`
 	margin: 1rem;
 `
-const UtilsBar = styled.div`
-	margin: 1rem;
-`
 const Burger = styled.div`
 	margin: 1rem;
+
+	svg {
+		margin-top: 2rem;
+		margin-left: 1rem;
+		cursor: pointer;
+	}
 `
 
-const CurrencySelector = styled.select``
-
 const Header = props => {
-	const { locale } = React.useContext(LocaleContext)
-	const { currency, setCurrency } = React.useContext(CurrencyContext)
-
-	const onChangeCurrency = e => {
-		setCurrency(e.target.value)
-		localStorage.setItem('currency', e.target.value)
-	}
-
 	return (
 		<StyledHeader>
 			<Inner>
 				<Left>
-					<Burger onClick={props.toggleLeftDrawer}>{props.leftDrawerOpen ? 'X' : '='}</Burger>
+					<Burger onClick={props.toggleLeftDrawer}>
+						{props.leftDrawerOpen ? <MdClose size={30} /> : <MdMenu size={30} />}
+					</Burger>
 				</Left>
 				<Center>
 					<Link href="/">
@@ -89,14 +84,7 @@ const Header = props => {
 					</Link>
 				</Center>
 				<Right>
-					<CurrencySelector onChange={onChangeCurrency} value={currency}>
-						<option value="DKK">DKK</option>
-						<option value="USD">$ USD</option>
-						<option value="EUR">€ EUR</option>
-						<option value="GBP">£ GBP</option>
-					</CurrencySelector>
-					{locale && <LanguageSelector />}
-					{props.toggleRightDrawer && <UtilsBar onClick={props.toggleRightDrawer}>Utils Bar</UtilsBar>}
+					<Toolbox />
 				</Right>
 
 				{props.children}

@@ -1,4 +1,4 @@
-import { TrashIcon } from '@primer/octicons-react'
+import { MdDeleteForever } from 'react-icons/md'
 import Select from 'react-select'
 import styled from 'styled-components'
 
@@ -52,11 +52,11 @@ const StyledSKU = styled.li`
 	}
 `
 
-const StyledTrashIcon = styled(TrashIcon)`
+const StyledTrashIcon = styled(MdDeleteForever)`
 	background: white;
 	color: black;
 	padding: 3px;
-	border-radius: 11px;
+	border-radius: 13px;
 	cursor: pointer;
 `
 const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) => {
@@ -102,7 +102,7 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 					<button onClick={onChangeImage}>{image ? 'Change image' : 'Select image'}</button>
 					{image && (
 						<span onClick={onDeleteImage}>
-							<StyledTrashIcon />
+							<StyledTrashIcon size={20} />
 						</span>
 					)}
 				</span>

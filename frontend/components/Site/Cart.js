@@ -1,5 +1,7 @@
 import { useMutation } from '@apollo/client'
-import { GiftIcon, HomeIcon as DeliveryIcon, SyncIcon as ReturnIcon, XCircleIcon, XIcon } from '@primer/octicons-react'
+import { FiTruck as DeliveryIcon } from 'react-icons/fi'
+import { ImGift as GiftIcon } from 'react-icons/im'
+import { MdCached as ReturnIcon, MdClear, MdClose } from 'react-icons/md'
 import styled from 'styled-components'
 import {
 	CartContext,
@@ -41,6 +43,10 @@ const StyledCart = styled.div`
 
 	.wrapper {
 		padding: 2rem;
+	}
+
+	.close {
+		cursor: pointer;
 	}
 
 	ul {
@@ -174,8 +180,8 @@ const Cart = () => {
 	return (
 		<StyledCart open={cartOpen}>
 			<div className="wrapper">
-				<div onClick={close}>
-					<XIcon size="medium" />
+				<div className="close" onClick={close}>
+					<MdClose size={30} />
 				</div>
 				<h2>{translate('your_cart', locale)}</h2>
 				<ul>
@@ -202,7 +208,7 @@ const Cart = () => {
 												e.preventDefault()
 												removeFromCart(index)
 											}}>
-											<XCircleIcon />
+											<MdClear size={20} />
 										</a>
 									</div>
 								</li>
@@ -212,19 +218,19 @@ const Cart = () => {
 				<div className="selling_points">
 					<p>
 						<span>
-							<DeliveryIcon />
+							<DeliveryIcon size={25} />
 						</span>
 						{translate('free_delivery', locale)}
 					</p>
 					<p>
 						<span>
-							<GiftIcon />
+							<GiftIcon size={25} />
 						</span>
 						{translate('gift_wrapping', locale)}
 					</p>
 					<p title={translate('customized_returns', locale)}>
 						<span>
-							<ReturnIcon />
+							<ReturnIcon size={25} />
 						</span>
 						{translate('returns_30_days', locale)}
 					</p>

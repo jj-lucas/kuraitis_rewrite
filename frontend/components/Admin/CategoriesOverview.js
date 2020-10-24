@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { DiffAddedIcon, DotFillIcon, DotIcon } from '@primer/octicons-react'
 import arrayMove from 'array-move'
 import { useEffect, useState } from 'react'
+import { MdAdd, MdRadioButtonChecked, MdRadioButtonUnchecked } from 'react-icons/md'
 import styled from 'styled-components'
 import { SortableItem, SortableList } from '../../components'
 
@@ -56,14 +56,14 @@ const StyledCard = styled.div`
 	}
 `
 
-const StyledDotActiveIcon = styled(DotFillIcon)`
+const StyledDotActiveIcon = styled(MdRadioButtonChecked)`
 	position: absolute;
 	top: 10px;
 	right: 10px;
 	color: var(--positive);
 `
 
-const StyledDotInactiveIcon = styled(DotIcon)`
+const StyledDotInactiveIcon = styled(MdRadioButtonUnchecked)`
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -133,12 +133,12 @@ const CategoriesOverview = () => {
 									</div>
 								</div>
 							</a>
-							{category.published ? <StyledDotActiveIcon size="medium" /> : <StyledDotInactiveIcon size="medium" />}
+							{category.published ? <StyledDotActiveIcon size={20} /> : <StyledDotInactiveIcon size={20} />}
 						</StyledCard>
 					</SortableItem>
 				))}
 			<Button onClick={initializeCategory}>
-				<DiffAddedIcon size="medium" />
+				<MdAdd size={50} />
 			</Button>
 		</SortableList>
 	)

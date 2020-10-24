@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client'
-import { TrashIcon } from '@primer/octicons-react'
 import arrayMove from 'array-move'
+import { MdDeleteForever } from 'react-icons/md'
 import styled from 'styled-components'
 import { DisplayError, SortableItem, SortableList } from '../../components'
 import { cloudinaryUrl } from '../../config'
@@ -40,11 +40,12 @@ const Tile = styled.div`
 	}
 `
 
-const StyledTrashIcon = styled(TrashIcon)`
+const StyledTrashIcon = styled(MdDeleteForever)`
 	background: white;
 	color: black;
 	padding: 3px;
-	border-radius: 11px;
+	border-radius: 13px;
+	cursor: pointer;
 `
 
 const ImageUploader = props => {
@@ -131,7 +132,7 @@ const ImageUploader = props => {
 										e.preventDefault()
 										onImageDelete(image.id)
 									}}>
-									<StyledTrashIcon />
+									<StyledTrashIcon size={20} />
 								</a>
 							</Tile>
 						</SortableItem>

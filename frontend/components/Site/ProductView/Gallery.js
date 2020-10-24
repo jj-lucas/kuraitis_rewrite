@@ -1,5 +1,5 @@
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon } from '@primer/octicons-react'
 import { useEffect, useRef, useState } from 'react'
+import { MdChevronLeft, MdChevronRight, MdExpandLess, MdExpandMore } from 'react-icons/md'
 import styled from 'styled-components'
 import { Picture } from '../../../components'
 import { LocaleContext } from '../../../lib'
@@ -113,10 +113,10 @@ const Gallery = ({ product, className, SKU }) => {
 			</div>
 			<div className="thumbs">
 				<GalleryButton className={'verticalNav'} href="#" onClick={onArrowUp} visible={offset > 0}>
-					<ChevronUpIcon size="medium" />
+					<MdExpandLess size={20} />
 				</GalleryButton>
 				<GalleryButton className={'horizontalNav'} href="#" onClick={onArrowUp} visible={offset > 0}>
-					<ChevronLeftIcon size="medium" />
+					<MdChevronLeft size={20} />
 				</GalleryButton>
 				<ul style={thumbsInView ? { height: `calc(84 * ${thumbsInView}px)` } : { height: 0 }} ref={refThumbs}>
 					{product.images.map((image, index) => (
@@ -147,14 +147,14 @@ const Gallery = ({ product, className, SKU }) => {
 					className={'verticalNav'}
 					onClick={onArrowDown}
 					visible={offset < Math.min(product.images.length - thumbsInView)}>
-					<ChevronDownIcon size="medium" />
+					<MdExpandMore size={20} />
 				</GalleryButton>
 				<GalleryButton
 					href="#"
 					className={'horizontalNav'}
 					onClick={onArrowDown}
 					visible={offset < Math.min(product.images.length - thumbsInView)}>
-					<ChevronRightIcon size="medium" />
+					<MdChevronRight size={20} />
 				</GalleryButton>
 			</div>
 		</div>
