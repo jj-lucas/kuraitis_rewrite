@@ -20,8 +20,6 @@ const StyledCheckout = styled.div`
 	}
 	.items {
 		flex-basis: 40%;
-		-ms-transform: translateY(-50%);
-		transform: translateY(-50%);
 
 		ul {
 			border-bottom: 1px solid black;

@@ -70,7 +70,20 @@ type Mutation {
 
 	updateCart(id: ID, items: [String!]): Cart!
 
-	createOrder(token: String!, cartId: String!, currency: String!, locale: String!): Order
+	createOrder(
+		token: String!
+		cartId: String!
+		currency: String!
+		locale: String!
+		email: String!
+		name: String!
+		address: String!
+		address2: String
+		city: String!
+		zip: String!
+		country: String!
+		shipping: String!
+	): Order
 }
 
 type User {

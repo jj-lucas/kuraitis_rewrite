@@ -2,8 +2,34 @@ import { gql, useMutation } from '@apollo/client'
 import StripeCheckout from 'react-stripe-checkout'
 
 const CREATE_ORDER_MUTATION = gql`
-	mutation CREATE_ORDER_MUTATION($cartId: String!, $currency: String!, $token: String!, $locale: String!) {
-		createOrder(cartId: $cartId, currency: $currency, token: $token, locale: $locale) {
+	mutation CREATE_ORDER_MUTATION(
+		$cartId: String!
+		$currency: String!
+		$token: String!
+		$locale: String!
+		$shipping: String!
+		$email: String!
+		$name: String!
+		$address: String!
+		$address2: String
+		$city: String!
+		$zip: String!
+		$country: String!
+	) {
+		createOrder(
+			cartId: $cartId
+			currency: $currency
+			token: $token
+			locale: $locale
+			shipping: $shipping
+			email: $email
+			name: $name
+			address: $address
+			address2: $address2
+			city: $city
+			zip: $zip
+			country: $country
+		) {
 			id
 		}
 	}
@@ -22,6 +48,7 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 				currency,
 				token: res.id,
 				locale,
+				...shipping,
 			},
 		}).then(data => {
 			console.log(data)

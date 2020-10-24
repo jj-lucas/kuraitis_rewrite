@@ -1,125 +1,141 @@
 enum Permission {
-  ADMIN
-  USER
-  CATEGORYCREATE
-  CATEGORYUPDATE
-  CATEGORYDELETE
-  PERMISSIONUPDATE
-  REPORTCREATE
-  REPORTRESOLVE
-  PRODUCTCREATE
-  PRODUCTDELETE
-  PRODUCTUPDATE
-  VARIANT
+	ADMIN
+	USER
+	CATEGORYCREATE
+	CATEGORYUPDATE
+	CATEGORYDELETE
+	PERMISSIONUPDATE
+	REPORTCREATE
+	REPORTRESOLVE
+	PRODUCTCREATE
+	PRODUCTDELETE
+	PRODUCTUPDATE
+	VARIANT
 }
 
 type User {
-  id: ID! @id
-  name: String!
-  email: String! @unique
-  password: String!
-  resetToken: String
-  resetTokenExpirty: Float
-  permissions: [Permission] @scalarList(strategy: RELATION)
+	id: ID! @id
+	name: String!
+	email: String! @unique
+	password: String!
+	resetToken: String
+	resetTokenExpirty: Float
+	permissions: [Permission] @scalarList(strategy: RELATION)
 }
 
 type Image {
-  id: ID! @id
-  image: String!
-  largeImage: String!
-  sorting: Int
-  category: Category
-  product: Product
+	id: ID! @id
+	image: String!
+	largeImage: String!
+	sorting: Int
+	category: Category
+	product: Product
 }
 
 type Category {
-  id: ID! @id
-  sorting: Int
-  published: Boolean @default(value: false)
-  products: [Product]
-  images: [Image]
+	id: ID! @id
+	sorting: Int
+	published: Boolean @default(value: false)
+	products: [Product]
+	images: [Image]
 
-  slug_da: String @unique
-  slug_en: String @unique
-  name_da: String
-  name_en: String
-  description_da: String
-  description_en: String
+	slug_da: String @unique
+	slug_en: String @unique
+	name_da: String
+	name_en: String
+	description_da: String
+	description_en: String
 }
 
 type Report {
-  id: ID! @id
-  createdAt: DateTime! @createdAt
-  resolvedAt: DateTime
-  image: String
-  url: String!
-  message: String!
+	id: ID! @id
+	createdAt: DateTime! @createdAt
+	resolvedAt: DateTime
+	image: String
+	url: String!
+	message: String!
 }
 
 type Product {
-  id: ID! @id
-  code: String @unique
-  customizable: Boolean @default(value: true)
-  price: Price
-  hasMultiplePrices: Boolean @default(value: false)
-  sorting: Int
-  published: Boolean @default(value: false)
-  categories: [Category]
-  images: [Image]
-  skus: [SKU!]!
-  selectedAttributes: String
+	id: ID! @id
+	code: String @unique
+	customizable: Boolean @default(value: true)
+	price: Price
+	hasMultiplePrices: Boolean @default(value: false)
+	sorting: Int
+	published: Boolean @default(value: false)
+	categories: [Category]
+	images: [Image]
+	skus: [SKU!]!
+	selectedAttributes: String
 
-  slug_da: String @unique
-  slug_en: String @unique
-  name_da: String
-  name_en: String
-  description_da: String
-  description_en: String
+	slug_da: String @unique
+	slug_en: String @unique
+	name_da: String
+	name_en: String
+	description_da: String
+	description_en: String
 }
 
 type SKU {
-  id: ID! @id
-  sku: String! @unique
-  product: Product!
-  price: Price
-  image: Image
+	id: ID! @id
+	sku: String! @unique
+	product: Product!
+	price: Price
+	image: Image
 }
 
 type Attribute {
-  id: ID! @id
-  name: String! # "SIZE"
-  options: String! # "Small|Large"
-  position: Int!
+	id: ID! @id
+	name: String! # "SIZE"
+	options: String! # "Small|Large"
+	position: Int!
 }
 
 type Price {
-  id: ID! @id
-  DKK: Int
-  USD: Int
-  EUR: Int
-  GBP: Int
+	id: ID! @id
+	DKK: Int
+	USD: Int
+	EUR: Int
+	GBP: Int
 }
 
 type Cart {
-  id: ID! @id
-  createdAt: DateTime! @createdAt
-  items: String
+	id: ID! @id
+	createdAt: DateTime! @createdAt
+	items: String
 }
 
 type PurchasedSku {
-  id: ID! @id
-  code: String!
-  name: String!
-  price: Int!
-  currency: String!
-  image: String!
-  variationInfo: String!
+	id: ID! @id
+	code: String!
+	name: String!
+	price: Int!
+	currency: String!
+	image: String!
+	variationInfo: String!
 }
 
 type Order {
-  id: ID! @id
-  items: [PurchasedSku!]!
-  total: Int!
-  currency: String!
-  charge: String!
+	id: ID! @id
+	createdAt: DateTime! @createdAt
+	items: [PurchasedSku!]!
+	shipping: String!
+	total: Int!
+	currency: String!
+	charge: String!
+	customer: Customer!
+}
+
+type Customer {
+	id: ID! @id
+	createdAt: DateTime! @createdAt
+	email: String!
+	name: String!
+	address: String!
+	address2: String
+	city: String!
+	zip: String!
+	country: String!
+	orders: [Order!]!
 }

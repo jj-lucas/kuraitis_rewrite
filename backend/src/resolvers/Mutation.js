@@ -189,6 +189,11 @@ const mutations = {
 			purchasedSKUs.push(purchasedSku)
 		})
 
+		// handle shipping costs
+		if (args.shipping === 'track_trace') {
+			subtotal += 40
+		}
+
 		// Stripe takes amounts in cents
 		const total = subtotal * 100 // IMPORTANT!!
 
@@ -199,16 +204,52 @@ const mutations = {
 			source: args.token,
 		})
 
-		// create PurchasedSKUs
+		// create the Customer
+		const customer = {
+			email: args.email,
+			name: args.name,
+			address: args.address,
+			address2: args.address2,
+			city: args.city,
+			zip: args.zip,
+			country: args.country,
+		}
 
 		// create the Order
-		const order = await ctx.db.mutation.createOrder({
+		const order = await ctx.db.mutation.createOrder(
+			{
+				data: {
+					total, // in cents
+					currency: args.currency,
+					charge: charge.id,
+					shipping: args.shipping,
+					items: {
+						create: purchasedSKUs,
+					},
+					customer: {
+						create: customer,
+					},
+				},
+			},
+			`{ 
+      id
+      customer {
+        id
+      }
+    }`
+		)
+
+		console.log(JSON.stringify(order))
+
+		await ctx.db.mutation.updateCustomer({
+			where: {
+				id: order.customer.id,
+			},
 			data: {
-				total, // in cents
-				currency: args.currency,
-				charge: charge.id,
-				items: {
-					create: purchasedSKUs,
+				orders: {
+					connect: {
+						id: order.id,
+					},
 				},
 			},
 		})
