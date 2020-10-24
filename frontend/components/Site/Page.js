@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { Nav } from '.'
 import { Cart, Footer, GlobalStyle, Header, Meta } from '../../components'
-import { theme } from '../../lib'
+import { CartContext, theme } from '../../lib'
 
 const Wrapper = styled.div`
 	display: flex;
@@ -65,9 +65,22 @@ const HorizontalNav = styled(Nav)`
 	}
 `
 
+const Overlay = styled.div`
+	position: fixed;
+	pointer-events: ${props => (props.active ? 'auto' : 'none')};
+	background: black;
+	width: 100vw;
+	height: 100vh;
+	opacity: 0;
+	transition: opacity ${props => `${props.theme.transition.durations.long} ${props.theme.transition.types.easeInOut}`};
+
+	${props => props.active && `opacity: 0.5;`}
+`
+
 const Page = props => {
 	const [leftDrawerOpen, setLeftDrawerOpen] = useState(false)
 	const [rightDrawerOpen, setRightDrawerOpen] = useState(false)
+	const { cartOpen, setCartOpen } = React.useContext(CartContext)
 
 	const toggleLeftDrawer = () => {
 		setLeftDrawerOpen(!leftDrawerOpen)
@@ -108,6 +121,7 @@ const Page = props => {
 					<Footer />
 				</InnerWrapper>
 				<RightDrawer open={rightDrawerOpen}></RightDrawer>
+				<Overlay active={cartOpen} onClick={e => setCartOpen(false)} />
 				<Cart />
 			</Wrapper>
 		</ThemeProvider>

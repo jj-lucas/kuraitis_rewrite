@@ -54,7 +54,7 @@ const UPDATE_CART_MUTATION = gql`
 
 const CartProvider = ({ children }) => {
 	const [cart, setCart] = React.useState()
-	const [cartOpen, setCartOpen] = React.useState(false)
+	const [cartOpen, setCartOpen] = React.useState(true)
 	const { loading, error, data } = useQuery(CART_QUERY)
 
 	/*
