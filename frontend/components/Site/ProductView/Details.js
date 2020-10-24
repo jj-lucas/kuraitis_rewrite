@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client'
 import { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 import {
 	CartContext,
@@ -112,9 +113,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 				</div>
 				<button onClick={addToCart}>{translate('add_to_cart', locale)}</button>
 			</form>
-			{product[`description_${locale}`].split('\n\n').map(paragraph => (
-				<p key={paragraph.substring(0, 10)}>{paragraph}</p>
-			))}
+			<ReactMarkdown>{product[`description_${locale}`]}</ReactMarkdown>
 			<p>SKU: {`${SKU}`}</p>
 		</div>
 	)
