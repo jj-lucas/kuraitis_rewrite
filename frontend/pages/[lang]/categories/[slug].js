@@ -1,6 +1,6 @@
-import { ContentSection, ProductsList, Page } from '../../../components'
-import { withLocale, withCurrency } from '../../../lib'
 import { useRouter } from 'next/router'
+import { ContentSection, Page, ProductsList } from '../../../components'
+import { withCart, withCurrency, withLocale } from '../../../lib'
 
 const CategoryProducts = props => {
 	const router = useRouter()
@@ -14,4 +14,4 @@ const CategoryProducts = props => {
 	)
 }
 
-export default withLocale(withCurrency(CategoryProducts))
+export default withLocale(withCurrency(withCart(CategoryProducts)))

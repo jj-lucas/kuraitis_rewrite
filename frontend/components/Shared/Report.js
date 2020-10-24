@@ -86,7 +86,7 @@ const Report = props => {
 					<>
 						{(me.permissions.includes('ADMIN') || me.permissions.includes('REPORTCREATE')) && (
 							<span onClick={onClick}>
-								<StyledIcon size={20} reported={props.image in existingReports} />
+								<StyledIcon size={20} reported={props.image in existingReports ? 'reported' : null} />
 							</span>
 						)}
 					</>

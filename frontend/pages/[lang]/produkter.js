@@ -1,5 +1,5 @@
-import { ContentSection, ProductsList, Page } from '../../components'
-import { withCurrency, withLocale } from '../../lib'
+import { ContentSection, Page, ProductsList } from '../../components'
+import { withCart, withCurrency, withLocale } from '../../lib'
 
 const Products = props => (
 	<Page>
@@ -9,4 +9,4 @@ const Products = props => (
 	</Page>
 )
 
-export default withLocale(withCurrency(Products))
+export default withLocale(withCurrency(withCart(Products)))

@@ -1,17 +1,9 @@
-import { useMutation } from '@apollo/client'
 import { FiTruck as DeliveryIcon } from 'react-icons/fi'
 import { ImGift as GiftIcon } from 'react-icons/im'
-import { MdCached as ReturnIcon, MdClear, MdClose } from 'react-icons/md'
+import { MdCached as ReturnIcon, MdClose } from 'react-icons/md'
 import styled from 'styled-components'
-import {
-	CartContext,
-	CART_QUERY,
-	CurrencyContext,
-	LocaleContext,
-	prettyPrice,
-	translate,
-	UPDATE_CART_MUTATION,
-} from '../../lib'
+import { CartProductsList } from '../../components'
+import { CartContext, CurrencyContext, LocaleContext, prettyPrice, translate } from '../../lib'
 import { Form } from '../Shared'
 
 const StyledCart = styled.div`
@@ -47,55 +39,6 @@ const StyledCart = styled.div`
 
 	.close {
 		cursor: pointer;
-	}
-
-	ul {
-		padding: 0;
-		margin-bottom: 0;
-	}
-
-	li {
-		border-top: 1px solid var(--black);
-		padding: 1rem 0;
-		list-style: none;
-		display: grid;
-		grid-template-columns: auto 1fr auto;
-		grid-gap: 2rem;
-
-		&:last-of-type {
-			border-bottom: 1px solid var(--black);
-		}
-
-		p {
-			margin: 0.5rem 0 0;
-		}
-		.image {
-			text-align: center;
-		}
-		.sku {
-			font-size: ${props => props.theme.typography.fs.sm};
-			font-weight: ${props => props.theme.typography.fw.bold};
-		}
-
-		.price {
-			font-size: ${props => props.theme.typography.fs.lg};
-			font-weight: ${props => props.theme.typography.fw.bold};
-		}
-
-		.remove {
-			margin-right: 2rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			a {
-				color: var(--gray);
-
-				&:hover {
-					color: var(--black);
-				}
-			}
-		}
 	}
 
 	.selling_points {
@@ -136,29 +79,12 @@ const StyledCart = styled.div`
 			opacity: 0.8;
 		}
 	}
-
-	img {
-		width: 164px;
-	}
 `
 
 const Cart = () => {
 	const { cart, cartOpen, setCartOpen } = React.useContext(CartContext)
 	const { currency } = React.useContext(CurrencyContext)
-	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
 	const { locale } = React.useContext(LocaleContext)
-
-	const removeFromCart = async index => {
-		await updateCart({
-			variables: {
-				id: cart.id,
-				items: cart.items.slice(0, index).concat(cart.items.slice(index + 1, cart.items.length)),
-			},
-			refetchQueries: [{ query: CART_QUERY, variables: {} }],
-		}).then(() => {
-			// window.location = '/admin/products'
-		})
-	}
 
 	const close = e => {
 		e.preventDefault()
@@ -184,50 +110,9 @@ const Cart = () => {
 					<MdClose size={30} />
 				</div>
 				<h2>{translate('your_cart', locale)}</h2>
-				<ul>
-					{cart &&
-						cart.items &&
-						cart.items.map((sku, index) => {
-							const skuData = cart.skus.find(candidate => candidate.sku == sku)
-							const image = skuData.image ? skuData.image.image : skuData.product.images[0].image
-							const price = skuData.price || skuData.product.price
 
-							const selectedAttributes = JSON.parse(skuData.product.selectedAttributes)
-							const attributesInSku = Object.keys(selectedAttributes).filter(
-								attribute => selectedAttributes[attribute].length
-							)
-							return (
-								<li key={index}>
-									<div class="image">
-										<img src={image} alt="" />
-									</div>
-									<div>
-										<p className="sku">{sku}</p>
-										<p className="name">{skuData.product[`name_${locale}`]}</p>
-										{attributesInSku.map((attribute, index) => {
-											return (
-												<p key={attribute + index}>
-													<strong>{translate(attribute, locale, 'capitalize')}: </strong>
-													{translate(sku.split('-')[index + 1], locale, 'capitalize')}
-												</p>
-											)
-										})}
-										<p className="price">{prettyPrice(price[currency], currency)}</p>
-									</div>
-									<div className="remove">
-										<a
-											href="#"
-											onClick={e => {
-												e.preventDefault()
-												removeFromCart(index)
-											}}>
-											<MdClear size={20} />
-										</a>
-									</div>
-								</li>
-							)
-						})}
-				</ul>
+				<CartProductsList cart={cart} />
+
 				<div className="selling_points">
 					<p>
 						<span>

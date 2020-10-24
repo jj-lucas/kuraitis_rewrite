@@ -1,5 +1,5 @@
-import { withLocale } from '../../lib'
 import { Homepage, Page } from '../../components'
+import { withCart, withCurrency, withLocale } from '../../lib'
 
 const Home = props => {
 	return (
@@ -9,4 +9,4 @@ const Home = props => {
 	)
 }
 
-export default withLocale(Home)
+export default withLocale(withCurrency(withCart(Home)))
