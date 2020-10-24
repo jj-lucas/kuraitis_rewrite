@@ -45,6 +45,7 @@ const CartItemsIcon = styled(MdRadioButtonChecked)`
 	top: -11px;
 	left: 17px;
 	color: var(--blue);
+	pointer-events: none;
 `
 
 const Toolbox = () => {

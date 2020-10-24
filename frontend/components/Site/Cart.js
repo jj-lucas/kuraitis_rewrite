@@ -93,6 +93,7 @@ const Cart = () => {
 
 	const checkout = e => {
 		e.preventDefault()
+		window.location = `/${locale}/checkout`
 	}
 
 	let subtotal = 0

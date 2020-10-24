@@ -1,94 +1,88 @@
 # import * from './generated/prisma.graphql'
 
 type SuccessMessage {
-  message: String
+	message: String
 }
 
 type Query {
-  users: [User]!
-  categories: [Category]!
-  category(id: ID, slug_da: String, slug_en: String): Category
-  me: User
-  reports(where: ReportWhereInput, orderBy: ReportOrderByInput): [Report]!
-  products(categorySlug: String): [Product]!
-  product(id: ID, code: String): Product
-  attributes(
-    where: AttributeWhereInput
-    orderBy: AttributeOrderByInput
-  ): [Attribute]!
-  cart: Cart
+	users: [User]!
+	categories: [Category]!
+	category(id: ID, slug_da: String, slug_en: String): Category
+	me: User
+	reports(where: ReportWhereInput, orderBy: ReportOrderByInput): [Report]!
+	products(categorySlug: String): [Product]!
+	product(id: ID, code: String): Product
+	attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput): [Attribute]!
+	cart: Cart
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!): User!
-  signin(email: String!, password: String!): User!
-  signout: SuccessMessage
+	signup(email: String!, password: String!, name: String!): User!
+	signin(email: String!, password: String!): User!
+	signout: SuccessMessage
 
-  createCategory: Category!
-  deleteCategory(id: ID!): Category
-  updateCategory(
-    id: ID!
-    published: Boolean
-    images: [ID]
+	createCategory: Category!
+	deleteCategory(id: ID!): Category
+	updateCategory(
+		id: ID!
+		published: Boolean
+		images: [ID]
 
-    slug_da: String
-    slug_en: String
-    name_da: String
-    name_en: String
-    description_da: String
-    description_en: String
-  ): Category
-  sortCategories(categories: [ID]): SuccessMessage
+		slug_da: String
+		slug_en: String
+		name_da: String
+		name_en: String
+		description_da: String
+		description_en: String
+	): Category
+	sortCategories(categories: [ID]): SuccessMessage
 
-  uploadImage(
-    image: String!
-    largeImage: String!
-    categoryId: ID
-    productId: ID
-  ): Image!
-  deleteImage(id: ID!): Image
+	uploadImage(image: String!, largeImage: String!, categoryId: ID, productId: ID): Image!
+	deleteImage(id: ID!): Image
 
-  createReport(image: String, url: String!, message: String!): Report
-  deleteReport(id: ID!): Report
+	createReport(image: String, url: String!, message: String!): Report
+	deleteReport(id: ID!): Report
 
-  createProduct(category: ID): Product!
-  deleteProduct(id: ID!): Product
-  updateProduct(
-    id: ID!
-    code: String
-    customizable: Boolean
-    price: Int
-    customPrice: Int
-    published: Boolean
-    categories: [ID]
-    images: [ID]
-    selectedAttributes: String
-    skuData: String
+	createProduct(category: ID): Product!
+	deleteProduct(id: ID!): Product
+	updateProduct(
+		id: ID!
+		code: String
+		customizable: Boolean
+		price: Int
+		customPrice: Int
+		published: Boolean
+		categories: [ID]
+		images: [ID]
+		selectedAttributes: String
+		skuData: String
 
-    slug_da: String
-    slug_en: String
-    name_da: String
-    name_en: String
-    description_da: String
-    description_en: String
-  ): Product
+		slug_da: String
+		slug_en: String
+		name_da: String
+		name_en: String
+		description_da: String
+		description_en: String
+	): Product
 
-  createSKU(data: SKUCreateInput!): SKU!
-  updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
+	createSKU(data: SKUCreateInput!): SKU!
+	updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
 
-  updateCart(id: ID, items: [String!]): Cart!
+	updateCart(id: ID, items: [String!]): Cart!
+
+	createOrder(token: String!, cartId: String!, currency: String!, locale: String!): Order
 }
 
 type User {
-  id: ID!
-  name: String!
-  email: String!
-  permissions: [Permission!]!
+	id: ID!
+	name: String!
+	email: String!
+	permissions: [Permission!]!
 }
 
 type Cart {
-  id: ID!
-  createdAt: DateTime!
-  skus: [SKU]
-  items: [String]
+	id: ID!
+	createdAt: DateTime!
+	skus: [SKU]
+	items: [String]
 }

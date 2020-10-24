@@ -19,9 +19,21 @@ const translations = {
 		en: 'black',
 		da: 'sort',
 	},
+	currency: {
+		en: 'Currency',
+		da: 'Valuta',
+	},
+
+	// Product page
 	add_to_cart: {
 		en: 'Add to cart',
 		da: 'Læg i indkøbskurv',
+	},
+
+	// Cart
+	no_items_in_cart: {
+		en: 'There are no items in your shopping cart',
+		da: '__no_items_in_cart',
 	},
 	your_cart: {
 		en: 'Your shopping cart',
@@ -47,9 +59,19 @@ const translations = {
 		en: 'The return right does not include customized products',
 		da: 'Returret inkluderer ikke customiserede produkter',
 	},
-	currency: {
-		en: 'Currency',
-		da: 'Valuta',
+
+	// Checkout
+	checkout: {
+		en: 'Checkout',
+		da: '__checkout',
+	},
+	total: {
+		en: 'Total',
+		da: '__total',
+	},
+	order_summary: {
+		en: 'Order summary',
+		da: '__order_summary',
 	},
 }
 

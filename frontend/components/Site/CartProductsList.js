@@ -60,8 +60,6 @@ const CartProductsList = ({ cart }) => {
 	const { currency, setCurrency } = React.useContext(CurrencyContext)
 	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
 
-	console.log(cart)
-
 	const removeFromCart = async index => {
 		await updateCart({
 			variables: {
@@ -76,6 +74,7 @@ const CartProductsList = ({ cart }) => {
 
 	return (
 		<StyledCartProductsList>
+			{cart && !cart.items.length && <p>{translate('no_items_in_cart', locale)}</p>}
 			{cart &&
 				cart.items &&
 				cart.items.map((sku, index) => {

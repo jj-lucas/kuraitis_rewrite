@@ -105,3 +105,21 @@ type Cart {
   createdAt: DateTime! @createdAt
   items: String
 }
+
+type PurchasedSku {
+  id: ID! @id
+  code: String!
+  name: String!
+  price: Int!
+  currency: String!
+  image: String!
+  variationInfo: String!
+}
+
+type Order {
+  id: ID! @id
+  items: [PurchasedSku!]!
+  total: Int!
+  currency: String!
+  charge: String!
+}
