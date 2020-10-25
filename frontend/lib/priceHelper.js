@@ -1,13 +1,13 @@
 const prettyPrice = (amount, currency) => {
 	switch (currency) {
 		case 'DKK':
-			return `${amount},- DKK`
+			return amount ? `${amount},- DKK` : 'Gratis'
 		case 'USD':
-			return `${amount} $`
+			return amount ? `${amount} $` : 'Free'
 		case 'EUR':
-			return `${amount} €`
+			return amount ? `${amount} €` : 'Free'
 		case 'GBP':
-			return `${amount} £`
+			return amount ? `${amount} £` : 'Free'
 	}
 	return ''
 }

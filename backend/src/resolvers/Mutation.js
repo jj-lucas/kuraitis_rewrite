@@ -163,7 +163,6 @@ const mutations = {
 		let purchasedSKUs = []
 		let subtotal = 0
 
-		console.log(data.items)
 		data.items.split('|').map((sku, index) => {
 			const skuData = data.skus.find(candidate => candidate.sku == sku)
 			// add to subtotal
@@ -189,13 +188,52 @@ const mutations = {
 			purchasedSKUs.push(purchasedSku)
 		})
 
-		// handle shipping costs
-		if (args.shipping === 'track_trace') {
-			subtotal += 40
+		// ensure shipping is set to international if country is not DK
+		if (args.country !== 'Denmark' && !args.shipping.includes('_international')) {
+			throw new Error('Wrong shipping profile chosen')
+		}
+
+		// standard
+		const shippingCost = await ctx.db.query.shippingProfile(
+			{
+				where: {
+					code: args.shipping,
+				},
+			},
+			`{
+        price {
+          DKK
+          GBP
+          USD
+          EUR
+        }
+      }`
+		)
+		subtotal += shippingCost.price[args.currency] / 100
+
+		// handle additional shipping costs
+		if (args.shipping.includes('track_trace')) {
+			// also include standard
+			const standardShipping = await ctx.db.query.shippingProfile(
+				{
+					where: {
+						code: args.shipping.replace('track_trace', 'standard'),
+					},
+				},
+				`{
+          price {
+            DKK
+            GBP
+            USD
+            EUR
+          }
+        }`
+			)
+			subtotal += standardShipping.price[args.currency] / 100
 		}
 
 		// Stripe takes amounts in cents
-		const total = subtotal * 100 // IMPORTANT!!
+		const total = parseInt(parseFloat(subtotal) * 100, 10) // IMPORTANT!!
 
 		// create the Stripe charge
 		const charge = await stripe.charges.create({
@@ -238,8 +276,6 @@ const mutations = {
       }
     }`
 		)
-
-		console.log(JSON.stringify(order))
 
 		await ctx.db.mutation.updateCustomer({
 			where: {

@@ -7,6 +7,8 @@ export const CartContext = React.createContext({
 	setCart: () => null,
 	cartOpen: false,
 	setCartOpen: () => null,
+	shippingProfiles: '',
+	setShippingProfiles: () => null,
 })
 
 const CART_QUERY = gql`
@@ -42,6 +44,15 @@ const CART_QUERY = gql`
 				}
 			}
 		}
+		shippingProfiles {
+			code
+			price {
+				DKK
+				GBP
+				USD
+				EUR
+			}
+		}
 	}
 `
 
@@ -55,40 +66,35 @@ const UPDATE_CART_MUTATION = gql`
 
 const CartProvider = ({ children }) => {
 	const [cart, setCart] = React.useState()
+	const [shippingProfiles, setShippingProfiles] = React.useState()
 	const [cartOpen, setCartOpen] = React.useState(false)
 	const { loading, error, data } = useQuery(CART_QUERY)
-
-	/*
-	React.useEffect(() => {
-		if (cart && cart !== localStorage.getItem('cart')) {
-			localStorage.setItem('cart', cart)
-		}
-	}, [cart])
-
-	React.useEffect(() => {
-		if (localStorage.getItem('cart')) {
-			setCart(localStorage.getItem('cart'))
-		}
-    }, [])
-    */
 
 	React.useEffect(() => {
 		if (data) {
 			setCart(data.cart)
+			setShippingProfiles(data.shippingProfiles)
 		}
 	}, [data])
 
 	return (
-		<CartContext.Provider value={{ cart: cart || null, setCart: setCart, cartOpen, setCartOpen }}>
+		<CartContext.Provider
+			value={{
+				cart: cart || null,
+				setCart: setCart,
+				cartOpen,
+				setCartOpen,
+				shippingProfiles,
+			}}>
 			{children}
 		</CartContext.Provider>
 	)
 }
 
 const withCart = WrappedPage => {
-	const withCart = ({ cart, cartOpen, setCartOpen, ...pageProps }) => {
+	const withCart = ({ cart, cartOpen, setCartOpen, shippingProfiles, ...pageProps }) => {
 		return (
-			<CartProvider cart={cart} cartOpen={cartOpen} setCartOpen={setCartOpen}>
+			<CartProvider cart={cart} cartOpen={cartOpen} setCartOpen={setCartOpen} shippingProfiles={shippingProfiles}>
 				<WrappedPage {...pageProps} />
 			</CartProvider>
 		)

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sun Oct 25 2020 00:24:22 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Oct 25 2020 11:51:54 GMT+0100 (Central European Standard Time)
 
 type AggregateAttribute {
   count: Int!
@@ -38,6 +38,10 @@ type AggregatePurchasedSku {
 }
 
 type AggregateReport {
+  count: Int!
+}
+
+type AggregateShippingProfile {
   count: Int!
 }
 
@@ -2509,6 +2513,7 @@ type Mutation {
   createSKU(data: SKUCreateInput!): SKU!
   createAttribute(data: AttributeCreateInput!): Attribute!
   createCart(data: CartCreateInput!): Cart!
+  createShippingProfile(data: ShippingProfileCreateInput!): ShippingProfile!
   createOrder(data: OrderCreateInput!): Order!
   createCustomer(data: CustomerCreateInput!): Customer!
   createPrice(data: PriceCreateInput!): Price!
@@ -2521,6 +2526,7 @@ type Mutation {
   updateSKU(data: SKUUpdateInput!, where: SKUWhereUniqueInput!): SKU
   updateAttribute(data: AttributeUpdateInput!, where: AttributeWhereUniqueInput!): Attribute
   updateCart(data: CartUpdateInput!, where: CartWhereUniqueInput!): Cart
+  updateShippingProfile(data: ShippingProfileUpdateInput!, where: ShippingProfileWhereUniqueInput!): ShippingProfile
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
   updateCustomer(data: CustomerUpdateInput!, where: CustomerWhereUniqueInput!): Customer
   updatePrice(data: PriceUpdateInput!, where: PriceWhereUniqueInput!): Price
@@ -2533,6 +2539,7 @@ type Mutation {
   deleteSKU(where: SKUWhereUniqueInput!): SKU
   deleteAttribute(where: AttributeWhereUniqueInput!): Attribute
   deleteCart(where: CartWhereUniqueInput!): Cart
+  deleteShippingProfile(where: ShippingProfileWhereUniqueInput!): ShippingProfile
   deleteOrder(where: OrderWhereUniqueInput!): Order
   deleteCustomer(where: CustomerWhereUniqueInput!): Customer
   deletePrice(where: PriceWhereUniqueInput!): Price
@@ -2545,6 +2552,7 @@ type Mutation {
   upsertSKU(where: SKUWhereUniqueInput!, create: SKUCreateInput!, update: SKUUpdateInput!): SKU!
   upsertAttribute(where: AttributeWhereUniqueInput!, create: AttributeCreateInput!, update: AttributeUpdateInput!): Attribute!
   upsertCart(where: CartWhereUniqueInput!, create: CartCreateInput!, update: CartUpdateInput!): Cart!
+  upsertShippingProfile(where: ShippingProfileWhereUniqueInput!, create: ShippingProfileCreateInput!, update: ShippingProfileUpdateInput!): ShippingProfile!
   upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
   upsertCustomer(where: CustomerWhereUniqueInput!, create: CustomerCreateInput!, update: CustomerUpdateInput!): Customer!
   upsertPrice(where: PriceWhereUniqueInput!, create: PriceCreateInput!, update: PriceUpdateInput!): Price!
@@ -2557,6 +2565,7 @@ type Mutation {
   updateManySKUs(data: SKUUpdateManyMutationInput!, where: SKUWhereInput): BatchPayload!
   updateManyAttributes(data: AttributeUpdateManyMutationInput!, where: AttributeWhereInput): BatchPayload!
   updateManyCarts(data: CartUpdateManyMutationInput!, where: CartWhereInput): BatchPayload!
+  updateManyShippingProfiles(data: ShippingProfileUpdateManyMutationInput!, where: ShippingProfileWhereInput): BatchPayload!
   updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
   updateManyCustomers(data: CustomerUpdateManyMutationInput!, where: CustomerWhereInput): BatchPayload!
   updateManyPrices(data: PriceUpdateManyMutationInput!, where: PriceWhereInput): BatchPayload!
@@ -2569,6 +2578,7 @@ type Mutation {
   deleteManySKUs(where: SKUWhereInput): BatchPayload!
   deleteManyAttributes(where: AttributeWhereInput): BatchPayload!
   deleteManyCarts(where: CartWhereInput): BatchPayload!
+  deleteManyShippingProfiles(where: ShippingProfileWhereInput): BatchPayload!
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
   deleteManyCustomers(where: CustomerWhereInput): BatchPayload!
   deleteManyPrices(where: PriceWhereInput): BatchPayload!
@@ -2597,6 +2607,9 @@ type Order implements Node {
   currency: String!
   charge: String!
   customer: Customer!
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
 }
 
 """A connection to a list of items."""
@@ -2615,6 +2628,9 @@ input OrderCreateInput {
   total: Int!
   currency: String!
   charge: String!
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
   items: PurchasedSkuCreateManyInput
   customer: CustomerCreateOneWithoutOrdersInput!
 }
@@ -2630,6 +2646,9 @@ input OrderCreateWithoutCustomerInput {
   total: Int!
   currency: String!
   charge: String!
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
   items: PurchasedSkuCreateManyInput
 }
 
@@ -2655,6 +2674,12 @@ enum OrderOrderByInput {
   currency_DESC
   charge_ASC
   charge_DESC
+  shippedAt_ASC
+  shippedAt_DESC
+  fullfilled_ASC
+  fullfilled_DESC
+  archived_ASC
+  archived_DESC
 }
 
 type OrderPreviousValues {
@@ -2664,6 +2689,9 @@ type OrderPreviousValues {
   total: Int!
   currency: String!
   charge: String!
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
 }
 
 input OrderScalarWhereInput {
@@ -2879,6 +2907,36 @@ input OrderScalarWhereInput {
 
   """All values not ending with the given string."""
   charge_not_ends_with: String
+  shippedAt: DateTime
+
+  """All values that are not equal to given value."""
+  shippedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  shippedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  shippedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  shippedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  shippedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  shippedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  shippedAt_gte: DateTime
+  fullfilled: Boolean
+
+  """All values that are not equal to given value."""
+  fullfilled_not: Boolean
+  archived: Boolean
+
+  """All values that are not equal to given value."""
+  archived_not: Boolean
 }
 
 type OrderSubscriptionPayload {
@@ -2923,6 +2981,9 @@ input OrderUpdateInput {
   total: Int
   currency: String
   charge: String
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
   items: PurchasedSkuUpdateManyInput
   customer: CustomerUpdateOneRequiredWithoutOrdersInput
 }
@@ -2932,6 +2993,9 @@ input OrderUpdateManyDataInput {
   total: Int
   currency: String
   charge: String
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
 }
 
 input OrderUpdateManyMutationInput {
@@ -2939,6 +3003,9 @@ input OrderUpdateManyMutationInput {
   total: Int
   currency: String
   charge: String
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
 }
 
 input OrderUpdateManyWithoutCustomerInput {
@@ -2963,6 +3030,9 @@ input OrderUpdateWithoutCustomerDataInput {
   total: Int
   currency: String
   charge: String
+  shippedAt: DateTime
+  fullfilled: Boolean
+  archived: Boolean
   items: PurchasedSkuUpdateManyInput
 }
 
@@ -3190,6 +3260,36 @@ input OrderWhereInput {
 
   """All values not ending with the given string."""
   charge_not_ends_with: String
+  shippedAt: DateTime
+
+  """All values that are not equal to given value."""
+  shippedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  shippedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  shippedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  shippedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  shippedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  shippedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  shippedAt_gte: DateTime
+  fullfilled: Boolean
+
+  """All values that are not equal to given value."""
+  fullfilled_not: Boolean
+  archived: Boolean
+
+  """All values that are not equal to given value."""
+  archived_not: Boolean
   items_every: PurchasedSkuWhereInput
   items_some: PurchasedSkuWhereInput
   items_none: PurchasedSkuWhereInput
@@ -3354,6 +3454,13 @@ input PriceUpdateOneInput {
   connect: PriceWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
+  update: PriceUpdateDataInput
+  upsert: PriceUpsertNestedInput
+}
+
+input PriceUpdateOneRequiredInput {
+  create: PriceCreateInput
+  connect: PriceWhereUniqueInput
   update: PriceUpdateDataInput
   upsert: PriceUpsertNestedInput
 }
@@ -5433,6 +5540,7 @@ type Query {
   sKUs(where: SKUWhereInput, orderBy: SKUOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SKU]!
   attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Attribute]!
   carts(where: CartWhereInput, orderBy: CartOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Cart]!
+  shippingProfiles(where: ShippingProfileWhereInput, orderBy: ShippingProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ShippingProfile]!
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
   customers(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Customer]!
   prices(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price]!
@@ -5445,6 +5553,7 @@ type Query {
   sKU(where: SKUWhereUniqueInput!): SKU
   attribute(where: AttributeWhereUniqueInput!): Attribute
   cart(where: CartWhereUniqueInput!): Cart
+  shippingProfile(where: ShippingProfileWhereUniqueInput!): ShippingProfile
   order(where: OrderWhereUniqueInput!): Order
   customer(where: CustomerWhereUniqueInput!): Customer
   price(where: PriceWhereUniqueInput!): Price
@@ -5457,6 +5566,7 @@ type Query {
   sKUsConnection(where: SKUWhereInput, orderBy: SKUOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SKUConnection!
   attributesConnection(where: AttributeWhereInput, orderBy: AttributeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AttributeConnection!
   cartsConnection(where: CartWhereInput, orderBy: CartOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CartConnection!
+  shippingProfilesConnection(where: ShippingProfileWhereInput, orderBy: ShippingProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ShippingProfileConnection!
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
   customersConnection(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CustomerConnection!
   pricesConnection(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PriceConnection!
@@ -5798,6 +5908,192 @@ input ReportWhereInput {
 
 input ReportWhereUniqueInput {
   id: ID
+}
+
+type ShippingProfile implements Node {
+  id: ID!
+  code: String!
+  price: Price!
+}
+
+"""A connection to a list of items."""
+type ShippingProfileConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ShippingProfileEdge]!
+  aggregate: AggregateShippingProfile!
+}
+
+input ShippingProfileCreateInput {
+  id: ID
+  code: String!
+  price: PriceCreateOneInput!
+}
+
+"""An edge in a connection."""
+type ShippingProfileEdge {
+  """The item at the end of the edge."""
+  node: ShippingProfile!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ShippingProfileOrderByInput {
+  id_ASC
+  id_DESC
+  code_ASC
+  code_DESC
+}
+
+type ShippingProfilePreviousValues {
+  id: ID!
+  code: String!
+}
+
+type ShippingProfileSubscriptionPayload {
+  mutation: MutationType!
+  node: ShippingProfile
+  updatedFields: [String!]
+  previousValues: ShippingProfilePreviousValues
+}
+
+input ShippingProfileSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShippingProfileSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShippingProfileSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShippingProfileSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ShippingProfileWhereInput
+}
+
+input ShippingProfileUpdateInput {
+  code: String
+  price: PriceUpdateOneRequiredInput
+}
+
+input ShippingProfileUpdateManyMutationInput {
+  code: String
+}
+
+input ShippingProfileWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShippingProfileWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShippingProfileWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShippingProfileWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
+  price: PriceWhereInput
+}
+
+input ShippingProfileWhereUniqueInput {
+  id: ID
+  code: String
 }
 
 type SKU implements Node {
@@ -6143,6 +6439,7 @@ type Subscription {
   sKU(where: SKUSubscriptionWhereInput): SKUSubscriptionPayload
   attribute(where: AttributeSubscriptionWhereInput): AttributeSubscriptionPayload
   cart(where: CartSubscriptionWhereInput): CartSubscriptionPayload
+  shippingProfile(where: ShippingProfileSubscriptionWhereInput): ShippingProfileSubscriptionPayload
   order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
   customer(where: CustomerSubscriptionWhereInput): CustomerSubscriptionPayload
   price(where: PriceSubscriptionWhereInput): PriceSubscriptionPayload

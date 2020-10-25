@@ -112,7 +112,7 @@ const Cart = () => {
 				</div>
 				<h2>{translate('your_cart', locale)}</h2>
 
-				<CartProductsList cart={cart} />
+				{cart && cart.items ? <CartProductsList cart={cart} /> : <p>{translate('no_items_in_cart', locale)}</p>}
 
 				<div className="selling_points">
 					<p>
@@ -134,15 +134,17 @@ const Cart = () => {
 						{translate('returns_30_days', locale)}
 					</p>
 				</div>
-				<h3 className="subtotal">
-					{translate('subtotal', locale)}: <span>{prettyPrice(subtotal, currency)}</span>
-				</h3>
 				{subtotal ? (
-					<Form>
-						<button type="submit" onClick={checkout}>
-							{translate('checkout', locale)}
-						</button>
-					</Form>
+					<>
+						<h3 className="subtotal">
+							{translate('subtotal', locale)}: <span>{prettyPrice(subtotal, currency)}</span>
+						</h3>
+						<Form>
+							<button type="submit" onClick={checkout}>
+								{translate('checkout', locale)}
+							</button>
+						</Form>{' '}
+					</>
 				) : null}
 			</div>
 		</StyledCart>

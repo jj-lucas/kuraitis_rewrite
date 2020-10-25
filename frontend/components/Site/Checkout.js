@@ -100,9 +100,10 @@ const StyledCheckout = styled.div`
 
 const Checkout = () => {
 	const { locale } = useContext(LocaleContext)
-	const { cart } = useContext(CartContext)
+	const { cart, shippingProfiles } = useContext(CartContext)
 	const { currency, setCurrency } = useContext(CurrencyContext)
 	const [formValid, setFormValid] = useState(false)
+	const [shippingSuffix, setShippingSuffix] = useState('_denmark')
 
 	const [email, setEmail] = useState('')
 	const [name, setName] = useState('')
@@ -111,9 +112,18 @@ const Checkout = () => {
 	const [city, setCity] = useState('')
 	const [zip, setZip] = useState('')
 	const [country, setCountry] = useState('Denmark')
-	const [shipping, setShipping] = useState('standard')
+	const [shipping, setShipping] = useState('standard_denmark')
 
 	const refForm = useRef(null)
+
+	if (!cart || !cart.items || !shippingProfiles) {
+		return (
+			<>
+				<h1>{translate('checkout', locale)}</h1>
+				<p>Your shopping cart is empty</p>
+			</>
+		)
+	}
 
 	let subtotal = 0
 	if (cart && cart.items) {
@@ -123,24 +133,18 @@ const Checkout = () => {
 		})
 	}
 
-	if (shipping === 'track_trace') {
-		subtotal += 40
-	}
-
-	if (!cart || !cart.items) {
-		return (
-			<>
-				<h1>{translate('checkout', locale)}</h1>
-				<p>Your shopping cart is empty</p>
-			</>
-		)
+	// add shipping costs
+	if (shipping === 'standard_denmark' || shipping === 'standard_international') {
+		subtotal += shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] / 100
+	} else {
+		// must be Track & Trace
+		subtotal += shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] / 100
+		subtotal += shippingProfiles.find(profile => profile.code === `track_trace${shippingSuffix}`).price[currency] / 100
 	}
 
 	const onShippingChange = e => {
 		setShipping(e.target.value)
 	}
-
-	console.log(cart)
 
 	return (
 		<StyledCheckout>
@@ -218,7 +222,14 @@ const Checkout = () => {
 								/>
 							</div>
 							<div>
-								<select required onChange={e => setCountry(e.target.value)} value={country}>
+								<select
+									required
+									onChange={e => {
+										setShippingSuffix(e.target.value === 'Denmark' ? '_denmark' : '_international')
+										setCountry(e.target.value)
+										setShipping(e.target.value === 'Denmark' ? 'standard_denmark' : 'standard_international')
+									}}
+									value={country}>
 									{countriesList.names().map(name => (
 										<option key={name}>{name}</option>
 									))}
@@ -232,11 +243,18 @@ const Checkout = () => {
 									id="shipping_standard"
 									type="radio"
 									name="shipping"
-									value="standard"
-									checked={shipping === 'standard'}
+									value={`standard${shippingSuffix}`}
+									checked={shipping === `standard${shippingSuffix}`}
 									onChange={onShippingChange}
 								/>
-								<strong>Standard </strong>(Free shipping, not trackable)
+								<strong>Standard </strong>
+								{prettyPrice(
+									shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] / 100,
+									currency
+								)}
+								{shipping == 'standard_denmark'
+									? ' (Not trackable, choose Track and Trace to monitor shipment progress)'
+									: ' (Not trackable, choose Track and Trace to monitor shipment progress)'}
 							</label>
 							<br />
 							<label htmlFor="shipping_track_trace">
@@ -244,11 +262,16 @@ const Checkout = () => {
 									type="radio"
 									id="shipping_track_trace"
 									name="shipping"
-									value="track_trace"
-									checked={shipping === 'track_trace'}
+									value={`track_trace${shippingSuffix}`}
+									checked={shipping === `track_trace${shippingSuffix}`}
 									onChange={onShippingChange}
 								/>
-								<strong>Track & Trace </strong>(+40 DKK)
+								<strong>Track & Trace </strong>
+								{prettyPrice(
+									shippingProfiles.find(profile => profile.code === `track_trace${shippingSuffix}`).price[currency] /
+										100,
+									currency
+								)}
 							</label>
 						</fieldset>
 						{formValid ? (
@@ -280,13 +303,19 @@ const Checkout = () => {
 					<CartProductsList cart={cart} />
 					<div className="total">
 						<div>
-							{shipping === 'standard' ? (
+							{shipping === 'standard_denmark' || shipping === 'standard_international' ? (
 								<>
 									<p title={translate('choose_track_trace', locale)}>
 										<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
 										<strong> Standard delivery</strong>
 									</p>
-									<p>Free</p>
+									<p>
+										{prettyPrice(
+											shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] /
+												100,
+											currency
+										)}
+									</p>
 								</>
 							) : (
 								<>
@@ -294,12 +323,25 @@ const Checkout = () => {
 										<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
 										<strong> Standard delivery</strong>
 									</p>
-									<p>Free</p>
+									<p>
+										{prettyPrice(
+											shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] /
+												100,
+											currency
+										)}
+									</p>
 									<p>
 										<TrackIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
 										<strong> Track & Trace</strong>
 									</p>
-									<p>40,- DKK</p>
+									<p>
+										{prettyPrice(
+											shippingProfiles.find(profile => profile.code === `track_trace${shippingSuffix}`).price[
+												currency
+											] / 100,
+											currency
+										)}
+									</p>
 								</>
 							)}
 						</div>
