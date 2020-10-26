@@ -50,8 +50,9 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 				locale,
 				...shipping,
 			},
-		}).then(data => {
+		}).then(({ data }) => {
 			console.log(data)
+			window.location = `/${locale}/order/${data.createOrder.id}`
 		})
 	}
 

@@ -266,7 +266,7 @@ const Checkout = () => {
 									checked={shipping === `track_trace${shippingSuffix}`}
 									onChange={onShippingChange}
 								/>
-								<strong>Track & Trace </strong>
+								<strong>Track & Trace </strong>+
 								{prettyPrice(
 									shippingProfiles.find(profile => profile.code === `track_trace${shippingSuffix}`).price[currency] /
 										100,

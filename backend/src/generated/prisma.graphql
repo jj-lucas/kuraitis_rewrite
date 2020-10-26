@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sun Oct 25 2020 11:51:54 GMT+0100 (Central European Standard Time)
+# timestamp: Sun Oct 25 2020 15:32:05 GMT+0100 (Central European Standard Time)
 
 type AggregateAttribute {
   count: Int!
@@ -2499,6 +2499,9 @@ input ImageWhereUniqueInput {
   id: ID
 }
 
+"""Raw JSON value"""
+scalar Json
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -2603,6 +2606,7 @@ type Order implements Node {
   createdAt: DateTime!
   items(where: PurchasedSkuWhereInput, orderBy: PurchasedSkuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PurchasedSku!]
   shipping: String!
+  shippingCosts: Json!
   total: Int!
   currency: String!
   charge: String!
@@ -2610,6 +2614,7 @@ type Order implements Node {
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
 }
 
 """A connection to a list of items."""
@@ -2625,12 +2630,14 @@ type OrderConnection {
 input OrderCreateInput {
   id: ID
   shipping: String!
+  shippingCosts: Json!
   total: Int!
   currency: String!
   charge: String!
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
   items: PurchasedSkuCreateManyInput
   customer: CustomerCreateOneWithoutOrdersInput!
 }
@@ -2643,12 +2650,14 @@ input OrderCreateManyWithoutCustomerInput {
 input OrderCreateWithoutCustomerInput {
   id: ID
   shipping: String!
+  shippingCosts: Json!
   total: Int!
   currency: String!
   charge: String!
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
   items: PurchasedSkuCreateManyInput
 }
 
@@ -2668,6 +2677,8 @@ enum OrderOrderByInput {
   createdAt_DESC
   shipping_ASC
   shipping_DESC
+  shippingCosts_ASC
+  shippingCosts_DESC
   total_ASC
   total_DESC
   currency_ASC
@@ -2680,18 +2691,22 @@ enum OrderOrderByInput {
   fullfilled_DESC
   archived_ASC
   archived_DESC
+  trackingCode_ASC
+  trackingCode_DESC
 }
 
 type OrderPreviousValues {
   id: ID!
   createdAt: DateTime!
   shipping: String!
+  shippingCosts: Json!
   total: Int!
   currency: String!
   charge: String!
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
 }
 
 input OrderScalarWhereInput {
@@ -2937,6 +2952,46 @@ input OrderScalarWhereInput {
 
   """All values that are not equal to given value."""
   archived_not: Boolean
+  trackingCode: String
+
+  """All values that are not equal to given value."""
+  trackingCode_not: String
+
+  """All values that are contained in given list."""
+  trackingCode_in: [String!]
+
+  """All values that are not contained in given list."""
+  trackingCode_not_in: [String!]
+
+  """All values less than the given value."""
+  trackingCode_lt: String
+
+  """All values less than or equal the given value."""
+  trackingCode_lte: String
+
+  """All values greater than the given value."""
+  trackingCode_gt: String
+
+  """All values greater than or equal the given value."""
+  trackingCode_gte: String
+
+  """All values containing the given string."""
+  trackingCode_contains: String
+
+  """All values not containing the given string."""
+  trackingCode_not_contains: String
+
+  """All values starting with the given string."""
+  trackingCode_starts_with: String
+
+  """All values not starting with the given string."""
+  trackingCode_not_starts_with: String
+
+  """All values ending with the given string."""
+  trackingCode_ends_with: String
+
+  """All values not ending with the given string."""
+  trackingCode_not_ends_with: String
 }
 
 type OrderSubscriptionPayload {
@@ -2978,34 +3033,40 @@ input OrderSubscriptionWhereInput {
 
 input OrderUpdateInput {
   shipping: String
+  shippingCosts: Json
   total: Int
   currency: String
   charge: String
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
   items: PurchasedSkuUpdateManyInput
   customer: CustomerUpdateOneRequiredWithoutOrdersInput
 }
 
 input OrderUpdateManyDataInput {
   shipping: String
+  shippingCosts: Json
   total: Int
   currency: String
   charge: String
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
 }
 
 input OrderUpdateManyMutationInput {
   shipping: String
+  shippingCosts: Json
   total: Int
   currency: String
   charge: String
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
 }
 
 input OrderUpdateManyWithoutCustomerInput {
@@ -3027,12 +3088,14 @@ input OrderUpdateManyWithWhereNestedInput {
 
 input OrderUpdateWithoutCustomerDataInput {
   shipping: String
+  shippingCosts: Json
   total: Int
   currency: String
   charge: String
   shippedAt: DateTime
   fullfilled: Boolean
   archived: Boolean
+  trackingCode: String
   items: PurchasedSkuUpdateManyInput
 }
 
@@ -3290,6 +3353,46 @@ input OrderWhereInput {
 
   """All values that are not equal to given value."""
   archived_not: Boolean
+  trackingCode: String
+
+  """All values that are not equal to given value."""
+  trackingCode_not: String
+
+  """All values that are contained in given list."""
+  trackingCode_in: [String!]
+
+  """All values that are not contained in given list."""
+  trackingCode_not_in: [String!]
+
+  """All values less than the given value."""
+  trackingCode_lt: String
+
+  """All values less than or equal the given value."""
+  trackingCode_lte: String
+
+  """All values greater than the given value."""
+  trackingCode_gt: String
+
+  """All values greater than or equal the given value."""
+  trackingCode_gte: String
+
+  """All values containing the given string."""
+  trackingCode_contains: String
+
+  """All values not containing the given string."""
+  trackingCode_not_contains: String
+
+  """All values starting with the given string."""
+  trackingCode_starts_with: String
+
+  """All values not starting with the given string."""
+  trackingCode_not_starts_with: String
+
+  """All values ending with the given string."""
+  trackingCode_ends_with: String
+
+  """All values not ending with the given string."""
+  trackingCode_not_ends_with: String
   items_every: PurchasedSkuWhereInput
   items_some: PurchasedSkuWhereInput
   items_none: PurchasedSkuWhereInput

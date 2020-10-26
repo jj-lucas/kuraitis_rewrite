@@ -127,6 +127,7 @@ type Order {
 	createdAt: DateTime! @createdAt
 	items: [PurchasedSku!]!
 	shipping: String!
+	shippingCosts: Json!
 	total: Int!
 	currency: String!
 	charge: String!
@@ -134,6 +135,7 @@ type Order {
 	shippedAt: DateTime
 	fullfilled: Boolean @default(value: false)
 	archived: Boolean @default(value: false)
+	trackingCode: String
 }
 
 type Customer {

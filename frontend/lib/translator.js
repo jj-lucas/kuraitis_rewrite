@@ -40,12 +40,12 @@ const translations = {
 		da: 'Din indkøbskurv',
 	},
 	subtotal: {
-		en: 'Order Total',
-		da: 'Ordretotal',
+		en: 'Order Subtotal',
+		da: 'Ordre subtotal',
 	},
 	free_delivery: {
-		en: 'Free delivery',
-		da: 'Gratis levering',
+		en: 'Free delivery in Denmark',
+		da: 'Gratis levering i Danmark',
 	},
 	gift_wrapping: {
 		en: 'Gift wrapping',
@@ -72,6 +72,57 @@ const translations = {
 	order_summary: {
 		en: 'Order summary',
 		da: '__order_summary',
+	},
+
+	// Order
+	your_order: {
+		en: 'Your order',
+		da: '__your_order',
+	},
+	track_trace_international: {
+		en: 'Track & Trace',
+		da: 'Track & Trace',
+	},
+	track_trace_denmark: {
+		en: 'Track & Trace',
+		da: 'Track & Trace',
+	},
+	standard_international: {
+		en: 'Standard shipping',
+		da: 'Standard shipping',
+	},
+	standard_denmark: {
+		en: 'Standard shipping',
+		da: 'Standard shipping',
+	},
+	customer_details: {
+		en: 'Customer information',
+		da: '__customer_details',
+	},
+	shipment_status: {
+		en: 'Shipment status',
+		da: '__shipment_status',
+	},
+	still_in_progress: {
+		en:
+			'Sergio is still making the products you purchased. You will receive an email when your order has been shipped.',
+		da: '__still_in_progress',
+	},
+	additional_help: {
+		en: 'Need additional help?',
+		da: '__additional_help',
+	},
+	order_details: {
+		en: 'Order details',
+		da: '__order_details',
+	},
+	order_date: {
+		en: 'Order date',
+		da: '__order_date',
+	},
+	order_id: {
+		en: 'Order ID',
+		da: '__order_id',
 	},
 }
 

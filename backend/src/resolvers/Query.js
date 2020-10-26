@@ -31,6 +31,7 @@ const Query = {
 	attributes: forwardTo('db'),
 
 	shippingProfiles: forwardTo('db'),
+	order: forwardTo('db'),
 
 	async cart(parent, args, ctx, info) {
 		const { cartToken } = ctx.request.cookies

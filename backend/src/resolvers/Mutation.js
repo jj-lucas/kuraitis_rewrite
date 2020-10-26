@@ -188,6 +188,8 @@ const mutations = {
 			purchasedSKUs.push(purchasedSku)
 		})
 
+		let shippingCosts = []
+
 		// ensure shipping is set to international if country is not DK
 		if (args.country !== 'Denmark' && !args.shipping.includes('_international')) {
 			throw new Error('Wrong shipping profile chosen')
@@ -210,6 +212,7 @@ const mutations = {
       }`
 		)
 		subtotal += shippingCost.price[args.currency] / 100
+		shippingCosts.push({ name: args.shipping, price: shippingCost.price[args.currency] / 100 })
 
 		// handle additional shipping costs
 		if (args.shipping.includes('track_trace')) {
@@ -230,6 +233,10 @@ const mutations = {
         }`
 			)
 			subtotal += standardShipping.price[args.currency] / 100
+			shippingCosts.unshift({
+				name: args.shipping.replace('track_trace', 'standard'),
+				price: standardShipping.price[args.currency] / 100,
+			})
 		}
 
 		// Stripe takes amounts in cents
@@ -261,6 +268,7 @@ const mutations = {
 					currency: args.currency,
 					charge: charge.id,
 					shipping: args.shipping,
+					shippingCosts,
 					items: {
 						create: purchasedSKUs,
 					},
