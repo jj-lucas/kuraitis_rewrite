@@ -6,6 +6,7 @@ import { LogoutButton } from '../../components'
 
 const links = [
 	{ label: 'Dashboard', path: '/admin' },
+	{ label: 'Orders', path: '/admin/orders' },
 	{ label: 'Categories', path: '/admin/categories' },
 	{ label: 'Products', path: '/admin/products' },
 	{ label: 'Reports', path: '/admin/reports' },

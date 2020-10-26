@@ -104,8 +104,7 @@ const translations = {
 		da: '__shipment_status',
 	},
 	still_in_progress: {
-		en:
-			'Sergio is still making the products you purchased. You will receive an email when your order has been shipped.',
+		en: 'Sergio is now making the products you purchased. You will receive an email when your order has been shipped.',
 		da: '__still_in_progress',
 	},
 	additional_help: {

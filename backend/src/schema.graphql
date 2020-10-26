@@ -16,6 +16,15 @@ type Query {
 	cart: Cart
 	shippingProfiles(where: ShippingProfileWhereInput): [ShippingProfile]!
 	order(id: ID!, auth: String!): Order
+	orders(
+		where: OrderWhereInput
+		orderBy: OrderOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): [Order]!
 }
 
 type Mutation {

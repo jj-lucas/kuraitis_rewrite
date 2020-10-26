@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client'
 import StripeCheckout from 'react-stripe-checkout'
+import { stripePublicKey } from '../../config'
 
 const CREATE_ORDER_MUTATION = gql`
 	mutation CREATE_ORDER_MUTATION(
@@ -62,7 +63,7 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 			amount={amount * 100}
 			email={'lucas@lucsali.com'}
 			name="Sergio Kuraitis - Naturligt Design"
-			stripeKey="pk_test_51GzQONHqFvOKDhGmsF50x344v3iwL4AY9faQGOQXAWokWrPXdtoja88f2pCRlN9yb0aFjRpo7mXfDwB5CVUL6See00GJkIQAKe"
+			stripeKey={stripePublicKey}
 			description={`Order description`}
 			token={null}
 			image={image}

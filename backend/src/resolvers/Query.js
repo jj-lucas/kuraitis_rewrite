@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { forwardTo } = require('prisma-binding')
+const hasPermissions = require('../lib/hasPermissions')
 
 const Query = {
 	...require('./queries/category'),
@@ -7,6 +8,8 @@ const Query = {
 
 	// USER
 	async users(parent, args, ctx, info) {
+		hasPermissions(ctx, ['ADMIN'])
+
 		return ctx.db.query.users({}, info)
 	},
 
@@ -49,6 +52,17 @@ const Query = {
 			info
 		)
 		return orders.length ? orders[0] : null
+	},
+
+	async orders(parent, args, ctx, info) {
+		hasPermissions(ctx, ['ADMIN', 'ORDERS'])
+
+		return ctx.db.query.orders(
+			{
+				where: args.where,
+			},
+			info
+		)
 	},
 
 	async cart(parent, args, ctx, info) {
