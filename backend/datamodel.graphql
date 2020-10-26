@@ -136,6 +136,7 @@ type Order {
 	fullfilled: Boolean @default(value: false)
 	archived: Boolean @default(value: false)
 	trackingCode: String
+	auth: String! @unique
 }
 
 type Customer {

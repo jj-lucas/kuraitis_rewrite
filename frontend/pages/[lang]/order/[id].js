@@ -4,11 +4,12 @@ import { withCart, withCurrency, withLocale } from '../../../lib'
 
 const OrderPage = props => {
 	const router = useRouter()
-	const { id } = router.query
+	const { id, t } = router.query
+
 	return (
 		<Page>
 			<ContentSection>
-				<Order orderId={id} />
+				<Order orderId={id} auth={t} />
 			</ContentSection>
 		</Page>
 	)

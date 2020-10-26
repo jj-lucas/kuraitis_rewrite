@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const { forwardTo } = require('prisma-binding')
 const hasPermissions = require('../lib/hasPermissions')
 const stripe = require('../stripe')
+const { randomBytes } = require('crypto')
+const { promisify } = require('util')
 
 const mutations = {
 	...require('./mutations/user'),
@@ -260,6 +262,10 @@ const mutations = {
 			country: args.country,
 		}
 
+		// create a random auth token
+		const randomBytesPromisified = promisify(randomBytes)
+		const authToken = (await randomBytesPromisified(10)).toString('hex')
+
 		// create the Order
 		const order = await ctx.db.mutation.createOrder(
 			{
@@ -275,10 +281,12 @@ const mutations = {
 					customer: {
 						create: customer,
 					},
+					auth: authToken,
 				},
 			},
 			`{ 
       id
+      auth
       customer {
         id
       }

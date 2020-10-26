@@ -10,8 +10,8 @@ import { CurrencyContext, LocaleContext, prettyPrice, translate } from '../../li
 import { Form } from '../Shared'
 
 const ORDER_QUERY = gql`
-	query ORDER_QUERY($id: ID!) {
-		order(where: { id: $id }) {
+	query ORDER_QUERY($id: ID!, $t: String!) {
+		order(id: $id, auth: $t) {
 			id
 			createdAt
 			items {
@@ -141,29 +141,31 @@ const StyledOrder = styled.div`
 	}
 `
 
-const Order = ({ orderId }) => {
+const Order = ({ orderId, auth }) => {
 	const { locale } = useContext(LocaleContext)
 	const { currency, setCurrency } = useContext(CurrencyContext)
 
 	const { loading, error, data } = useQuery(ORDER_QUERY, {
-		variables: { id: orderId },
+		variables: { id: orderId, t: auth },
 	})
 
 	if (loading) {
 		return <p>Loading</p>
 	}
 
-	if (!data) {
+	if (!data || !data.order) {
 		return (
 			<>
-				<h1>{translate('checkout', locale)}</h1>
-				<p>Your shopping cart is empty</p>
+				<h1>{translate('your_order', locale)}</h1>
+				<p>
+					We couldn't find this order. Please <a href="mailto:sergio@kuraitis.dk">contact Sergio</a> directly if in need
+					of assistance.
+				</p>
 			</>
 		)
 	}
 
 	const { order } = data
-	console.log(order)
 
 	return (
 		<StyledOrder>

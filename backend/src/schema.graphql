@@ -15,7 +15,7 @@ type Query {
 	attributes(where: AttributeWhereInput, orderBy: AttributeOrderByInput): [Attribute]!
 	cart: Cart
 	shippingProfiles(where: ShippingProfileWhereInput): [ShippingProfile]!
-	order(where: OrderWhereUniqueInput!): Order
+	order(id: ID!, auth: String!): Order
 }
 
 type Mutation {

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lucas-gabriel-salina-dovidio/kuraitis-rewrite/dev
-# timestamp: Sun Oct 25 2020 15:32:05 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Oct 26 2020 18:59:41 GMT+0100 (Central European Standard Time)
 
 type AggregateAttribute {
   count: Int!
@@ -2615,6 +2615,7 @@ type Order implements Node {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String!
 }
 
 """A connection to a list of items."""
@@ -2638,6 +2639,7 @@ input OrderCreateInput {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String!
   items: PurchasedSkuCreateManyInput
   customer: CustomerCreateOneWithoutOrdersInput!
 }
@@ -2658,6 +2660,7 @@ input OrderCreateWithoutCustomerInput {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String!
   items: PurchasedSkuCreateManyInput
 }
 
@@ -2693,6 +2696,8 @@ enum OrderOrderByInput {
   archived_DESC
   trackingCode_ASC
   trackingCode_DESC
+  auth_ASC
+  auth_DESC
 }
 
 type OrderPreviousValues {
@@ -2707,6 +2712,7 @@ type OrderPreviousValues {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String!
 }
 
 input OrderScalarWhereInput {
@@ -2992,6 +2998,46 @@ input OrderScalarWhereInput {
 
   """All values not ending with the given string."""
   trackingCode_not_ends_with: String
+  auth: String
+
+  """All values that are not equal to given value."""
+  auth_not: String
+
+  """All values that are contained in given list."""
+  auth_in: [String!]
+
+  """All values that are not contained in given list."""
+  auth_not_in: [String!]
+
+  """All values less than the given value."""
+  auth_lt: String
+
+  """All values less than or equal the given value."""
+  auth_lte: String
+
+  """All values greater than the given value."""
+  auth_gt: String
+
+  """All values greater than or equal the given value."""
+  auth_gte: String
+
+  """All values containing the given string."""
+  auth_contains: String
+
+  """All values not containing the given string."""
+  auth_not_contains: String
+
+  """All values starting with the given string."""
+  auth_starts_with: String
+
+  """All values not starting with the given string."""
+  auth_not_starts_with: String
+
+  """All values ending with the given string."""
+  auth_ends_with: String
+
+  """All values not ending with the given string."""
+  auth_not_ends_with: String
 }
 
 type OrderSubscriptionPayload {
@@ -3041,6 +3087,7 @@ input OrderUpdateInput {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String
   items: PurchasedSkuUpdateManyInput
   customer: CustomerUpdateOneRequiredWithoutOrdersInput
 }
@@ -3055,6 +3102,7 @@ input OrderUpdateManyDataInput {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String
 }
 
 input OrderUpdateManyMutationInput {
@@ -3067,6 +3115,7 @@ input OrderUpdateManyMutationInput {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String
 }
 
 input OrderUpdateManyWithoutCustomerInput {
@@ -3096,6 +3145,7 @@ input OrderUpdateWithoutCustomerDataInput {
   fullfilled: Boolean
   archived: Boolean
   trackingCode: String
+  auth: String
   items: PurchasedSkuUpdateManyInput
 }
 
@@ -3393,6 +3443,46 @@ input OrderWhereInput {
 
   """All values not ending with the given string."""
   trackingCode_not_ends_with: String
+  auth: String
+
+  """All values that are not equal to given value."""
+  auth_not: String
+
+  """All values that are contained in given list."""
+  auth_in: [String!]
+
+  """All values that are not contained in given list."""
+  auth_not_in: [String!]
+
+  """All values less than the given value."""
+  auth_lt: String
+
+  """All values less than or equal the given value."""
+  auth_lte: String
+
+  """All values greater than the given value."""
+  auth_gt: String
+
+  """All values greater than or equal the given value."""
+  auth_gte: String
+
+  """All values containing the given string."""
+  auth_contains: String
+
+  """All values not containing the given string."""
+  auth_not_contains: String
+
+  """All values starting with the given string."""
+  auth_starts_with: String
+
+  """All values not starting with the given string."""
+  auth_not_starts_with: String
+
+  """All values ending with the given string."""
+  auth_ends_with: String
+
+  """All values not ending with the given string."""
+  auth_not_ends_with: String
   items_every: PurchasedSkuWhereInput
   items_some: PurchasedSkuWhereInput
   items_none: PurchasedSkuWhereInput
@@ -3401,6 +3491,7 @@ input OrderWhereInput {
 
 input OrderWhereUniqueInput {
   id: ID
+  auth: String
 }
 
 """Information about pagination in a connection."""

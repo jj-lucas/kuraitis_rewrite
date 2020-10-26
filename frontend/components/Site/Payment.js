@@ -31,6 +31,7 @@ const CREATE_ORDER_MUTATION = gql`
 			country: $country
 		) {
 			id
+			auth
 		}
 	}
 `
@@ -52,7 +53,7 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 			},
 		}).then(({ data }) => {
 			console.log(data)
-			window.location = `/${locale}/order/${data.createOrder.id}`
+			window.location = `/${locale}/order/${data.createOrder.id}?t=${data.createOrder.auth}`
 		})
 	}
 
