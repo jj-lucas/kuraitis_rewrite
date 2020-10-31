@@ -4,6 +4,7 @@ const hasPermissions = require('../lib/hasPermissions')
 const stripe = require('../stripe')
 const { randomBytes } = require('crypto')
 const { promisify } = require('util')
+const { sendConfirmationMail } = require('../lib/mail')
 
 const mutations = {
 	...require('./mutations/user'),
@@ -288,7 +289,8 @@ const mutations = {
       id
       auth
       customer {
-        id
+		id
+		email
       }
     }`
 		)
@@ -314,8 +316,38 @@ const mutations = {
 		})
 		ctx.response.clearCookie('cartToken')
 
+		// send order confirmation mail
+		sendConfirmationMail(order)
+
 		// return the order to the client
 		return order
+	},
+
+	async sendConfirmationMail(parent, args, ctx, info) {
+		// get the order
+		const order = await ctx.db.query.order(
+			{
+				where: {
+					id: args.orderId,
+				},
+			},
+			`{
+			id
+			total
+			currency
+			customer {
+				email
+			}
+		}`
+		)
+		if (!order) return null
+
+		// send order confirmation mail
+		await sendConfirmationMail(order)
+
+		return {
+			message: 'Confirmation mail sent',
+		}
 	},
 }
 

@@ -95,6 +95,8 @@ type Mutation {
 		country: String!
 		shipping: String!
 	): Order
+
+	sendConfirmationMail(orderId: String): SuccessMessage
 }
 
 type User {

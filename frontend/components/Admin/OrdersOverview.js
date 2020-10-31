@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { add, format, formatDistanceToNowStrict } from 'date-fns'
 import styled from 'styled-components'
 import { stripePaymentsUrl } from '../../config'
@@ -29,6 +29,14 @@ const ORDERS_QUERY = gql`
 				country
 			}
 			shipping
+		}
+	}
+`
+
+const SEND_ORDER_CONFIRMATION_MUTATION = gql`
+	mutation SEND_ORDER_CONFIRMATION_MUTATION($orderId: String!) {
+		sendConfirmationMail(orderId: $orderId) {
+			message
 		}
 	}
 `
@@ -99,6 +107,24 @@ const Order = styled.li`
 `
 
 const OrderList = ({ orders }) => {
+	const [createOrder] = useMutation(SEND_ORDER_CONFIRMATION_MUTATION)
+
+	const resendConfirmationMail = orderId => {
+		if (window.confirm('Are you sure you want to resend the confirmation mail?')) {
+			createOrder({
+				variables: {
+					orderId,
+				},
+			}).then(({ data }) => {
+				if (data) {
+					alert('Order confirmation sent')
+				} else {
+					alert('Something went wrong')
+				}
+			})
+		}
+	}
+
 	return (
 		<ul>
 			{orders.map(order => {
@@ -132,6 +158,9 @@ const OrderList = ({ orders }) => {
 									) : (
 										<button>Marked as shipped</button>
 									)}
+								</p>
+								<p>
+									<button onClick={e => resendConfirmationMail(order.id)}>Resend confirmation email</button>
 								</p>
 								<p>
 									<a target="_blank" href={`/en/order/${order.id}?t=${order.auth}`}>

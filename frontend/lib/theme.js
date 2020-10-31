@@ -1,6 +1,6 @@
 const theme = {
 	maxWidth: '1400px',
-	maxLengthLine: '1024px',
+	maxLengthLine: '1300px',
 	breakpoints: {
 		xs: '375px',
 		sm: '680px',
