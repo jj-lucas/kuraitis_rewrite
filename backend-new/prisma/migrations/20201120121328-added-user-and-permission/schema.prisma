@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -22,7 +22,7 @@ model TestUser {
 
 model Permission {
     id    String @id @default(cuid())
-    name  String @unique
+    name  String
     users User[]
 }
 

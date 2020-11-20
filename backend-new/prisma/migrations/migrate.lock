@@ -1,3 +1,6 @@
 # Prisma Migrate lockfile v1
 
 20201120091246-init
+20201120114234-added-other-test
+20201120121328-added-user-and-permission
+20201120122806-make-permission-name-unique

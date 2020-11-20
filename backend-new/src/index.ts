@@ -1,36 +1,21 @@
-import typeDefs from './type-defs'
 import { PrismaClient } from "@prisma/client"
+import resolvers from './resolvers'
+import typeDefs from './type-defs'
 
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 require('dotenv').config({ path: 'variables.env' })
 
+/*import * as fs from 'fs';
+import * as path from 'path';
+const typeDefs = fs.readFileSync(path.join(__dirname, "schema.graphql"), 'utf8')*/
+
 const { GraphQLServer } = require('graphql-yoga')
 
-type Context = {
+export type Context = {
     prisma: PrismaClient
     request: any
     response: any
-}
-
-const resolvers = {
-    Query: {
-        tests: (parent, args, context: Context, info) => {
-            console.log(context.request.userId)
-            const tests = context.prisma.test.findMany()
-
-            return tests
-        }
-    },
-    Mutation: {
-        createTest: (parent, args, context: Context, info) => {
-            return context.prisma.test.create({
-                data: {
-                    name: args.name
-                }
-            })
-        }
-    },
 }
 
 const { makeExecutableSchema } = require('@graphql-tools/schema')
