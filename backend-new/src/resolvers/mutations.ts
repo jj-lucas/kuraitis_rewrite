@@ -3,14 +3,6 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const mutationResolvers = {
-    createTest: (parent, args, ctx: Context, info) => {
-        return ctx.prisma.test.create({
-            data: {
-                name: args.name
-            }
-        })
-    },
-
     createUser: async (parent, args, ctx: Context, info) => {
         args.email = args.email.toLowerCase()
         // hash the passsword
