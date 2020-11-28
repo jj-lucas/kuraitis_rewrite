@@ -1,8 +1,8 @@
-import { DisplayError, Form, ImageUploader, ProductVariants } from '../../components'
-import { useQuery, useMutation, gql } from '@apollo/client'
-import { languages } from '../../config'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { useEffect, useState } from 'react'
 import Select from 'react-select'
-import { useState, useEffect } from 'react'
+import { DisplayError, Form, ImageUploader, ProductVariants } from '../../components'
+import { languages } from '../../config'
 
 const PRODUCT_BY_ID_QUERY = gql`
 	query PRODUCT_BY_ID_QUERY($id: ID!) {
@@ -13,9 +13,9 @@ const PRODUCT_BY_ID_QUERY = gql`
 			price {
 				DKK
 			}
-			images(orderBy:sorting_ASC) {
+			images {
 				id
-				image
+				url
 			}
             categories {
                 id
@@ -29,7 +29,7 @@ const PRODUCT_BY_ID_QUERY = gql`
 				}
 				image {
 					id
-					image
+					url
 				}
 			}
 			selectedAttributes
@@ -41,7 +41,7 @@ const PRODUCT_BY_ID_QUERY = gql`
             id
             name_da
         }
-		attributes(orderBy: position_ASC) {
+		attributes {
 			id
 			name
 			options
@@ -353,3 +353,4 @@ const ProductEditor = props => {
 }
 
 export { ProductEditor }
+

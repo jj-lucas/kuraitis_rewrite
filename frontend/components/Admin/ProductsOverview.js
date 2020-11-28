@@ -14,9 +14,9 @@ const PRODUCTS_QUERY = gql`
 			categories {
 				id
 			}
-			images(orderBy: sorting_ASC) {
+			images {
 				id
-				image
+				url
 			}
 		}
 		categories {
@@ -30,8 +30,8 @@ const PRODUCTS_QUERY = gql`
 `
 
 const CREATE_PRODUCT_MUTATION = gql`
-	mutation CREATE_PRODUCT_MUTATION($category: ID) {
-		createProduct(category: $category) {
+	mutation CREATE_PRODUCT_MUTATION($categoryId: ID) {
+		createProduct(categoryId: $categoryId) {
 			id
 		}
 	}
@@ -122,7 +122,7 @@ const CategoryOfProducts = props => {
 
 		await createProduct({
 			variables: {
-				category: props.category ? props.category : null,
+				categoryId: props.category ? props.category : null,
 			},
 		})
 			.catch(error => {
@@ -141,7 +141,7 @@ const CategoryOfProducts = props => {
 						<StyledCard>
 							<a href={`/admin/product?id=${product.id}`}>
 								<div>
-									<img src={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
+									<img src={product.images[0] ? product.images[0].url : '/images/placeholder_product.png'} />
 								</div>
 
 								<div>
@@ -165,3 +165,4 @@ const CategoryOfProducts = props => {
 }
 
 export { ProductsOverview }
+

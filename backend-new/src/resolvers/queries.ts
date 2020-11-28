@@ -101,7 +101,7 @@ const queryResolvers = {
 
 	attributes: async (parent, args, ctx: Context, info) => {
 		return ctx.prisma.attribute.findMany({
-			orderBy: [{ sorting: 'asc' }],
+			orderBy: [{ position: 'asc' }],
 		})
 	},
 

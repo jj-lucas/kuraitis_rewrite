@@ -242,12 +242,16 @@ const mutationResolvers = {
 
 		// sort images
 		const images = args.images ? args.images : []
-		images.map(async (id, index) => {
+
+		// Array.map doesn't respect await, causing concurrency issues
+		// due to the fact that SQLLite gets locked
+		// https://github.com/prisma/prisma/issues/484
+		for (let i in images) {
 			await ctx.prisma.image.update({
-				where: { id },
-				data: { sorting: index + 1 },
+				where: { id: images[i] },
+				data: { sorting: parseInt(i, 10) + 1 },
 			})
-		})
+		}
 
 		// take a copy of updates
 		const updates = {
@@ -314,12 +318,16 @@ const mutationResolvers = {
 		// sort images
 		if (args.images) {
 			const images = args.images
-			images.map(async (id, index) => {
+
+			// Array.map doesn't respect await, causing concurrency issues
+			// due to the fact that SQLLite gets locked
+			// https://github.com/prisma/prisma/issues/484
+			for (let i in images) {
 				await ctx.prisma.image.update({
-					where: { id },
-					data: { sorting: index + 1 },
+					where: { id: images[i] },
+					data: { sorting: parseInt(i, 10) + 1 },
 				})
-			})
+			}
 		}
 
 		// take a copy of updates
@@ -341,7 +349,7 @@ const mutationResolvers = {
 		}
 
 		// run the update method
-		return ctx.prisma.category.update({
+		return await ctx.prisma.category.update({
 			data: updates,
 			where: {
 				id: args.id,

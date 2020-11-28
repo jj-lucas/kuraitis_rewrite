@@ -60,9 +60,13 @@ server.express.use(async (req, res, next) => {
 })
 
 const options = {
-	port: 8000,
+	port: process.env.PORT,
 	endpoint: '/graphql',
 	subscriptions: '/subscriptions',
 	playground: '/playground',
+	cors: {
+		credentials: true,
+		origin: process.env.FRONTEND_URL,
+	},
 }
 server.start(options, ({ port }) => console.log(`Server started, listening on port ${port} for incoming requests.`))

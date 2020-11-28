@@ -15,8 +15,8 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_da
 			name_en
 			sorting
-			images(orderBy: sorting_ASC) {
-				image
+			images {
+				url
 			}
 		}
 	}
@@ -123,7 +123,7 @@ const CategoriesOverview = () => {
 								<div>
 									<img
 										alt=""
-										src={category.images[0] ? category.images[0].image : '/images/placeholder_category.png'}
+										src={category.images[0] ? category.images[0].url : '/images/placeholder_category.png'}
 									/>
 								</div>
 
@@ -145,3 +145,4 @@ const CategoriesOverview = () => {
 }
 
 export { CategoriesOverview }
+

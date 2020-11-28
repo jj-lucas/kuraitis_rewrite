@@ -93,10 +93,10 @@ const Nav = ({ className, children }) => {
 				</NavLink>
 			))}
 			<User>
-				{({ me }) =>
-					me && (
+				{({ currentUser }) =>
+					currentUser && (
 						<>
-							{me.permissions.includes('ADMIN') && (
+							{currentUser.permissions.includes('ADMIN') && (
 								<Link href="/admin">
 									<a className="admin">Admin</a>
 								</Link>
@@ -119,3 +119,4 @@ const Nav = ({ className, children }) => {
 }
 
 export { Nav }
+

@@ -35,6 +35,7 @@ const Button = () => {
 	)
 }
 
-const LogoutButton = () => <User>{({ me }) => me && <Button />}</User>
+const LogoutButton = () => <User>{({ currentUser }) => currentUser && <Button />}</User>
 
 export { LogoutButton }
+

@@ -81,10 +81,10 @@ const Report = props => {
 
 	return (
 		<User>
-			{({ me }) =>
-				me && (
+			{({ currentUser }) =>
+				currentUser && (
 					<>
-						{(me.permissions.includes('ADMIN') || me.permissions.includes('REPORTCREATE')) && (
+						{(currentUser.permissions.includes('ADMIN') || currentUser.permissions.includes('REPORTCREATE')) && (
 							<span onClick={onClick}>
 								<StyledIcon size={20} reported={props.image in existingReports ? 'reported' : null} />
 							</span>
@@ -97,3 +97,4 @@ const Report = props => {
 }
 
 export { Report }
+

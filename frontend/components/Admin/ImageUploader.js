@@ -5,12 +5,12 @@ import styled from 'styled-components'
 import { DisplayError, SortableItem, SortableList } from '../../components'
 import { cloudinaryUrl } from '../../config'
 
-const UPLOAD_IMAGE_MUTATION = gql`
-	mutation UPLOAD_IMAGE_MUTATION($image: String!, $largeImage: String!, $categoryId: ID, $productId: ID) {
-		uploadImage(image: $image, largeImage: $largeImage, categoryId: $categoryId, productId: $productId) {
+const CREATE_IMAGE_MUTATION = gql`
+	mutation CREATE_IMAGE_MUTATION($url: String!, $largeUrl: String!, $categoryId: ID, $productId: ID) {
+		createImage(url: $url, largeUrl: $largeUrl, categoryId: $categoryId, productId: $productId) {
 			id
-			image
-			largeImage
+			url
+			largeUrl
 		}
 	}
 `
@@ -18,7 +18,7 @@ const UPLOAD_IMAGE_MUTATION = gql`
 const DELETE_IMAGE_MUTATION = gql`
 	mutation DELETE_IMAGE_MUTATION($id: ID!) {
 		deleteImage(id: $id) {
-			id
+			message
 		}
 	}
 `
@@ -49,7 +49,7 @@ const StyledTrashIcon = styled(MdDeleteForever)`
 `
 
 const ImageUploader = props => {
-	const [uploadImage, { loading: loadingUpload, error: errorUpload }] = useMutation(UPLOAD_IMAGE_MUTATION)
+	const [uploadImage, { loading: loadingUpload, error: errorUpload }] = useMutation(CREATE_IMAGE_MUTATION)
 	const [deleteImage, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_IMAGE_MUTATION)
 
 	const id = props.categoryId || props.productId || null
@@ -70,8 +70,8 @@ const ImageUploader = props => {
 		const file = await res.json()
 
 		let variables = {
-			image: file.secure_url,
-			largeImage: file.eager[0].secure_url,
+			url: file.secure_url,
+			largeUrl: file.eager[0].secure_url,
 		}
 		if (props.categoryId) {
 			variables.categoryId = props.categoryId
@@ -124,7 +124,7 @@ const ImageUploader = props => {
 					props.images.map((image, index) => (
 						<SortableItem key={image.id} index={index}>
 							<Tile>
-								<img src={image.image} />
+								<img src={image.url} />
 								<a
 									className="remove"
 									href="#"
@@ -143,3 +143,4 @@ const ImageUploader = props => {
 }
 
 export { ImageUploader }
+

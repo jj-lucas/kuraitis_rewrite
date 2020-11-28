@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { DisplayError, CURRENT_USER_QUERY } from '../../components'
+import { useState } from 'react'
+import { CURRENT_USER_QUERY, DisplayError } from '../../components'
 
 const SIGNIN_MUTATION = gql`
 	mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-		signin(email: $email, password: $password) {
+		signIn(email: $email, password: $password) {
 			id
 			email
 			name
@@ -15,7 +15,7 @@ const SIGNIN_MUTATION = gql`
 const LoginForm = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [signin, { data, loading, error }] = useMutation(SIGNIN_MUTATION)
+	const [signIn, { data, loading, error }] = useMutation(SIGNIN_MUTATION)
 
 	return (
 		<>
@@ -23,7 +23,7 @@ const LoginForm = () => {
 				method="post"
 				onSubmit={async e => {
 					e.preventDefault()
-					await signin({ variables: { email, password }, refetchQueries: [{ query: CURRENT_USER_QUERY }] }).catch(
+					await signIn({ variables: { email, password }, refetchQueries: [{ query: CURRENT_USER_QUERY }] }).catch(
 						error => {
 							console.log(error)
 						}
@@ -64,3 +64,4 @@ const LoginForm = () => {
 }
 
 export { LoginForm }
+

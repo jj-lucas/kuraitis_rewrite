@@ -1,23 +1,25 @@
-import { useQuery, gql } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 
 /*
 Usage example
 
 import User from './User'
 <User>
-    {({ me }) => (
-        <>{me.name}</>
+    {({ currentUser }) => (
+        <>{currentUser.name}</>
     )}
 </User>
 */
 
 const CURRENT_USER_QUERY = gql`
 	query CURRENT_USER_QUERY {
-		me {
+		currentUser {
 			id
 			name
 			email
-			permissions
+			permissions {
+				name
+			}
 		}
 	}
 `
@@ -26,7 +28,13 @@ const User = props => {
 	const { loading, error, data } = useQuery(CURRENT_USER_QUERY)
 	if (error) return <p>Error</p>
 	if (loading) return <></>
+
+	// make permissions easier to parse
+	if (data.permissions ) {
+		data.permissions = data.permissions.map(permission => permission.name)
+	}
 	return props.children(data)
 }
 
 export { User, CURRENT_USER_QUERY }
+

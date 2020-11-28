@@ -1,16 +1,16 @@
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { useEffect, useState } from 'react'
 import { DisplayError, Form, ImageUploader } from '../../components'
-import { useQuery, useMutation, gql } from '@apollo/client'
 import { languages } from '../../config'
-import { useState, useEffect } from 'react'
 
 const CATEGORY_BY_ID_QUERY = gql`
 	query CATEGORY_BY_ID_QUERY($id: ID!) {
 		category(id: $id ) {
 			id
 			published
-            images(orderBy:sorting_ASC) {
+            images {
 				id
-                image
+                url
             }
             ${languages.map(lang => 'name_' + lang.id)}
             ${languages.map(lang => 'slug_' + lang.id)} 
@@ -229,3 +229,4 @@ const CategoryEditor = props => {
 }
 
 export { CategoryEditor }
+
