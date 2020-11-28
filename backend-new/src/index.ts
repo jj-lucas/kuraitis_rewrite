@@ -51,15 +51,8 @@ server.express.use(async (req, res, next) => {
 	if (!req.userId) return next()
 	const user = await prisma.user.findOne({
 		where: { id: req.userId },
-		select: {
-			id: true,
-			email: true,
-			name: true,
-			permissions: {
-				select: {
-					name: true,
-				},
-			},
+		include: {
+			permissions: true,
 		},
 	})
 	req.user = user

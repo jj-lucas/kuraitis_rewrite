@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -39,7 +39,7 @@ model Image {
 model Category {
     id             String    @id @default(cuid())
     sorting        Int?
-    published      Boolean   @default(false)
+    published      Boolean   @default(true)
     products       Product[]
     images         Image[]
     slug_da        String?   @unique
@@ -62,7 +62,7 @@ model Report {
 
 model Product {
     id                 String     @id @default(cuid())
-    code               String?    @unique
+    code               String     @unique
     customizable       Boolean    @default(true)
     price              Price?     @relation(fields: [priceId], references: [id])
     hasMultiplePrices  Boolean    @default(false)
@@ -105,9 +105,9 @@ model Price {
     USD             Int
     EUR             Int
     GBP             Int
-    product         Product[]
-    sku             Sku[]
-    shippingProfile ShippingProfile[]
+    Product         Product[]
+    Sku             Sku[]
+    ShippingProfile ShippingProfile[]
 }
 
 model Cart {
@@ -131,7 +131,7 @@ model PurchasedSku {
     currency      String
     image         String
     variationInfo String
-    order         Order?  @relation(fields: [orderId], references: [id])
+    Order         Order?  @relation(fields: [orderId], references: [id])
     orderId       String?
 }
 

@@ -5,3 +5,10 @@
 20201120121328-added-user-and-permission
 20201120122806-make-permission-name-unique
 20201120132659-added-model-matching-old-schema
+20201128124322-add-relation-between-report-and-image
+20201128130007-add-url-to-report
+20201128133024-fix-typo-in-attributes
+20201128133747-rename-fields
+20201128134903-product-code-not-required
+20201128161852-change-default-type-of-category-published
+20201128172852-changed-name-of-field

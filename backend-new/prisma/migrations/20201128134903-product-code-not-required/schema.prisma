@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -39,7 +39,7 @@ model Image {
 model Category {
     id             String    @id @default(cuid())
     sorting        Int?
-    published      Boolean   @default(false)
+    published      Boolean   @default(true)
     products       Product[]
     images         Image[]
     slug_da        String?   @unique
@@ -131,7 +131,7 @@ model PurchasedSku {
     currency      String
     image         String
     variationInfo String
-    order         Order?  @relation(fields: [orderId], references: [id])
+    Order         Order?  @relation(fields: [orderId], references: [id])
     orderId       String?
 }
 
