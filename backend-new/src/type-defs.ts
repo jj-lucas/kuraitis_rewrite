@@ -3,6 +3,10 @@ const typeDefs = `
         name: String!
     }
 
+    type SuccessMessage {
+        message: String
+    }
+
     type User {
         id: ID!
         name: String!
@@ -12,12 +16,18 @@ const typeDefs = `
 
     type Query { 
         users: [User]
+        currentUser: User
     }
 
     type Mutation {
-        createUser(
+        signUp(
             name: String!
             email: String!
+            password: String!
+        ): User!
+        signOut: SuccessMessage
+        signIn(
+            email: String!, 
             password: String!
         ): User
     }
