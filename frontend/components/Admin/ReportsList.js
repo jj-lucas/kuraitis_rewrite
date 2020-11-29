@@ -6,9 +6,9 @@ const REPORTS_QUERY = gql`
 	query REPORTS_QUERY {
 		reports {
 			id
-			image
+			imageUrl
 			url
-			message
+			description
 		}
 	}
 `
@@ -16,7 +16,7 @@ const REPORTS_QUERY = gql`
 const DELETE_REPORT_MUTATION = gql`
 	mutation DELETE_REPORT_MUTATION($id: ID!) {
 		deleteReport(id: $id) {
-			id
+			message
 		}
 	}
 `
@@ -78,10 +78,10 @@ const ReportsList = () => {
 			{dataQuery.reports.map(report => (
 				<Report key={report.id}>
 					<a href={report.url} target="_blank">
-						<img src={report.image} />
+						<img src={report.imageUrl} />
 					</a>
 					<div className="info">
-						<p>{report.message}</p>
+						<p>{report.description}</p>
 						<div className="ctas">
 							<Button type="submit" onClick={e => onResolve(e, report.id)}>
 								Resolve
@@ -95,3 +95,4 @@ const ReportsList = () => {
 }
 
 export { ReportsList }
+

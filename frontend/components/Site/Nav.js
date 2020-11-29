@@ -96,7 +96,7 @@ const Nav = ({ className, children }) => {
 				{({ currentUser }) =>
 					currentUser && (
 						<>
-							{currentUser.permissions.includes('ADMIN') && (
+							{currentUser.permissions.map(permission => permission.name).includes('ADMIN') && (
 								<Link href="/admin">
 									<a className="admin">Admin</a>
 								</Link>

@@ -4,7 +4,6 @@ import { stripePublicKey } from '../../config'
 
 const CREATE_ORDER_MUTATION = gql`
 	mutation CREATE_ORDER_MUTATION(
-		$cartId: String!
 		$currency: String!
 		$token: String!
 		$locale: String!
@@ -18,7 +17,6 @@ const CREATE_ORDER_MUTATION = gql`
 		$country: String!
 	) {
 		createOrder(
-			cartId: $cartId
 			currency: $currency
 			token: $token
 			locale: $locale
@@ -32,12 +30,11 @@ const CREATE_ORDER_MUTATION = gql`
 			country: $country
 		) {
 			id
-			auth
 		}
 	}
 `
 
-const Payment = ({ children, amount, image, currency, cartId, locale, shipping }) => {
+const Payment = ({ children, amount, image, currency, locale, shipping }) => {
 	const [createOrder] = useMutation(CREATE_ORDER_MUTATION)
 
 	console.log(shipping)
@@ -46,7 +43,6 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 
 		await createOrder({
 			variables: {
-				cartId,
 				currency,
 				token: res.id,
 				locale,
@@ -54,7 +50,7 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 			},
 		}).then(({ data }) => {
 			console.log(data)
-			window.location = `/${locale}/order/${data.createOrder.id}?t=${data.createOrder.auth}`
+			window.location = `/${locale}/order/${data.createOrder.id}`
 		})
 	}
 
@@ -75,3 +71,4 @@ const Payment = ({ children, amount, image, currency, cartId, locale, shipping }
 }
 
 export { Payment }
+

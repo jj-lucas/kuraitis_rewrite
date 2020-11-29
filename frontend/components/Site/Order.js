@@ -10,8 +10,8 @@ import { CurrencyContext, LocaleContext, prettyPrice, translate } from '../../li
 import { Form } from '../Shared'
 
 const ORDER_QUERY = gql`
-	query ORDER_QUERY($id: ID!, $t: String!) {
-		order(id: $id, auth: $t) {
+	query ORDER_QUERY($id: ID!) {
+		order(id: $id) {
 			id
 			createdAt
 			items {
@@ -116,6 +116,17 @@ const StyledOrder = styled.div`
 			}
 		}
 	}
+	.shipping {
+		> div {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+
+			strong {
+				display: inline-block;
+				vertical-align: top;
+			}
+		}
+	}
 	.total {
 		> div {
 			display: grid;
@@ -123,7 +134,7 @@ const StyledOrder = styled.div`
 			padding-bottom: 1rem;
 
 			&:first-of-type {
-				border-bottom: 3px solid black;
+				border-top: 3px solid black;
 			}
 		}
 		p,
@@ -141,12 +152,12 @@ const StyledOrder = styled.div`
 	}
 `
 
-const Order = ({ orderId, auth }) => {
+const Order = ({ orderId }) => {
 	const { locale } = useContext(LocaleContext)
 	const { currency, setCurrency } = useContext(CurrencyContext)
 
 	const { loading, error, data } = useQuery(ORDER_QUERY, {
-		variables: { id: orderId, t: auth },
+		variables: { id: orderId },
 	})
 
 	if (loading) {
@@ -166,7 +177,9 @@ const Order = ({ orderId, auth }) => {
 	}
 
 	const { order } = data
-
+	
+	console.log(JSON.parse(order.shippingCosts))
+	
 	return (
 		<StyledOrder>
 			<div>
@@ -179,7 +192,7 @@ const Order = ({ orderId, auth }) => {
 							<h2>{translate('order_details', locale)}</h2>
 							<p>
 								<strong>{translate('order_date', locale)}: </strong>
-								{format(new Date(order.createdAt), 'dd/MM/yyyy HH:mm')}
+								{format(new Date(parseInt(order.createdAt, 10)), 'dd/MM/yyyy HH:mm')}
 							</p>
 							<p>
 								<strong>{translate('order_id', locale)}: </strong>
@@ -268,7 +281,7 @@ const Order = ({ orderId, auth }) => {
 					<ul>
 						{order.items.map((item, index) => (
 							<li key={item + index}>
-								<div class="image">
+								<div className="image">
 									<img src={item.image} alt="" />
 								</div>
 								<div>
@@ -287,24 +300,24 @@ const Order = ({ orderId, auth }) => {
 							</li>
 						))}
 					</ul>
+					<div className="shipping">
+						{JSON.parse(order.shippingCosts).map(tariff => {
+							return (
+								<div key={tariff.code}>
+									<p>
+										{tariff.code.includes('track_trace') ? (
+											<TrackIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
+										) : (
+											<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
+										)}
+										<strong> {translate(tariff.code, locale)}</strong>
+									</p>
+									<p>{prettyPrice(tariff.price, order.currency)}</p>
+								</div>
+							)
+						})}
+					</div>
 					<div className="total">
-						<div>
-							{order.shippingCosts.map(tariff => {
-								return (
-									<>
-										<p>
-											{tariff.name.includes('track_trace') ? (
-												<TrackIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
-											) : (
-												<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
-											)}
-											<strong> {translate(tariff.name, locale)}</strong>
-										</p>
-										<p>{prettyPrice(tariff.price, order.currency)}</p>
-									</>
-								)
-							})}
-						</div>
 						<div>
 							<h2>{translate('total', locale)}</h2>
 							<h2>{prettyPrice(order.total / 100, order.currency)}</h2>
@@ -312,7 +325,7 @@ const Order = ({ orderId, auth }) => {
 					</div>
 				</div>
 			</div>
-			<div class="selling-points">
+			<div className="selling-points">
 				<div>
 					<div>
 						<DeliveryIcon size={25} />
@@ -343,3 +356,4 @@ const Order = ({ orderId, auth }) => {
 }
 
 export { Order }
+

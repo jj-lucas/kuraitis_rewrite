@@ -127,12 +127,13 @@ const Checkout = () => {
 
 	let subtotal = 0
 	if (cart && cart.items) {
-		cart.items.map((sku, index) => {
+		cart.items.split("|").map((sku, index) => {
 			const skuData = cart.skus.find(candidate => candidate.sku == sku)
 			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
 		})
 	}
 
+	console.log(shippingProfiles)
 	// add shipping costs
 	if (shipping === 'standard_denmark' || shipping === 'standard_international') {
 		subtotal += shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] / 100
@@ -276,7 +277,6 @@ const Checkout = () => {
 						</fieldset>
 						{formValid ? (
 							<Payment
-								cartId={cart.id}
 								amount={subtotal}
 								locale={locale}
 								currency={currency}
@@ -383,3 +383,4 @@ const Checkout = () => {
 }
 
 export { Checkout }
+

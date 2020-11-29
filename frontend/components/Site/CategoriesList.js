@@ -1,8 +1,8 @@
+import { gql, useQuery } from '@apollo/client'
 import React from 'react'
-import { useQuery, gql } from '@apollo/client'
 import styled from 'styled-components'
-import { LocaleContext } from '../../lib'
 import { Picture } from '../../components'
+import { LocaleContext } from '../../lib'
 
 const ALL_CATEGORIES_QUERY = gql`
 	query ALL_CATEGORIES_QUERY {
@@ -15,7 +15,7 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_en
 			sorting
 			images {
-				image
+				url
 			}
 		}
 	}
@@ -110,7 +110,7 @@ const CategoriesList = () => {
 								key={item.id}
 								name={item[`name_${locale}`]}
 								path={locale + (locale === 'da' ? '/kategorier/' : '/categories/') + item[`slug_${locale}`]}
-								image={item.images[0] ? item.images[0].image : null}
+								image={item.images[0] ? item.images[0].url : null}
 							/>
 						)
 				)}
@@ -120,3 +120,4 @@ const CategoriesList = () => {
 }
 
 export { CategoriesList }
+

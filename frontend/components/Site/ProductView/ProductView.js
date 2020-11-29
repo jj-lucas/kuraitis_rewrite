@@ -37,8 +37,8 @@ const PRODUCT_BY_CODE = gql`
 			}
 			images {
 				id
-				image
-				largeImage
+				url
+				largeUrl
 			}
 		}
 	}
@@ -75,3 +75,4 @@ const ProductView = ({ code, cart }) => {
 }
 
 export { ProductView }
+

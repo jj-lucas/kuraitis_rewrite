@@ -6,19 +6,19 @@ import { User } from '.'
 const REPORTS_QUERY = gql`
 	query REPORTS_QUERY {
 		reports {
-			image
-			message
+			imageUrl
+			description
 		}
 	}
 `
 
 const CREATE_REPORT_MUTATION = gql`
-	mutation CREATE_REPORT_MUTATION($image: String!, $url: String!, $message: String!) {
-		createReport(image: $image, url: $url, message: $message) {
+	mutation CREATE_REPORT_MUTATION($imageUrl: String!, $url: String!, $description: String!) {
+		createReport(imageUrl: $imageUrl, url: $url, description: $description) {
 			id
-			image
+			imageUrl
 			url
-			message
+			description
 		}
 	}
 `
@@ -53,13 +53,13 @@ const Report = props => {
 			alert(existingReports[props.image])
 		} else {
 			// prompt new report
-			const message = prompt('What is wrong?')
-			if (message != null) {
+			const description = prompt('What is wrong?')
+			if (description != null) {
 				await createReport({
 					variables: {
-						image: props.image,
+						imageUrl: props.image,
 						url: document.location.href,
-						message,
+						description,
 					},
 				})
 					.catch(error => {
@@ -76,7 +76,7 @@ const Report = props => {
 
 	const existingReports = {}
 	dataQuery.reports.map(report => {
-		existingReports[report.image] = report.message
+		existingReports[report.imageUrl] = report.message
 	})
 
 	return (
@@ -84,7 +84,7 @@ const Report = props => {
 			{({ currentUser }) =>
 				currentUser && (
 					<>
-						{(currentUser.permissions.includes('ADMIN') || currentUser.permissions.includes('REPORTCREATE')) && (
+						{(currentUser.permissions.map(permission => permission.name).includes('ADMIN') || currentUser.permissions.map(permission => permission.name).includes('REPORTCREATE')) && (
 							<span onClick={onClick}>
 								<StyledIcon size={20} reported={props.image in existingReports ? 'reported' : null} />
 							</span>

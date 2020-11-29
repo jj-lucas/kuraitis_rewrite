@@ -29,7 +29,7 @@ const typeDefs = `
         resolvedAt: String
         description: String!
         url: String!
-        image: Image!
+        imageUrl: String!
     }
     
     type Sku {
@@ -171,7 +171,6 @@ const typeDefs = `
 
         order(
             id: ID!
-            auth: String!
         ): Order
         orders: [Order]
     }
@@ -201,7 +200,7 @@ const typeDefs = `
         createReport(
             description: String!,
             url: String!,
-            imageId: ID!,
+            imageUrl: String!,
         ): Report
         deleteReport(
             id: ID!
@@ -251,7 +250,6 @@ const typeDefs = `
         ): SuccessMessage
         
 	    updateCart(
-            id: ID
             items: [String!]
         ): Cart!
 

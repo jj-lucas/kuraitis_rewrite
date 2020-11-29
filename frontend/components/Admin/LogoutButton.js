@@ -5,7 +5,7 @@ import { CURRENT_USER_QUERY, User } from '../../components'
 
 const SIGNOUT_MUTATION = gql`
 	mutation SIGNOUT_MUTATION {
-		signout {
+		signOut {
 			message
 		}
 	}
@@ -17,12 +17,12 @@ const StyledButton = styled.button`
 `
 
 const Button = () => {
-	const [signout, { data, loading, error }] = useMutation(SIGNOUT_MUTATION)
+	const [signOut, { data, loading, error }] = useMutation(SIGNOUT_MUTATION)
 
 	return (
 		<StyledButton
 			onClick={e => {
-				signout({
+				signOut({
 					refetchQueries: [
 						{
 							query: CURRENT_USER_QUERY,

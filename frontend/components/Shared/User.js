@@ -29,10 +29,6 @@ const User = props => {
 	if (error) return <p>Error</p>
 	if (loading) return <></>
 
-	// make permissions easier to parse
-	if (data.permissions ) {
-		data.permissions = data.permissions.map(permission => permission.name)
-	}
 	return props.children(data)
 }
 

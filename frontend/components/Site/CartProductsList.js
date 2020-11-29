@@ -77,9 +77,9 @@ const CartProductsList = ({ cart }) => {
 			{cart && !cart.items.length && <p>{translate('no_items_in_cart', locale)}</p>}
 			{cart &&
 				cart.items &&
-				cart.items.map((sku, index) => {
+				cart.items.split("|").map((sku, index) => {
 					const skuData = cart.skus.find(candidate => candidate.sku == sku)
-					const image = skuData.image ? skuData.image.image : skuData.product.images[0].image
+					const image = skuData.image ? skuData.image.url : skuData.product.images[0].url
 					const price = skuData.price || skuData.product.price
 
 					const selectedAttributes = JSON.parse(skuData.product.selectedAttributes)
@@ -88,7 +88,7 @@ const CartProductsList = ({ cart }) => {
 					)
 					return (
 						<li key={index}>
-							<div class="image">
+							<div className="image">
 								<img src={image} alt="" />
 							</div>
 							<div>
@@ -122,3 +122,4 @@ const CartProductsList = ({ cart }) => {
 }
 
 export { CartProductsList }
+

@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -147,6 +147,7 @@ model Order {
     fullfilled    Boolean        @default(false)
     archived      Boolean        @default(false)
     trackingCode  String?
+    auth          String         @unique
     customerId    String
 }
 

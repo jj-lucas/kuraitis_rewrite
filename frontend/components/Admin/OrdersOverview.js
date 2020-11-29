@@ -5,9 +5,8 @@ import { stripePaymentsUrl } from '../../config'
 
 const ORDERS_QUERY = gql`
 	query ORDERS_QUERY {
-		orders(orderBy: createdAt_DESC) {
+		orders {
 			id
-			auth
 			charge
 			createdAt
 			shippedAt
@@ -144,17 +143,17 @@ const OrderList = ({ orders }) => {
 							</div>
 							<div>
 								<p>
-									Purchased: {format(new Date(order.createdAt), 'dd MMMM, yyyy')} <br />
+									Purchased: {format(new Date(parseInt(order.createdAt, 10)), 'dd MMMM, yyyy')} <br />
 									Estimated shipping:{' '}
-									<strong>{format(add(new Date(order.createdAt), { days: 4 }), 'dd MMMM, yyyy')}</strong>
+									<strong>{format(add(new Date(parseInt(order.createdAt, 10)), { days: 4 }), 'dd MMMM, yyyy')}</strong>
 									<br />
-									{!order.shippedAt && `${formatDistanceToNowStrict(add(new Date(order.createdAt), { days: 4 }))} left`}
+									{!order.shippedAt && `${formatDistanceToNowStrict(add(new Date(parseInt(order.createdAt, 10)), { days: 4 }))} left`}
 								</p>
 							</div>
 							<div>
 								<p>
 									{order.shippedAt ? (
-										<>Shipped: {format(new Date(order.shippedAt), 'dd MMMM, yyyy')}</>
+										<>Shipped: {format(new Date(parseInt(order.shippedAt, 10)), 'dd MMMM, yyyy')}</>
 									) : (
 										<button>Marked as shipped</button>
 									)}
@@ -163,7 +162,7 @@ const OrderList = ({ orders }) => {
 									<button onClick={e => resendConfirmationMail(order.id)}>Resend confirmation email</button>
 								</p>
 								<p>
-									<a target="_blank" href={`/en/order/${order.id}?t=${order.auth}`}>
+									<a target="_blank" href={`/en/order/${order.id}`}>
 										Open order details
 									</a>
 									<br />
@@ -243,3 +242,4 @@ const OrdersOverview = () => {
 }
 
 export { OrdersOverview }
+

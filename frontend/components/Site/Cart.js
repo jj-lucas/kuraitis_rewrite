@@ -98,7 +98,7 @@ const Cart = () => {
 
 	let subtotal = 0
 	if (cart && cart.items) {
-		cart.items.map((sku, index) => {
+		cart.items.split("|").map((sku, index) => {
 			const skuData = cart.skus.find(candidate => candidate.sku == sku)
 			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
 		})
@@ -152,3 +152,4 @@ const Cart = () => {
 }
 
 export { Cart }
+

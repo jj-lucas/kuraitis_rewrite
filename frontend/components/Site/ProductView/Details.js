@@ -9,7 +9,7 @@ import {
 	LocaleContext,
 	prettyPrice,
 	translate,
-	UPDATE_CART_MUTATION,
+	UPDATE_CART_MUTATION
 } from '../../../lib'
 
 const Details = ({ product, className, setSKU, SKU }) => {
@@ -78,10 +78,12 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		e.preventDefault()
 		const sku = product.skus.find(sku => sku.sku === SKU).sku
 
+		console.log(cart)
+
 		await updateCart({
 			variables: {
 				...(cart ? { id: cart.id } : null),
-				items: [...(cart ? cart.items : []), sku],
+				items: [...(cart ? cart.items.split("|") : []), sku],
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {

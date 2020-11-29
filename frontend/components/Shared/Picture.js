@@ -1,5 +1,5 @@
-import { Report } from '../../components'
 import styled from 'styled-components'
+import { Report, User } from '../../components'
 
 const StyledPicture = styled.picture`
 	position: relative;
@@ -30,9 +30,20 @@ const Picture = props => {
 						<source key={source} srcSet={source} media={`(min-width: ${[0, 680, 1024][2 - index]}px)`} />
 					))}
 			<img src={multipleSources ? props.sources[1] : props.source} alt={props.alt} />
-			<Report image={multipleSources ? props.sources[1] : props.source} />
+			<User>
+				{({ currentUser }) =>
+					currentUser && (
+						<>
+							{currentUser.permissions.map(permission => permission.name).includes('ADMIN') && (
+								<Report image={multipleSources ? props.sources[1] : props.source} />
+							)}
+						</>
+					)
+				}
+			</User>
 		</StyledPicture>
 	)
 }
 
 export { Picture }
+

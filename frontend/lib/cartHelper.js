@@ -26,7 +26,7 @@ const CART_QUERY = gql`
 					GBP
 				}
 				image {
-					image
+					url
 				}
 				product {
 					price {
@@ -39,7 +39,7 @@ const CART_QUERY = gql`
 					name_en
 					selectedAttributes
 					images {
-						image
+						url
 					}
 				}
 			}
@@ -57,8 +57,8 @@ const CART_QUERY = gql`
 `
 
 const UPDATE_CART_MUTATION = gql`
-	mutation UPDATE_CART($id: ID, $items: [String!]) {
-		updateCart(id: $id, items: $items) {
+	mutation UPDATE_CART($items: [String!]) {
+		updateCart(items: $items) {
 			id
 		}
 	}
@@ -72,6 +72,7 @@ const CartProvider = ({ children }) => {
 
 	React.useEffect(() => {
 		if (data) {
+			console.log(data)
 			setCart(data.cart)
 			setShippingProfiles(data.shippingProfiles)
 		}
@@ -106,3 +107,4 @@ const withCart = WrappedPage => {
 }
 
 export { withCart, CART_QUERY, UPDATE_CART_MUTATION }
+

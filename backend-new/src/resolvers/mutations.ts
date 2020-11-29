@@ -4,10 +4,10 @@ const jwt = require('jsonwebtoken')
 const axios = require('axios')
 const { promisify } = require('util')
 const { randomBytes } = require('crypto')
-const stripe = require('../lib/stripe')
+const stripe = require('stripe')
 const hasPermissions = require('../lib/hasPermissions')
 const makeMultiPrice = require('../lib/utils')
-const { sendConfirmationMail } = require('../lib/mail')
+import sendConfirmationMail from '../lib/mail'
 
 const generateJWT = (user, ctx) => {
 	// generate a JWT token
@@ -132,7 +132,7 @@ const mutationResolvers = {
 		return { message: 'Image deleted' }
 	},
 
-	createReport: async (parent, { description, url, imageId }, ctx: Context, info) => {
+	createReport: async (parent, { description, url, imageUrl }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
 		// create a report
@@ -140,14 +140,7 @@ const mutationResolvers = {
 			data: {
 				description,
 				url,
-				image: {
-					connect: {
-						id: imageId,
-					},
-				},
-			},
-			include: {
-				image: true,
+				imageUrl,
 			},
 		})
 
@@ -209,18 +202,24 @@ const mutationResolvers = {
 		const conversionRates = resp.data.rates
 		let hasMultiplePrices = false
 
-		Skus.map(async entry => {
+		// Array.map doesn't respect await, causing concurrency issues
+		// due to the fact that SQLLite gets locked
+		// https://github.com/prisma/prisma/issues/484
+		for (let i in Skus) {
+			const entry = Skus[i]
+
 			if (entry.price && entry.price !== args.price) {
 				hasMultiplePrices = true
 			}
-			ctx.prisma.sku.create({
+
+			await ctx.prisma.sku.create({
 				data: {
 					sku: entry.sku,
 					price: entry.price
 						? {
 								create: { ...makeMultiPrice(entry.price.DKK, conversionRates) },
 						  }
-						: null,
+						: undefined,
 					product: {
 						connect: {
 							id: args.id,
@@ -232,10 +231,10 @@ const mutationResolvers = {
 									id: entry.image.id,
 								},
 						  }
-						: null,
+						: undefined,
 				},
 			})
-		})
+		}
 
 		// clean up skuData
 		delete args.skuData
@@ -366,36 +365,46 @@ const mutationResolvers = {
 	sortCategories: async (parent, { categories }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
-		categories.map(async (id, index) => {
+		// Array.map doesn't respect await, causing concurrency issues
+		// due to the fact that SQLLite gets locked
+		// https://github.com/prisma/prisma/issues/484
+		for (let i in categories) {
 			await ctx.prisma.category.update({
-				where: { id },
-				data: { sorting: index + 1 },
+				where: { id: categories[i] },
+				data: { sorting: parseInt(i, 10) + 1 },
 			})
-		})
+		}
+
 		return {
 			message: 'Categories sorted',
 		}
 	},
 
-	updateCart: async (parent, { id, items }, ctx: Context, info) => {
+	updateCart: async (parent, { items }, ctx: Context, info) => {
 		let cart = null
 		let gottaRegenerateCookie = false
 
-		// if a cart ID is provided
-		if (id) {
+		const { cartToken } = ctx.request.cookies
+
+		// if a cart cookies is found
+		if (cartToken) {
+			const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
+
 			// find cart to update
 			cart = await ctx.prisma.cart.findOne({
 				where: {
-					id,
+					id: cartId,
 				},
 			})
+
 			if (!cart) {
 				// clear the cookie to prevent future errors
 				ctx.response.clearCookie('cartToken')
 				gottaRegenerateCookie = true
 			}
+
 			if (cart) {
-				// if a cart for this ID existed, update it
+				// if a cart for this token existed, update it
 				cart = await ctx.prisma.cart.update({
 					where: {
 						id: cart.id,
@@ -481,6 +490,7 @@ const mutationResolvers = {
 
 		data.items.split('|').map((sku, index) => {
 			const skuData = data.skus.find(candidate => candidate.sku == sku)
+
 			// add to subtotal
 			subtotal += (skuData.price && skuData.price[args.currency]) || skuData.product.price[args.currency]
 
@@ -497,7 +507,7 @@ const mutationResolvers = {
 				name: skuData.product[`name_${args.locale}`],
 				price: (skuData.price && skuData.price[args.currency]) || skuData.product.price[args.currency],
 				currency: args.currency,
-				image: (skuData.image && skuData.image.image) || skuData.product.images[0].image,
+				image: (skuData.image && skuData.image.url) || skuData.product.images[0].url,
 				variationInfo: JSON.stringify(variationInfo),
 			}
 
@@ -521,7 +531,7 @@ const mutationResolvers = {
 			},
 		})
 		subtotal += shippingCost.price[args.currency] / 100
-		shippingCosts.push({ name: args.shipping, price: shippingCost.price[args.currency] / 100 })
+		shippingCosts.push({ code: args.shipping, price: shippingCost.price[args.currency] / 100 })
 
 		// handle additional shipping costs
 		if (args.shipping.includes('track_trace')) {
@@ -536,7 +546,7 @@ const mutationResolvers = {
 			})
 			subtotal += standardShipping.price[args.currency] / 100
 			shippingCosts.unshift({
-				name: args.shipping.replace('track_trace', 'standard'),
+				code: args.shipping.replace('track_trace', 'standard'),
 				price: standardShipping.price[args.currency] / 100,
 			})
 		}
@@ -545,7 +555,7 @@ const mutationResolvers = {
 		const total = parseInt('' + parseFloat('' + subtotal) * 100, 10) // IMPORTANT!!
 
 		// create the Stripe charge
-		const charge = await stripe.charges.create({
+		const charge = await stripe(process.env.STRIPE_SECRET).charges.create({
 			amount: total,
 			currency: args.currency,
 			source: args.token,
@@ -562,10 +572,6 @@ const mutationResolvers = {
 			country: args.country,
 		}
 
-		// create a random auth token
-		const randomBytesPromisified = promisify(randomBytes)
-		const authToken = (await randomBytesPromisified(10)).toString('hex')
-
 		// create the Order
 		const order = await ctx.prisma.order.create({
 			data: {
@@ -573,14 +579,13 @@ const mutationResolvers = {
 				currency: args.currency,
 				charge: charge.id,
 				shipping: args.shipping,
-				shippingCosts: JSON.stringify(shippingCost),
+				shippingCosts: JSON.stringify(shippingCosts),
 				items: {
 					create: purchasedSKUs,
 				},
 				customer: {
 					create: customer,
 				},
-				auth: authToken,
 			},
 			include: {
 				customer: true,

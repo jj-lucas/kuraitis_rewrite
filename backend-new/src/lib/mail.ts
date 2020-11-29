@@ -1,13 +1,5 @@
 const nodemailer = require('nodemailer')
 
-const transport = nodemailer.createTransport({
-	service: 'gmail',
-	auth: {
-		user: process.env.MAIL_USER,
-		pass: process.env.MAIL_PASS,
-	},
-})
-
 // here you would add a templating lib
 const orderTemplate = order => `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -486,12 +478,25 @@ a[x-apple-data-detectors] {
 `
 
 const sendConfirmationMail = async order => {
+	const transport = nodemailer.createTransport({
+		service: 'gmail',
+		auth: {
+			user: process.env.MAIL_USER,
+			pass: process.env.MAIL_PASS,
+		},
+	})
+
 	const mailRes = await transport.sendMail({
 		from: process.env.GMAIL_APP_USERNAME,
-		to: order.customer.email,
+		to: process.env.OUTGOING_MAILS_ENABLED === 'true' ? order.customer.email : process.env.MAIL_USER,
+		// bcc: process.env.MAIL_BCC,
 		subject: 'Thank you for your order',
 		html: orderTemplate(order),
+		/*envelope: {
+			from: process.env.GMAIL_APP_USERNAME,
+			to: process.env.OUTGOING_MAILS_ENABLED === 'true' ? order.customer.email : process.env.MAIL_USER,
+		},*/
 	})
 }
 
-exports.sendConfirmationMail = sendConfirmationMail
+export default sendConfirmationMail

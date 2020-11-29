@@ -23,9 +23,9 @@ const PRODUCTS_QUERY = gql`
 			categories {
 				id
 			}
-			images(orderBy: sorting_ASC) {
+			images {
 				id
-				image
+				url
 			}
 		}
 		categories {
@@ -95,7 +95,7 @@ const CategoryOfProducts = ({ products }) => {
 								product[`slug_${locale}`]
 							}`}>
 							<div>
-								<Picture source={product.images[0] ? product.images[0].image : '/images/placeholder_product.png'} />
+								<Picture source={product.images[0] ? product.images[0].url : '/images/placeholder_product.png'} />
 							</div>
 
 							<div>
@@ -148,3 +148,4 @@ const ProductsList = ({ categorySlug }) => {
 }
 
 export { ProductsList }
+

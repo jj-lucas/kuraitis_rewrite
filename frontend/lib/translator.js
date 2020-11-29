@@ -138,7 +138,7 @@ const transformText = (str, type) => {
 	}
 }
 
-export const translate = (str = 'HHHHEY', locale, transform = null) => {
+export const translate = (str = '#UNDEFINED#', locale, transform = null) => {
 	if (str.toLowerCase() in translations) {
 		return transformText(translations[str.toLowerCase()][locale], transform)
 	} else {

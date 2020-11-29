@@ -1,0 +1,27 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Image",
+      "field": "Report"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Report",
+      "field": "imageUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Report",
+      "field": "image"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Report",
+      "field": "imageId"
+    }
+  ]
+}

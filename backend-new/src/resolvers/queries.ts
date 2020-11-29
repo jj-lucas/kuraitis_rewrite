@@ -33,11 +33,7 @@ const queryResolvers = {
 	reports: async (parent, args, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
-		return ctx.prisma.report.findMany({
-			include: {
-				image: true,
-			},
-		})
+		return ctx.prisma.report.findMany()
 	},
 
 	products: async (parent, { categorySlug }, ctx: Context, info) => {
@@ -132,7 +128,7 @@ const queryResolvers = {
 
 		return ctx.prisma.category.findFirst({
 			where: {
-				OR: [{ id }, { slug_da }, { slug_en }],
+				OR: [{ id }, { slug_da: slug_da ? slug_da : null }, { slug_en: slug_en ? slug_en : null }],
 			},
 			include: {
 				products: {
@@ -167,11 +163,10 @@ const queryResolvers = {
 				if (cart) {
 					const result: {
 						id: string
-						items: string[]
+						items?: string
 						skus?: any
 					} = {
 						id: cart.id,
-						items: [],
 					}
 					if (cart.items) {
 						result.skus = await ctx.prisma.sku.findMany({
@@ -194,8 +189,11 @@ const queryResolvers = {
 
 						// only pass items for which we have valid SKUs for
 						result.items = cart.items
-							? cart.items.split('|').filter(skuToFind => result.skus.find(sku => skuToFind === sku.sku))
-							: []
+							? cart.items
+									.split('|')
+									.filter(skuToFind => result.skus.find(sku => skuToFind === sku.sku))
+									.join('|')
+							: ''
 					}
 
 					return result
@@ -213,19 +211,32 @@ const queryResolvers = {
 		return null
 	},
 
-	order: async (parent, args, ctx: Context, info) => {
-		return ctx.prisma.order.findOne({
+	order: async (parent, { id }, ctx: Context, info) => {
+		const order = await ctx.prisma.order.findOne({
 			where: {
-				id: args.id,
-				auth: args.auth,
+				id,
+			},
+			include: {
+				items: true,
+				customer: true,
 			},
 		})
+
+		return order
 	},
 
 	orders: async (parent, args, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
-		return ctx.prisma.order.findMany()
+		return ctx.prisma.order.findMany({
+			orderBy: {
+				createdAt: 'desc',
+			},
+			include: {
+				items: true,
+				customer: true,
+			},
+		})
 	},
 }
 
