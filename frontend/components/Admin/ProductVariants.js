@@ -107,7 +107,7 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 					)}
 				</span>
 				<span>
-					<img src={image && image.image} />
+					<img src={image && image.url} />
 				</span>
 			</StyledSKU>
 			<ImageModal
@@ -172,6 +172,7 @@ const ProductVariants = props => {
 	}
 
 	const onChangeSku = (sku, data) => {
+		console.log(sku, data)
 		const updatedSKUs = props.SKUs.map(entry =>
 			entry.sku === sku
 				? {
@@ -180,6 +181,7 @@ const ProductVariants = props => {
 				  }
 				: entry
 		)
+		console.log(updatedSKUs)
 		// update parent
 		props.setSKUs(updatedSKUs)
 	}
@@ -338,7 +340,7 @@ const ImageModal = ({ images, show, setShow, onChangeSku, sku, selectedImage }) 
 						key={entry.id}
 						className={entry.id === selectedImage && 'selected'}
 						onClick={e => onImageSelect(e, entry.id)}>
-						<img src={entry.image} />
+						<img src={entry.url} />
 					</a>
 				))}
 			</ul>

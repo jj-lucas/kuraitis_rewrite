@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -30,9 +30,10 @@ model Image {
     sorting    Int?
     category   Category? @relation(fields: [categoryId], references: [id])
     product    Product?  @relation(fields: [productId], references: [id])
+    sku        Sku?      @relation(fields: [skuId], references: [id])
     categoryId String?
     productId  String?
-    sku        Sku[]
+    skuId      String?
 }
 
 model Category {
@@ -84,7 +85,7 @@ model Sku {
     sku       String  @unique
     product   Product @relation(fields: [productId], references: [id])
     price     Price?  @relation(fields: [priceId], references: [id])
-    image     Image?  @relation(fields: [imageId], references: [id])
+    image     Image?
     productId String
     priceId   String?
     imageId   String?

@@ -83,7 +83,12 @@ const queryResolvers = {
 				images: {
 					orderBy: [{ sorting: 'asc' }],
 				},
-				skus: true,
+				skus: {
+					include: {
+						image: true,
+						price: true,
+					},
+				},
 				categories: true,
 			},
 		})

@@ -14,3 +14,6 @@
 20201128172852-changed-name-of-field
 20201128221136-change-image-field-of-report
 20201129141311-remove-auth-field-from-order
+20201219141206-correct-relation-between-skus-and-images
+20201219142632-modify-sku-image-relation
+20201219143901-fixed-sku-image-relation---again-again
