@@ -21,6 +21,7 @@ const typeDefs = `
         sorting: Int
         categoryId: String
         productId: String
+        skuId: String
     }
 
     type Report {

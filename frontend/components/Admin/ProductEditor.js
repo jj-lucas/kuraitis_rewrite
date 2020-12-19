@@ -177,6 +177,8 @@ const ProductEditor = props => {
 		updates.skuData = JSON.stringify(SKUs)
 		updates.price = updates.price ? updates.price.DKK : null
 
+		console.log(updates)
+
 		// frontend validation
 		try {
 			if (updates.published) {
