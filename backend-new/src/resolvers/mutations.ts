@@ -214,7 +214,7 @@ const mutationResolvers = {
 
 			await ctx.prisma.sku.create({
 				data: {
-					sku: entry.sku,
+					sku: entry.sku.toUpperCase(),
 					price: entry.price
 						? {
 								create: { ...makeMultiPrice(entry.price.DKK, conversionRates) },
@@ -488,8 +488,13 @@ const mutationResolvers = {
 		let purchasedSKUs = []
 		let subtotal = 0
 
+		console.log(data.items)
+
 		data.items.split('|').map((sku, index) => {
 			const skuData = data.skus.find(candidate => candidate.sku == sku)
+
+			console.log(sku)
+			console.log(data.skus)
 
 			// add to subtotal
 			subtotal += (skuData.price && skuData.price[args.currency]) || skuData.product.price[args.currency]
@@ -513,6 +518,8 @@ const mutationResolvers = {
 
 			purchasedSKUs.push(purchasedSku)
 		})
+
+		console.log('Here')
 
 		let shippingCosts = []
 

@@ -64,7 +64,7 @@ const CartProductsList = ({ cart }) => {
 		await updateCart({
 			variables: {
 				id: cart.id,
-				items: cart.items.slice(0, index).concat(cart.items.slice(index + 1, cart.items.length)),
+				items: cart.items.split("|").slice(0, index).concat(cart.items.split("|").slice(index + 1, cart.items.split("|").length)),
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
