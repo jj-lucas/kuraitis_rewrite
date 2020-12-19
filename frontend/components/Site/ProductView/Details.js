@@ -36,13 +36,14 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		let SKU = product.code
 		Object.keys(attributes).map(key => {
 			if (key in selectedAttributes) {
-				SKU += `-${selectedAttributes[key]}`
+				SKU += `-${selectedAttributes[key].toUpperCase()}`
 			}
 		})
 		setSKU(SKU)
 
 		// update price based on SKU
 		const variant = product.skus.find(variant => variant.sku.toUpperCase() === SKU)
+
 		if (variant && variant.price && variant.price[currency]) {
 			if (price[currency] !== variant.price[currency]) {
 				setPrice(variant.price[currency])
@@ -83,7 +84,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		await updateCart({
 			variables: {
 				...(cart ? { id: cart.id } : null),
-				items: [...(cart ? cart.items.split("|") : []), sku],
+				items: [...(cart && cart.items ? cart.items.split("|") : []), sku],
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
