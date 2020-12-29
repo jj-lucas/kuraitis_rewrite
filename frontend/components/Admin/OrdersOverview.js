@@ -34,6 +34,14 @@ const ORDERS_QUERY = gql`
 	}
 `
 
+const MARK_ORDER_AS_SHIPPED_MUTATION = gql`
+	mutation MARK_ORDER_AS_SHIPPED_MUTATION($id: String!) {
+		markOrderAsShipped(id: $id) {
+			message
+		}
+	}
+`
+
 const SEND_ORDER_CONFIRMATION_MUTATION = gql`
 	mutation SEND_ORDER_CONFIRMATION_MUTATION($orderId: String!) {
 		sendConfirmationMail(orderId: $orderId) {
@@ -108,11 +116,12 @@ const Order = styled.li`
 `
 
 const OrderList = ({ orders }) => {
-	const [createOrder] = useMutation(SEND_ORDER_CONFIRMATION_MUTATION)
+	const [sendConfirmationMail] = useMutation(SEND_ORDER_CONFIRMATION_MUTATION)
+	const [markAsShipped] = useMutation(MARK_ORDER_AS_SHIPPED_MUTATION)
 
-	const resendConfirmationMail = orderId => {
+	const triggerConfirmationMail = orderId => {
 		if (window.confirm('Are you sure you want to resend the confirmation mail?')) {
-			createOrder({
+			sendConfirmationMail({
 				variables: {
 					orderId,
 				},
@@ -126,9 +135,26 @@ const OrderList = ({ orders }) => {
 		}
 	}
 
+	const triggerMarkAsShipped = id => {
+		if (window.confirm('Are you sure you want to mark the order as shipped?')) {
+			markAsShipped({
+				variables: {
+					id,
+				},
+				refetchQueries: [{ query: ORDERS_QUERY, variables: {} }],
+			}).then(({ data }) => {
+				if (data) {
+					alert('Order marked as shipped')
+				} else {
+					alert('Something went wrong')
+				}
+			})
+		}
+	}
 	return (
 		<ul>
 			{orders.map(order => {
+				console.log(order)
 				return (
 					<Order className={order.shippedAt && 'shipped'} key={order.id}>
 						<div className="header">Order #: {order.number}</div>
@@ -157,11 +183,11 @@ const OrderList = ({ orders }) => {
 									{order.shippedAt ? (
 										<>Shipped: {format(new Date(parseInt(order.shippedAt, 10)), 'dd MMMM, yyyy')}</>
 									) : (
-										<button>Marked as shipped</button>
+										<button onClick={e => triggerMarkAsShipped(order.id)}>Mark as shipped</button>
 									)}
 								</p>
 								<p>
-									<button onClick={e => resendConfirmationMail(order.id)}>Resend confirmation email</button>
+									<button onClick={e => triggerConfirmationMail(order.id)}>Resend confirmation email</button>
 								</p>
 								<p>
 									<a target="_blank" href={`/${order.locale}/order/${order.id}`}>

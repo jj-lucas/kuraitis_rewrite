@@ -223,7 +223,7 @@ const Order = ({ orderId }) => {
 								<>
 									{locale === 'en' ? (
 										<>
-											<p>Your order was shipped on the {format(new Date(order.shippedAt), 'do LLLL')}.</p>
+											<p>Your order was shipped on the {format(new Date(parseInt(order.shippedAt, 10)), 'do LLLL')}.</p>
 											{order.trackingCode && (
 												<p>
 													Follow your shipment progress using the following Track & Trace code:{' '}
@@ -237,7 +237,7 @@ const Order = ({ orderId }) => {
 										</>
 									) : (
 										<>
-											<p>Your order was shipped on the {format(new Date(order.shippedAt), 'do LLLL')}.</p>
+											<p>Your order was shipped on the {format(new Date(parseInt(order.shippedAt, 10)), 'do LLLL')}.</p>
 											{order.trackingCode && (
 												<p>
 													Follow your shipment progress using the following Track & Trace code:{' '}
