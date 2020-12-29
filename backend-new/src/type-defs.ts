@@ -104,6 +104,7 @@ const typeDefs = `
 
     type Order {
         id: ID!
+        number: Int
         createdAt: String!
         items: [PurchasedSku]!
         shipping: String!
@@ -118,6 +119,7 @@ const typeDefs = `
         trackingCode: String
         auth: String
         customerId: String
+        locale: String
     }
 
     type Customer {

@@ -7,11 +7,13 @@ const ORDERS_QUERY = gql`
 	query ORDERS_QUERY {
 		orders {
 			id
+			number
 			charge
 			createdAt
 			shippedAt
 			currency
 			total
+			locale
 			trackingCode
 			items {
 				code
@@ -129,7 +131,7 @@ const OrderList = ({ orders }) => {
 			{orders.map(order => {
 				return (
 					<Order className={order.shippedAt && 'shipped'} key={order.id}>
-						<div className="header"></div>
+						<div className="header">Order #: {order.number}</div>
 						<div className="info">
 							<div>
 								<p>
@@ -162,7 +164,7 @@ const OrderList = ({ orders }) => {
 									<button onClick={e => resendConfirmationMail(order.id)}>Resend confirmation email</button>
 								</p>
 								<p>
-									<a target="_blank" href={`/en/order/${order.id}`}>
+									<a target="_blank" href={`/${order.locale}/order/${order.id}`}>
 										Open order details
 									</a>
 									<br />
@@ -205,9 +207,9 @@ const OrderList = ({ orders }) => {
 								<p className={`address ${order.shipping.includes('track_trace') && 'track_trace'}`}>
 									{order.customer.name}
 									<br />
-									{order.customer.address} {order.customer.address2}
+									{order.customer.address}{order.customer.address2 && `, ${order.customer.address2}`}
 									<br />
-									{order.customer.city} {order.customer.zip}
+									{order.customer.zip} {order.customer.city}
 									<br />
 									{order.customer.country}
 									<br />

@@ -123,6 +123,10 @@ const translations = {
 		en: 'Order ID',
 		da: '__order_id',
 	},
+	order_number: {
+		en: 'Order #',
+		da: '__order_number',
+	},
 }
 
 const transformText = (str, type) => {
