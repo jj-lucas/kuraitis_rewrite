@@ -488,13 +488,8 @@ const mutationResolvers = {
 		let purchasedSKUs = []
 		let subtotal = 0
 
-		console.log(data.items)
-
 		data.items.split('|').map((sku, index) => {
 			const skuData = data.skus.find(candidate => candidate.sku == sku)
-
-			console.log(sku)
-			console.log(data.skus)
 
 			// add to subtotal
 			subtotal += (skuData.price && skuData.price[args.currency]) || skuData.product.price[args.currency]
@@ -518,8 +513,6 @@ const mutationResolvers = {
 
 			purchasedSKUs.push(purchasedSku)
 		})
-
-		console.log('Here')
 
 		let shippingCosts = []
 
@@ -587,6 +580,7 @@ const mutationResolvers = {
 				charge: charge.id,
 				shipping: args.shipping,
 				shippingCosts: JSON.stringify(shippingCosts),
+				locale: args.locale,
 				items: {
 					create: purchasedSKUs,
 				},
@@ -596,6 +590,7 @@ const mutationResolvers = {
 			},
 			include: {
 				customer: true,
+				items: true,
 			},
 		})
 
