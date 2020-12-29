@@ -13,6 +13,7 @@ const ORDER_QUERY = gql`
 	query ORDER_QUERY($id: ID!) {
 		order(id: $id) {
 			id
+			number
 			createdAt
 			items {
 				code
@@ -86,6 +87,7 @@ const StyledOrder = styled.div`
 			}
 			.image {
 				text-align: center;
+				margin-right: 1rem;
 			}
 			.sku {
 				font-size: ${props => props.theme.typography.fs.sm};
@@ -191,12 +193,11 @@ const Order = ({ orderId }) => {
 						<fielset>
 							<h2>{translate('order_details', locale)}</h2>
 							<p>
-								<strong>{translate('order_date', locale)}: </strong>
-								{format(new Date(parseInt(order.createdAt, 10)), 'dd/MM/yyyy HH:mm')}
+								<strong>{translate('order_number', locale)}{order.number}</strong>
 							</p>
 							<p>
-								<strong>{translate('order_id', locale)}: </strong>
-								{orderId}
+								<strong>{translate('order_date', locale)}: </strong>
+								{format(new Date(parseInt(order.createdAt, 10)), 'dd/MM/yyyy HH:mm')}
 							</p>
 						</fielset>
 						<fielset>
@@ -210,7 +211,7 @@ const Order = ({ orderId }) => {
 								{order.customer.address2 && `, ${order.customer.address2}`}
 							</p>
 							<p>
-								{order.customer.city} {order.customer.zip}
+								{order.customer.zip} {order.customer.city}
 							</p>
 							<p>{order.customer.country}</p>
 						</fielset>

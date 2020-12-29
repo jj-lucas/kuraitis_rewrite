@@ -11,7 +11,9 @@ const sendConfirmationMail = async order => {
 		},
 	})
 
+	console.log('hey')
 	console.log(order)
+	console.log(order.createdAt)
 
 	const mailRes = await transport.sendMail({
 		from: process.env.GMAIL_APP_USERNAME,
