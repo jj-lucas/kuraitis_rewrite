@@ -622,6 +622,22 @@ const mutationResolvers = {
 		return order
 	},
 
+	markOrderAsShipped: async (parent, { id }, ctx: Context, info) => {
+		hasPermissions(ctx, ['ADMIN'])
+
+		// run the update method
+		await ctx.prisma.order.update({
+			data: {
+				shippedAt: new Date(),
+			},
+			where: {
+				id,
+			},
+		})
+
+		return { message: 'Order marked as shipped' }
+	},
+
 	sendConfirmationMail: async (parent, { orderId }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 		// get the order

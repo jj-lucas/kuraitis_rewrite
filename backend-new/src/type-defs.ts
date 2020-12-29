@@ -269,6 +269,10 @@ const typeDefs = `
             country: String!
             shipping: String!
         ): Order
+
+        markOrderAsShipped(
+            id: String!
+        ): SuccessMessage
         
 	    sendConfirmationMail(
             orderId: String!

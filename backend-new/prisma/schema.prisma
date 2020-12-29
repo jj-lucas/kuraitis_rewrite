@@ -137,6 +137,7 @@ model Order {
     number        Int            @id @default(autoincrement())
     id            String         @unique @default(cuid())
     createdAt     DateTime       @default(now())
+    shippedAt     DateTime?
     items         PurchasedSku[]
     shipping      String
     shippingCosts String
@@ -144,7 +145,6 @@ model Order {
     currency      String
     charge        String
     customer      Customer       @relation(fields: [customerId], references: [id])
-    shippedAt     DateTime?
     fullfilled    Boolean        @default(false)
     archived      Boolean        @default(false)
     trackingCode  String?
