@@ -6,7 +6,7 @@ const { promisify } = require('util')
 const { randomBytes } = require('crypto')
 const stripe = require('stripe')
 const hasPermissions = require('../lib/hasPermissions')
-const makeMultiPrice = require('../lib/utils')
+import { makeMultiPrice } from '../lib/utils'
 import sendConfirmationMail from '../lib/mail'
 
 const generateJWT = (user, ctx) => {
@@ -636,6 +636,7 @@ const mutationResolvers = {
 			},
 			include: {
 				customer: true,
+				items: true,
 			},
 		})
 		if (!order) throw new Error('Order not found')
