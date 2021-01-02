@@ -1,6 +1,18 @@
 import { MdClose as CloseIcon } from 'react-icons/md'
 import styled from 'styled-components'
 
+/*
+Usage:
+
+import { Modal } from '../../components'
+const [open, setOpen] = React.useState(false)
+...
+
+<Modal open={open} setOpen={setOpen} title="Modal title">
+    <More complex component with logic />
+</Modal>
+
+*/
 const StyledModal = styled.div`
 	display: block;
 	position: fixed;
