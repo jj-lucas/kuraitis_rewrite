@@ -1,6 +1,7 @@
 import { MdDeleteForever } from 'react-icons/md'
 import Select from 'react-select'
 import styled from 'styled-components'
+import { Modal } from '../../components'
 
 const StyledFieldset = styled.fieldset`
 	button[type='submit'] {
@@ -60,7 +61,7 @@ const StyledTrashIcon = styled(MdDeleteForever)`
 	cursor: pointer;
 `
 const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) => {
-	const [showImageModal, setShowImageModal] = React.useState(false)
+	const [openImageModal, setOpenImageModal] = React.useState(false)
 
 	const onChangePrice = e => {
 		onChangeSku(sku, {
@@ -72,7 +73,7 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 	const onChangeImage = e => {
 		e.preventDefault()
 
-		setShowImageModal(true)
+		setOpenImageModal(true)
 	}
 
 	const onDeleteImage = e => {
@@ -110,14 +111,16 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 					<img src={image && image.url} />
 				</span>
 			</StyledSKU>
-			<ImageModal
-				images={productImages}
-				show={showImageModal}
-				setShow={setShowImageModal}
-				onChangeSku={onChangeSku}
-				sku={sku}
-				selectedImage={image && image.id}
-			/>
+
+			<Modal open={openImageModal} setOpen={setOpenImageModal} title="Select image">
+				<ImageModalContent
+					images={productImages}
+					setOpen={setOpenImageModal}
+					onChangeSku={onChangeSku}
+					sku={sku}
+					selectedImage={image && image.id}
+				/>
+			</Modal>
 		</>
 	)
 }
@@ -271,55 +274,7 @@ const ProductVariants = props => {
 	)
 }
 
-const StyledImageModal = styled.div`
-	display: none;
-	position: fixed;
-	z-index: 10;
-	width: 600px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background: white;
-	padding: 2rem;
-	box-shadow: ${props => props.theme.boxShadow.lg};
-
-	&.active {
-		display: block;
-	}
-
-	ul {
-		list-style: none;
-		display: grid;
-		padding: 0;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-		grid-gap: 30px;
-
-		a {
-			opacity: 0.5;
-			transition: opacity ${props => props.theme.transition.durations.short}
-				${props => props.theme.transition.types.cubic};
-
-			&:hover {
-				opacity: 1;
-			}
-
-			&.selected {
-				opacity: 1;
-
-				img {
-					border-color: gray;
-				}
-			}
-		}
-
-		img {
-			width: 100%;
-			border: 3px solid white;
-		}
-	}
-`
-
-const ImageModal = ({ images, show, setShow, onChangeSku, sku, selectedImage }) => {
+const ImageModalContent = ({ images, setOpen, onChangeSku, sku, selectedImage }) => {
 	const onImageSelect = (e, imageId) => {
 		e.preventDefault()
 
@@ -327,12 +282,11 @@ const ImageModal = ({ images, show, setShow, onChangeSku, sku, selectedImage }) 
 			image: images.find(image => image.id === imageId),
 		})
 
-		setShow(false)
+		setOpen(false)
 	}
 
 	return (
-		<StyledImageModal className={show ? 'active' : ''}>
-			<h2>Select image</h2>
+		<>
 			<ul>
 				{images.map(entry => (
 					<a
@@ -344,7 +298,7 @@ const ImageModal = ({ images, show, setShow, onChangeSku, sku, selectedImage }) 
 					</a>
 				))}
 			</ul>
-		</StyledImageModal>
+		</>
 	)
 }
 
