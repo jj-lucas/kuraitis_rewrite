@@ -114,7 +114,6 @@ const typeDefs = `
         charge: String!
         customer: Customer!
         shippedAt: String
-        fullfilled: Boolean!
         archived: Boolean!
         trackingCode: String
         auth: String
@@ -272,6 +271,7 @@ const typeDefs = `
 
         markOrderAsShipped(
             id: String!
+            trackingCode: String
         ): SuccessMessage
         
 	    sendConfirmationMail(

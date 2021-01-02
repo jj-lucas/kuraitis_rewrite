@@ -622,14 +622,20 @@ const mutationResolvers = {
 		return order
 	},
 
-	markOrderAsShipped: async (parent, { id }, ctx: Context, info) => {
+	markOrderAsShipped: async (parent, { id, trackingCode }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
+
+		const data: { shippedAt: Date; trackingCode?: string } = {
+			shippedAt: new Date(),
+		}
+
+		if (trackingCode) {
+			data.trackingCode = trackingCode
+		}
 
 		// run the update method
 		await ctx.prisma.order.update({
-			data: {
-				shippedAt: new Date(),
-			},
+			data,
 			where: {
 				id,
 			},

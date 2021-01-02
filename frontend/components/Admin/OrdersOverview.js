@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { add, format, formatDistanceToNowStrict } from 'date-fns'
+import { add, format } from 'date-fns'
 import styled from 'styled-components'
 import { stripePaymentsUrl } from '../../config'
 
@@ -35,8 +35,8 @@ const ORDERS_QUERY = gql`
 `
 
 const MARK_ORDER_AS_SHIPPED_MUTATION = gql`
-	mutation MARK_ORDER_AS_SHIPPED_MUTATION($id: String!) {
-		markOrderAsShipped(id: $id) {
+	mutation MARK_ORDER_AS_SHIPPED_MUTATION($id: String!, $trackingCode: String) {
+		markOrderAsShipped(id: $id, trackingCode: $trackingCode) {
 			message
 		}
 	}
@@ -135,22 +135,42 @@ const OrderList = ({ orders }) => {
 		}
 	}
 
-	const triggerMarkAsShipped = id => {
-		if (window.confirm('Are you sure you want to mark the order as shipped?')) {
-			markAsShipped({
-				variables: {
-					id,
-				},
-				refetchQueries: [{ query: ORDERS_QUERY, variables: {} }],
-			}).then(({ data }) => {
-				if (data) {
-					alert('Order marked as shipped')
-				} else {
-					alert('Something went wrong')
-				}
-			})
+	const triggerMarkAsShipped = (id, shippingMethod) => {
+		if (shippingMethod.includes('track_trace')) {
+			const trackingCode = window.prompt('Enter the tracking code') // null if cancel, "" if no tracking code
+			if (trackingCode !== null) {
+				markAsShipped({
+					variables: {
+						trackingCode,
+						id,
+					},
+					refetchQueries: [{ query: ORDERS_QUERY, variables: {} }],
+				}).then(({ data }) => {
+					if (data) {
+						alert('Order marked as shipped')
+					} else {
+						alert('Something went wrong')
+					}
+				})
+			}
+		} else {
+			if (window.confirm('Are you sure you want to mark the order as shipped?')) {
+				markAsShipped({
+					variables: {
+						id,
+					},
+					refetchQueries: [{ query: ORDERS_QUERY, variables: {} }],
+				}).then(({ data }) => {
+					if (data) {
+						alert('Order marked as shipped')
+					} else {
+						alert('Something went wrong')
+					}
+				})
+			}
 		}
 	}
+
 	return (
 		<ul>
 			{orders.map(order => {
@@ -174,16 +194,17 @@ const OrderList = ({ orders }) => {
 									Purchased: {format(new Date(parseInt(order.createdAt, 10)), 'dd MMMM, yyyy')} <br />
 									Estimated shipping:{' '}
 									<strong>{format(add(new Date(parseInt(order.createdAt, 10)), { days: 4 }), 'dd MMMM, yyyy')}</strong>
-									<br />
-									{!order.shippedAt && `${formatDistanceToNowStrict(add(new Date(parseInt(order.createdAt, 10)), { days: 4 }))} left`}
 								</p>
 							</div>
 							<div>
 								<p>
 									{order.shippedAt ? (
-										<>Shipped: {format(new Date(parseInt(order.shippedAt, 10)), 'dd MMMM, yyyy')}</>
+										<>
+											<p>Shipped: {format(new Date(parseInt(order.shippedAt, 10)), 'dd MMMM, yyyy')}</p>
+											{order.trackingCode && <p>Tracking code: {order.trackingCode}</p>}
+										</>
 									) : (
-										<button onClick={e => triggerMarkAsShipped(order.id)}>Mark as shipped</button>
+										<button onClick={e => triggerMarkAsShipped(order.id, order.shipping)}>Mark as shipped</button>
 									)}
 								</p>
 								<p>
@@ -199,9 +220,7 @@ const OrderList = ({ orders }) => {
 									</a>
 									<br />
 									{order.trackingCode && (
-										<a
-											target="_blank"
-											href={`https://www.postnord.se/en/our-tools/track-and-trace2#dynamicloading=true&shipmentid=${order.trackingCode}`}>
+										<a target="_blank" href={`https://tracking.postnord.com/dk/?id=${order.trackingCode}`}>
 											Open Track & Trace
 										</a>
 									)}
@@ -233,7 +252,8 @@ const OrderList = ({ orders }) => {
 								<p className={`address ${order.shipping.includes('track_trace') && 'track_trace'}`}>
 									{order.customer.name}
 									<br />
-									{order.customer.address}{order.customer.address2 && `, ${order.customer.address2}`}
+									{order.customer.address}
+									{order.customer.address2 && `, ${order.customer.address2}`}
 									<br />
 									{order.customer.zip} {order.customer.city}
 									<br />
@@ -270,4 +290,3 @@ const OrdersOverview = () => {
 }
 
 export { OrdersOverview }
-
