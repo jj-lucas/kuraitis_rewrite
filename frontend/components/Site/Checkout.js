@@ -4,7 +4,7 @@ import { FiTruck as DeliveryIcon } from 'react-icons/fi'
 import { ImGift as GiftIcon } from 'react-icons/im'
 import { MdCached as ReturnIcon, MdPinDrop as TrackIcon } from 'react-icons/md'
 import styled from 'styled-components'
-import { CartProductsList, Form, Payment } from '../../components'
+import { CartProductsList, Form, Payment, SellingPoints } from '../../components'
 import { CartContext, CurrencyContext, LocaleContext, prettyPrice, translate } from '../../lib'
 
 const StyledCheckout = styled.div`
@@ -127,7 +127,7 @@ const Checkout = () => {
 
 	let subtotal = 0
 	if (cart && cart.items) {
-		cart.items.split("|").map((sku, index) => {
+		cart.items.split('|').map((sku, index) => {
 			const skuData = cart.skus.find(candidate => candidate.sku == sku)
 			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
 		})
@@ -352,35 +352,9 @@ const Checkout = () => {
 					</div>
 				</div>
 			</div>
-			<div class="selling-points">
-				<div>
-					<div>
-						<DeliveryIcon size={25} />
-					</div>
-					<p>
-						3-5 days until your order is made and shipped. <br />
-						Actual delivery time is not included. See the FAQ for more info.
-					</p>
-				</div>
-				<div>
-					<div>
-						<GiftIcon size={25} />
-					</div>
-					<p>All items are shipped in gift packaging.</p>
-				</div>
-				<div>
-					<div>
-						<ReturnIcon size={25} />
-					</div>
-					<p>
-						Free cancellations prior to shipping. <br />
-						30 days return right for non-customized products.
-					</p>
-				</div>
-			</div>
+			<SellingPoints />
 		</StyledCheckout>
 	)
 }
 
 export { Checkout }
-

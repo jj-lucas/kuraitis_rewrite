@@ -7,7 +7,7 @@ import { ImGift as GiftIcon } from 'react-icons/im'
 import { MdCached as ReturnIcon, MdPinDrop as TrackIcon } from 'react-icons/md'
 import styled from 'styled-components'
 import { CurrencyContext, LocaleContext, prettyPrice, translate } from '../../lib'
-import { Form } from '../Shared'
+import { Form, SellingPoints } from '../../components'
 
 const ORDER_QUERY = gql`
 	query ORDER_QUERY($id: ID!) {
@@ -179,9 +179,9 @@ const Order = ({ orderId }) => {
 	}
 
 	const { order } = data
-	
+
 	console.log(JSON.parse(order.shippingCosts))
-	
+
 	return (
 		<StyledOrder>
 			<div>
@@ -193,7 +193,10 @@ const Order = ({ orderId }) => {
 						<fielset>
 							<h2>{translate('order_details', locale)}</h2>
 							<p>
-								<strong>{translate('order_number', locale)}{order.number}</strong>
+								<strong>
+									{translate('order_number', locale)}
+									{order.number}
+								</strong>
 							</p>
 							<p>
 								<strong>{translate('order_date', locale)}: </strong>
@@ -326,35 +329,10 @@ const Order = ({ orderId }) => {
 					</div>
 				</div>
 			</div>
-			<div className="selling-points">
-				<div>
-					<div>
-						<DeliveryIcon size={25} />
-					</div>
-					<p>
-						3-5 days until your order is made and shipped. <br />
-						Actual delivery time is not included. See the FAQ for more info.
-					</p>
-				</div>
-				<div>
-					<div>
-						<GiftIcon size={25} />
-					</div>
-					<p>All items are shipped in gift packaging.</p>
-				</div>
-				<div>
-					<div>
-						<ReturnIcon size={25} />
-					</div>
-					<p>
-						Free cancellations prior to shipping. <br />
-						30 days return right for non-customized products.
-					</p>
-				</div>
-			</div>
+
+			<SellingPoints />
 		</StyledOrder>
 	)
 }
 
 export { Order }
-

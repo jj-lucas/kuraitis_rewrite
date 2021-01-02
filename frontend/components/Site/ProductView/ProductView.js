@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { LocaleContext } from '../../../lib'
+import { SellingPoints } from '../../../components'
 import Details from './Details'
 import Gallery from './Gallery'
 
@@ -64,15 +65,17 @@ const ProductView = ({ code, cart }) => {
 	if (loading) return <p>Loading</p>
 
 	return (
-		<Wrapper>
-			<Gallery product={data.product} offset={2} SKU={SKU} />
-			<Details product={data.product} SKU={SKU} setSKU={setSKU} />
-			<Head>
-				<title>{data.product[`name_${locale}`]} | Sergio Kuraitis: Naturligt Design</title>
-			</Head>
-		</Wrapper>
+		<>
+			<Wrapper>
+				<Gallery product={data.product} offset={2} SKU={SKU} />
+				<Details product={data.product} SKU={SKU} setSKU={setSKU} />
+				<Head>
+					<title>{data.product[`name_${locale}`]} | Sergio Kuraitis: Naturligt Design</title>
+				</Head>
+			</Wrapper>
+			<SellingPoints />
+		</>
 	)
 }
 
 export { ProductView }
-
