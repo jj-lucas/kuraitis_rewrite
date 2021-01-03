@@ -1,4 +1,34 @@
 const translations = {
+	// Mails
+	subject_order_confirmation: {
+		en: data => `Thank you for your order from Kuraitis.dk (#${data.id})`,
+		da: '__subject_order_confirmation',
+	},
+	subject_shipping: {
+		en: data => `Your order from Kuraitis.dk has been shipped (#${data.id})`,
+		da: '__subject_shipping',
+	},
+	// Shipment mail
+	order_shipped: {
+		en: 'Your order has been shipped',
+		da: '__order_shipped',
+	},
+	shipped_today: {
+		en: data => `Your order #${data.id} placed on the ${data.date} is on its way.`,
+		da: '__shipped_today',
+	},
+	track_package: {
+		en: 'Track your package',
+		da: '__track_package',
+	},
+	additional_questions: {
+		en: data =>
+			`For any additional question check out the FAQ page <a href="${data.url}/en/faq">here</a>.<br />
+			You are welcome to contact Sergio directly for any question/comment regarding your order.`,
+		da: '__additional_questions',
+	},
+
+	// Order confirmation mail
 	thank_you_for_order: {
 		en: 'Thank you for your order',
 		da: '__thank_you_for_order',
@@ -40,9 +70,9 @@ const translations = {
 		en: 'name',
 		da: '__items_ordered',
 	},
-	items_quantity: {
-		en: 'qty',
-		da: '__items_quantity',
+	items_sku: {
+		en: 'SKU',
+		da: '__items_sku',
 	},
 	items_price: {
 		en: 'price',
@@ -102,9 +132,13 @@ const transformText = (str, type) => {
 	}
 }
 
-export const translate = (str = '#UNDEFINED#', locale, transform = null) => {
+export const translate = (str = '#UNDEFINED#', locale, transform = null, data = {}) => {
 	if (str.toLowerCase() in translations) {
-		return transformText(translations[str.toLowerCase()][locale], transform)
+		if (typeof translations[str.toLowerCase()][locale] === 'function') {
+			return transformText(translations[str.toLowerCase()][locale](data), transform)
+		} else {
+			return transformText(translations[str.toLowerCase()][locale], transform)
+		}
 	} else {
 		return transformText(str, transform)
 	}

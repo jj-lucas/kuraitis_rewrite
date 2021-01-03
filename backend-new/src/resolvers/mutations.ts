@@ -7,7 +7,7 @@ const { randomBytes } = require('crypto')
 const stripe = require('stripe')
 const hasPermissions = require('../lib/hasPermissions')
 import { makeMultiPrice } from '../lib/utils'
-import sendConfirmationMail from '../lib/mail'
+import { sendConfirmationMail, sendShippingMail } from '../lib/mail'
 
 const generateJWT = (user, ctx) => {
 	// generate a JWT token
@@ -634,12 +634,21 @@ const mutationResolvers = {
 		}
 
 		// run the update method
-		await ctx.prisma.order.update({
+		const order = await ctx.prisma.order.update({
 			data,
 			where: {
 				id,
 			},
+			include: {
+				customer: true,
+				items: true,
+			},
 		})
+
+		if (!order) throw new Error('Order not found')
+
+		// send order confirmation mail
+		sendShippingMail(order)
 
 		return { message: 'Order marked as shipped' }
 	},
@@ -660,6 +669,28 @@ const mutationResolvers = {
 
 		// send order confirmation mail
 		await sendConfirmationMail(order)
+
+		return {
+			message: 'Confirmation mail sent',
+		}
+	},
+
+	sendOrderShippedMail: async (parent, { orderId }, ctx: Context, info) => {
+		hasPermissions(ctx, ['ADMIN'])
+		// get the order
+		const order = await ctx.prisma.order.findOne({
+			where: {
+				id: orderId,
+			},
+			include: {
+				customer: true,
+				items: true,
+			},
+		})
+		if (!order) throw new Error('Order not found')
+
+		// send order confirmation mail
+		await sendShippingMail(order)
 
 		return {
 			message: 'Confirmation mail sent',
