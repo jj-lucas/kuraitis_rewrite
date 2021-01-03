@@ -231,6 +231,9 @@ const typeDefs = `
             description_da: String
             description_en: String
         ): Product
+        sortProducts(
+            products: [ID]
+        ): SuccessMessage
 
         createCategory: Category
         deleteCategory(

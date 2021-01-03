@@ -1,5 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useEffect, useState } from 'react'
+import arrayMove from 'array-move'
 import { MdAdd, MdRadioButtonChecked, MdRadioButtonUnchecked } from 'react-icons/md'
 import styled from 'styled-components'
 import { SortableItem, SortableList } from '../../components'
@@ -33,6 +34,14 @@ const CREATE_PRODUCT_MUTATION = gql`
 	mutation CREATE_PRODUCT_MUTATION($categoryId: ID) {
 		createProduct(categoryId: $categoryId) {
 			id
+		}
+	}
+`
+
+const SORT_PRODUCTS_MUTATION = gql`
+	mutation SORT_PRODUCTS_MUTATION($products: [ID]) {
+		sortProducts(products: $products) {
+			message
 		}
 	}
 `
@@ -112,6 +121,7 @@ const CategoryOfProducts = props => {
 	const [products, setProducts] = useState([])
 
 	const [createProduct, { loading: loadingCreate, error: errorCreate }] = useMutation(CREATE_PRODUCT_MUTATION)
+	const [sortProducts, { loading: loadingSort, error: errorSort }] = useMutation(SORT_PRODUCTS_MUTATION)
 
 	useEffect(() => {
 		if (props.products) setProducts(props.products)
@@ -133,8 +143,25 @@ const CategoryOfProducts = props => {
 			})
 	}
 
+	const onSortEnd = async ({ oldIndex, newIndex }) => {
+		const reorderedProducts = arrayMove(products, oldIndex, newIndex)
+		setProducts(reorderedProducts)
+
+		await sortProducts({
+			variables: {
+				products: reorderedProducts.map(product => product.id),
+			},
+		})
+			.catch(error => {
+				console.log(error)
+			})
+			.then(response => {
+				console.log(response.data.sortProducts.message)
+			})
+	}
+
 	return (
-		<SortableList axis="xy" distance={1}>
+		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={4}>
 			{products &&
 				products.map((product, index) => (
 					<SortableItem key={product.id} index={index}>
@@ -165,4 +192,3 @@ const CategoryOfProducts = props => {
 }
 
 export { ProductsOverview }
-

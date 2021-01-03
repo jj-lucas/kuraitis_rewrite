@@ -296,6 +296,24 @@ const mutationResolvers = {
 		})
 	},
 
+	sortProducts: async (parent, { products }, ctx: Context, info) => {
+		hasPermissions(ctx, ['ADMIN'])
+
+		// Array.map doesn't respect await, causing concurrency issues
+		// due to the fact that SQLLite gets locked
+		// https://github.com/prisma/prisma/issues/484
+		for (let i in products) {
+			await ctx.prisma.product.update({
+				where: { id: products[i] },
+				data: { sorting: parseInt(i, 10) + 1 },
+			})
+		}
+
+		return {
+			message: 'Products sorted',
+		}
+	},
+
 	createCategory: async (parent, args, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
