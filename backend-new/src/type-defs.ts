@@ -277,6 +277,10 @@ const typeDefs = `
 	    sendConfirmationMail(
             orderId: String!
         ): SuccessMessage
+        
+	    sendOrderShippedMail(
+            orderId: String!
+        ): SuccessMessage
     }
 `
 

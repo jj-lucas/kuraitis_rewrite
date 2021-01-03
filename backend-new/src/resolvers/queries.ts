@@ -234,9 +234,14 @@ const queryResolvers = {
 		hasPermissions(ctx, ['ADMIN'])
 
 		return ctx.prisma.order.findMany({
-			orderBy: {
-				createdAt: 'desc',
-			},
+			orderBy: [
+				{
+					shippedAt: 'desc',
+				},
+				{
+					createdAt: 'desc',
+				},
+			],
 			include: {
 				items: true,
 				customer: true,

@@ -230,9 +230,7 @@ const Order = ({ orderId }) => {
 											{order.trackingCode && (
 												<p>
 													Follow your shipment progress using the following Track & Trace code:{' '}
-													<a
-														target="_blank"
-														href={`https://www.postnord.se/en/online-tools/tools/track/track-and-trace#dynamicloading=true&shipmentid=${order.trackingCode}`}>
+													<a target="_blank" href={`https://tracking.postnord.com/dk/?id=${order.trackingCode}`}>
 														{order.trackingCode}
 													</a>
 												</p>
@@ -244,9 +242,7 @@ const Order = ({ orderId }) => {
 											{order.trackingCode && (
 												<p>
 													Follow your shipment progress using the following Track & Trace code:{' '}
-													<a
-														target="_blank"
-														href={`https://www.postnord.se/en/online-tools/tools/track/track-and-trace#dynamicloading=true&shipmentid=${order.trackingCode}`}>
+													<a target="_blank" href={`https://tracking.postnord.com/dk/?id=${order.trackingCode}`}>
 														{order.trackingCode}
 													</a>
 												</p>
