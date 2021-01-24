@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import styled from 'styled-components'
 import { stripePaymentsUrl } from '../../config'
+const unescape = require('lodash.unescape')
 
 const ORDERS_QUERY = gql`
 	query ORDERS_QUERY {
@@ -134,8 +135,8 @@ const Order = ({ order, triggerConfirmationMail, triggerMarkAsShipped, triggerOr
 			<div className="info">
 				<div>
 					<p>
-						<strong>{order.customer.name}</strong> <br />
-						<a href={`mailto:${order.customer.email}`}>{order.customer.email}</a> <br />
+						<strong>{unescape(order.customer.name)}</strong> <br />
+						<a href={`mailto:${unescape(order.customer.email)}`}>{unescape(order.customer.email)}</a> <br />
 						<span className="orderId"></span>
 					</p>
 					<h2>
@@ -229,14 +230,14 @@ const Order = ({ order, triggerConfirmationMail, triggerMarkAsShipped, triggerOr
 						Metodo: <strong>{order.shipping.includes('track_trace') ? 'Track & Trace' : 'Standard shipping'}</strong>
 					</p>
 					<p className={`address ${order.shipping.includes('track_trace') && 'track_trace'}`}>
-						{order.customer.name}
+						{unescape(order.customer.name)}
 						<br />
-						{order.customer.address}
-						{order.customer.address2 && `, ${order.customer.address2}`}
+						{unescape(order.customer.address)}
+						{order.customer.address2 && `, ${unescape(order.customer.address2)}`}
 						<br />
-						{order.customer.zip} {order.customer.city}
+						{unescape(order.customer.zip)} {unescape(order.customer.city)}
 						<br />
-						{order.customer.country}
+						{unescape(order.customer.country)}
 						<br />
 					</p>
 				</div>

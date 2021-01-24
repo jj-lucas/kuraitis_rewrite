@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const axios = require('axios')
 const { promisify } = require('util')
 const { randomBytes } = require('crypto')
+const escape = require('lodash.escape')
 const stripe = require('stripe')
 const hasPermissions = require('../lib/hasPermissions')
 import { makeMultiPrice } from '../lib/utils'
@@ -581,13 +582,13 @@ const mutationResolvers = {
 
 		// create the Customer
 		const customer = {
-			email: args.email,
-			name: args.name,
-			address: args.address,
-			address2: args.address2,
-			city: args.city,
-			zip: args.zip,
-			country: args.country,
+			email: escape(args.email),
+			name: escape(args.name),
+			address: escape(args.address),
+			address2: escape(args.address2),
+			city: escape(args.city),
+			zip: escape(args.zip),
+			country: escape(args.country),
 		}
 
 		// create the Order
