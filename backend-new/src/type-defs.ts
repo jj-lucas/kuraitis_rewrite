@@ -39,6 +39,7 @@ const typeDefs = `
         product: Product!
         price: Price
         image: Image
+        stock: Int
     }
 
     type Product {
