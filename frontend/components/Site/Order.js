@@ -38,6 +38,7 @@ const ORDER_QUERY = gql`
 			}
 			shippedAt
 			trackingCode
+			comment
 		}
 	}
 `
@@ -131,6 +132,10 @@ const StyledOrder = styled.div`
 		}
 	}
 	.total {
+		small {
+			font-weight: ${props => props.theme.typography.fw.light};
+			margin-left: 1rem;
+		}
 		> div {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
@@ -181,8 +186,6 @@ const Order = ({ orderId }) => {
 
 	const { order } = data
 
-	console.log(JSON.parse(order.shippingCosts))
-
 	return (
 		<StyledOrder>
 			<div>
@@ -208,16 +211,21 @@ const Order = ({ orderId }) => {
 							<h2>{translate('customer_details', locale)}</h2>
 							<p>
 								<strong>{unescape(order.customer.name)}</strong>
-							</p>
-							<p>{unescape(order.customer.email)}</p>
-							<p>
+								<br />
+								{unescape(order.customer.email)}
+								<br />
 								{unescape(order.customer.address)}
 								{order.customer.address2 && `, ${unescape(order.customer.address2)}`}
-							</p>
-							<p>
+								<br />
 								{unescape(order.customer.zip)} {unescape(order.customer.city)}
+								<br />
+								{unescape(order.customer.country)}
 							</p>
-							<p>{unescape(order.customer.country)}</p>
+							{order.comment && (
+								<p>
+									<strong>{translate('comments', locale)}:</strong> {unescape(order.comment)}
+								</p>
+							)}
 						</fielset>
 						<fielset>
 							<h2>{translate('shipment_status', locale)}</h2>
@@ -320,7 +328,10 @@ const Order = ({ orderId }) => {
 					</div>
 					<div className="total">
 						<div>
-							<h2>{translate('total', locale)}</h2>
+							<h2>
+								{translate('total', locale)}
+								<small> ({translate('vat_included', locale)})</small>
+							</h2>
 							<h2>{prettyPrice(order.total / 100, order.currency)}</h2>
 						</div>
 					</div>

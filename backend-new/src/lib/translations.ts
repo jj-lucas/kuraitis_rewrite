@@ -55,8 +55,8 @@ const translations = {
 		da: '__order_date',
 	},
 	order_total: {
-		en: 'Order total',
-		da: '__order_total',
+		en: 'Order total (VAT included)',
+		da: '__order_total (inkl moms)',
 	},
 	shipping_address: {
 		en: 'Shipping address',
@@ -89,6 +89,10 @@ const translations = {
 	subtotal_items: {
 		en: 'items',
 		da: '__subtotal_items',
+	},
+	comments: {
+		en: 'Comments about your order',
+		da: 'Kommentarer om din ordre',
 	},
 
 	// shipping codes

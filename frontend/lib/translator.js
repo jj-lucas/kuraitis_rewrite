@@ -29,6 +29,14 @@ const translations = {
 		en: 'Add to cart',
 		da: 'Læg i indkøbskurv',
 	},
+	vat_included: {
+		en: 'VAT included',
+		da: 'inkl moms',
+	},
+	customization: {
+		en: 'Customization',
+		da: '__customization',
+	},
 
 	// Cart
 	no_items_in_cart: {
@@ -69,9 +77,53 @@ const translations = {
 		en: 'Total',
 		da: '__total',
 	},
+	vat_included: {
+		en: 'VAT included',
+		da: 'inkl. moms',
+	},
 	order_summary: {
 		en: 'Order summary',
 		da: '__order_summary',
+	},
+	customer_information: {
+		en: 'Customer_information',
+		da: '__customer_information',
+	},
+	email: {
+		en: 'Email Address',
+		da: '__email',
+	},
+	shipping_address: {
+		en: 'Shipping address',
+		da: '__shipping_address',
+	},
+	name: {
+		en: 'Recipient Name',
+		da: '__name',
+	},
+	address: {
+		en: 'Address',
+		da: '__address',
+	},
+	address2: {
+		en: 'Apt, suite, etc.',
+		da: '__address2',
+	},
+	city: {
+		en: 'City',
+		da: '__city',
+	},
+	zip: {
+		en: 'ZIP',
+		da: '__zip',
+	},
+	shipping_method: {
+		en: 'Shipping method',
+		da: '__shipping_method',
+	},
+	comments: {
+		en: 'Comments about your order',
+		da: 'Kommentarer om din ordre',
 	},
 
 	// Order

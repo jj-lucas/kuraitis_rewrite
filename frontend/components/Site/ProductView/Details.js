@@ -9,7 +9,7 @@ import {
 	LocaleContext,
 	prettyPrice,
 	translate,
-	UPDATE_CART_MUTATION
+	UPDATE_CART_MUTATION,
 } from '../../../lib'
 
 const Details = ({ product, className, setSKU, SKU }) => {
@@ -17,6 +17,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	const { currency } = React.useContext(CurrencyContext)
 	const { cart, setCartOpen } = React.useContext(CartContext)
 	const [selectedAttributes, setSelectedAttributes] = useState({})
+	const [customization, setCustomization] = useState('')
 	const [price, setPrice] = useState(0)
 
 	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
@@ -75,16 +76,21 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		setSelectedAttributes(currentAttributes)
 	}
 
+	const changeCustomization = e => {
+		e.preventDefault()
+		if (/^[a-zA-Z]*$/g.test(e.target.value)) {
+			setCustomization(e.target.value.substring(0, 3))
+		}
+	}
+
 	const addToCart = async e => {
 		e.preventDefault()
 		const sku = product.skus.find(sku => sku.sku === SKU).sku
 
-		console.log(cart)
-
 		await updateCart({
 			variables: {
 				...(cart ? { id: cart.id } : null),
-				items: [...(cart && cart.items ? cart.items.split("|") : []), sku],
+				items: [...(cart && cart.items ? cart.items.split('|') : []), sku],
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
@@ -95,7 +101,16 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	return (
 		<div className={className}>
 			<h1>{product[`name_${locale}`]}</h1>
-			<h3>{prettyPrice(price, currency)}</h3>
+			<h3>
+				{prettyPrice(price, currency)}
+				<small>{translate('vat_included', locale)}</small>
+			</h3>
+			{(locale === 'da' || currency === 'DKK') && (
+				<p>
+					<b>Fri levering</b> til Danmark.
+				</p>
+			)}
+
 			<form>
 				<div className="variants">
 					{Object.keys(attributes).map(key => {
@@ -113,11 +128,41 @@ const Details = ({ product, className, setSKU, SKU }) => {
 								</div>
 							)
 					})}
+					{/* disable customizxation field for now 
+						<div className="customization">
+							<span>{translate('customization', locale).toUpperCase()}</span>
+							<input type="text" onChange={changeCustomization} value={customization} />
+						</div>
+					*/}
 				</div>
+
 				<button onClick={addToCart}>{translate('add_to_cart', locale)}</button>
 			</form>
 			<ReactMarkdown>{product[`description_${locale}`]}</ReactMarkdown>
-			<p>SKU: {`${SKU}`}</p>
+			{product.customizable && (
+				<>
+					{locale === 'en' ? (
+						<p>
+							<strong>Customize your product</strong>
+							<br />
+							We can add up to three initials to each item which can be embossed by pressure onto the surface of the
+							leather, adding a unique touch of individuality and personality. Request such customization in the
+							"comments about your order" field in the checkout page.
+						</p>
+					) : (
+						<p>
+							<strong>Gør dit køb personligt</strong>
+							<br />
+							Vi kan tilføje to eller tre initialer til dit køb, som enten kan presses ind i læderoverfladen. Så dit køb
+							bliver ekstra personligt og unikt. Anmod om sådan tilpasning i feltet "kommentarer om din ordre" i
+							checkout siden.
+						</p>
+					)}
+				</>
+			)}
+			<p>
+				<strong>SKU:</strong> {SKU}
+			</p>
 		</div>
 	)
 }
@@ -125,14 +170,28 @@ const Details = ({ product, className, setSKU, SKU }) => {
 const StyledDetails = styled(Details)`
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
 		width: 33%;
-		min-height: 500px;
-		padding-left: 10px;
+		min-height: 50rem;
+		padding-left: 1rem;
+	}
+
+	h1 {
+		margin-top: 0;
+	}
+
+	h3 {
+		font-size: ${props => props.theme.typography.fs.h2};
+		margin-bottom: 1rem;
+
+		small {
+			font-weight: ${props => props.theme.typography.fw.light};
+			margin-left: 1rem;
+		}
 	}
 
 	.variants {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		grid-gap: 30px;
+		grid-gap: 1rem 3rem;
 
 		div {
 			span {
@@ -143,15 +202,23 @@ const StyledDetails = styled(Details)`
 				width: 100%;
 				background-color: var(--lightGray);
 				border: 1px solid var(--lightishGray);
-				padding: 5px 7px;
+				padding: 0.5rem;
+			}
+
+			input {
+				width: 86%;
+				background-color: var(--lightGray);
+				border: 1px solid var(--lightishGray);
+				padding: 0.75rem;
+				text-transform: uppercase;
 			}
 		}
 	}
 
 	button {
 		width: 100%;
-		margin-top: 15px;
-		padding: 15px 7px;
+		margin-top: 1.5rem;
+		padding: 1rem;
 		background-color: var(--black);
 		color: var(--lightGray);
 		text-transform: uppercase;

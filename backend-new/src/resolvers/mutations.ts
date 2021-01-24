@@ -7,6 +7,8 @@ const { randomBytes } = require('crypto')
 const escape = require('lodash.escape')
 const stripe = require('stripe')
 const hasPermissions = require('../lib/hasPermissions')
+import orderConfirmationTemplate from '../templates/orderConfirmation'
+import shippingTemplate from '../templates/shipping'
 import { makeMultiPrice } from '../lib/utils'
 import { sendConfirmationMail, sendShippingMail } from '../lib/mail'
 
@@ -606,6 +608,7 @@ const mutationResolvers = {
 				customer: {
 					create: customer,
 				},
+				comment: escape(args.comment),
 			},
 			include: {
 				customer: true,
@@ -714,6 +717,34 @@ const mutationResolvers = {
 		return {
 			message: 'Confirmation mail sent',
 		}
+	},
+
+	previewMail: async (parent, { orderId, type }, ctx: Context, info) => {
+		hasPermissions(ctx, ['ADMIN'])
+		// get the order
+		const order = await ctx.prisma.order.findOne({
+			where: {
+				id: orderId,
+			},
+			include: {
+				customer: true,
+				items: true,
+			},
+		})
+		if (!order) throw new Error('Order not found')
+
+		switch (type) {
+			case 'shipping':
+				return {
+					message: shippingTemplate(order),
+				}
+			case 'order_confirmation':
+				return {
+					message: orderConfirmationTemplate(order),
+				}
+		}
+
+		throw new Error('Reqeuested type not found')
 	},
 }
 

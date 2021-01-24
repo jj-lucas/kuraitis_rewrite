@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { MdExpandLess, MdExpandMore } from 'react-icons/md'
 import styled from 'styled-components'
 import { stripePaymentsUrl } from '../../config'
+import { Modal } from '../../components'
 const unescape = require('lodash.unescape')
 
 const ORDERS_QUERY = gql`
@@ -33,6 +34,7 @@ const ORDERS_QUERY = gql`
 				country
 			}
 			shipping
+			comment
 		}
 	}
 `
@@ -61,6 +63,14 @@ const SEND_ORDER_SHIPPED_MAIL_MUTATION = gql`
 	}
 `
 
+const PREVIEW_MAIL_MUTATION = gql`
+	mutation PREVIEW_MAIL_MUTATION($orderId: String!, $type: String!) {
+		previewMail(orderId: $orderId, type: $type) {
+			message
+		}
+	}
+`
+
 const StyledOrder = styled.li`
 	list-style: none;
 	box-shadow: ${props => props.theme.boxShadow.md};
@@ -76,6 +86,11 @@ const StyledOrder = styled.li`
 		display: grid;
 		grid-template-columns: 2fr 2fr 1fr;
 		grid-gap: 2rem;
+
+		.comment {
+			padding: 1rem;
+			background-color: #facbbb;
+		}
 	}
 
 	.orderId {
@@ -126,7 +141,13 @@ const StyledOrder = styled.li`
 	}
 `
 
-const Order = ({ order, triggerConfirmationMail, triggerMarkAsShipped, triggerOrderShippedMail }) => {
+const Order = ({
+	order,
+	triggerConfirmationMail,
+	triggerMarkAsShipped,
+	triggerOrderShippedMail,
+	requestMailPreview,
+}) => {
 	const [showAdvanced, setShowAdvanced] = useState(false)
 
 	return (
@@ -153,6 +174,12 @@ const Order = ({ order, triggerConfirmationMail, triggerMarkAsShipped, triggerOr
 							</>
 						)}
 					</p>
+					{order.comment && (
+						<p className="comment">
+							<strong>Comments about the order: </strong>
+							{unescape(order.comment)}
+						</p>
+					)}
 				</div>
 				<div>
 					<p>
@@ -191,13 +218,39 @@ const Order = ({ order, triggerConfirmationMail, triggerMarkAsShipped, triggerOr
 								)}
 								<span>--</span>
 								<br />
+								<a
+									target="_blank"
+									href={`#`}
+									onClick={e => {
+										e.preventDefault()
+										requestMailPreview(order.id, 'order_confirmation')
+									}}>
+									Preview confirmation email
+								</a>
+								<br />
+								<a
+									target="_blank"
+									href={`#`}
+									onClick={e => {
+										e.preventDefault()
+										requestMailPreview(order.id, 'shipping')
+									}}>
+									Preview shipping email
+								</a>
+								<br />
+								<span>--</span>
+								<br />
 								<a target="_blank" href={`#`} onClick={e => triggerConfirmationMail(order.id)}>
 									Resend confirmation email
 								</a>
-								<br />
-								<a target="_blank" href={`#`} onClick={e => triggerOrderShippedMail(order.id)}>
-									Resend shipping email
-								</a>
+								{order.shippedAt && (
+									<>
+										<br />
+										<a target="_blank" href={`#`} onClick={e => triggerOrderShippedMail(order.id)}>
+											Resend shipping email
+										</a>
+									</>
+								)}
 							</p>
 						</>
 					) : (
@@ -246,10 +299,19 @@ const Order = ({ order, triggerConfirmationMail, triggerMarkAsShipped, triggerOr
 	)
 }
 
+const MailPreview = styled.div`
+	width: 100%;
+	height: 80vh;
+	overflow: auto;
+`
+
 const OrderList = ({ orders }) => {
 	const [sendConfirmationMail] = useMutation(SEND_ORDER_CONFIRMATION_MUTATION)
 	const [sendOrderShippedMail] = useMutation(SEND_ORDER_SHIPPED_MAIL_MUTATION)
 	const [markAsShipped] = useMutation(MARK_ORDER_AS_SHIPPED_MUTATION)
+	const [previewMail] = useMutation(PREVIEW_MAIL_MUTATION)
+
+	const [mailPreview, setMailPreview] = useState('')
 
 	const triggerConfirmationMail = orderId => {
 		if (window.confirm('Are you sure you want to resend the confirmation mail?')) {
@@ -319,21 +381,43 @@ const OrderList = ({ orders }) => {
 		}
 	}
 
+	const requestMailPreview = (orderId, type) => {
+		previewMail({
+			variables: {
+				orderId,
+				type,
+			},
+		}).then(({ data }) => {
+			if (data) {
+				console.log(data)
+				setMailPreview(data.previewMail.message)
+			} else {
+				alert('Something went wrong')
+			}
+		})
+	}
+
 	return (
-		<ul>
-			{orders.map(order => {
-				// console.log(order)
-				return (
-					<Order
-						key={order.id}
-						order={order}
-						triggerConfirmationMail={triggerConfirmationMail}
-						triggerMarkAsShipped={triggerMarkAsShipped}
-						triggerOrderShippedMail={triggerOrderShippedMail}
-					/>
-				)
-			})}
-		</ul>
+		<>
+			<ul>
+				{orders.map(order => {
+					// console.log(order)
+					return (
+						<Order
+							key={order.id}
+							order={order}
+							triggerConfirmationMail={triggerConfirmationMail}
+							triggerMarkAsShipped={triggerMarkAsShipped}
+							triggerOrderShippedMail={triggerOrderShippedMail}
+							requestMailPreview={requestMailPreview}
+						/>
+					)
+				})}
+			</ul>
+			<Modal open={mailPreview} title="Mail preview" setOpen={setMailPreview}>
+				<MailPreview dangerouslySetInnerHTML={{ __html: mailPreview }} />
+			</Modal>
+		</>
 	)
 }
 

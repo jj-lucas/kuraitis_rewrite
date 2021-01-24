@@ -10,6 +10,7 @@ const PRODUCT_BY_ID_QUERY = gql`
 			id
 			code
             published
+			customizable
 			price {
 				DKK
 			}
@@ -54,6 +55,7 @@ const UPDATE_PRODUCT_MUTATION = gql`
         $id: ID!,
         $code: String,
 		$published: Boolean, 
+		$customizable: Boolean, 
         $categories: [ID],
         $images: [ID],
         $price: Int,
@@ -67,6 +69,7 @@ const UPDATE_PRODUCT_MUTATION = gql`
 			id: $id,
             code: $code,
 			published: $published,
+			customizable: $customizable,
             categories: $categories,
             images: $images,
 			price: $price,
@@ -324,6 +327,19 @@ const ProductEditor = props => {
 						))}
 
 						<fieldset disabled={loading} aria-busy={loading}>
+							<label htmlFor="customizable">
+								<input
+									type="checkbox"
+									id="customizable"
+									name="customizable"
+									defaultChecked={product.customizable}
+									onChange={handleChange}
+								/>
+								Customizable
+							</label>
+						</fieldset>
+
+						<fieldset disabled={loading} aria-busy={loading}>
 							<label htmlFor="published">
 								<input
 									type="checkbox"
@@ -355,4 +371,3 @@ const ProductEditor = props => {
 }
 
 export { ProductEditor }
-

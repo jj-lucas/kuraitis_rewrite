@@ -15,6 +15,7 @@ const CREATE_ORDER_MUTATION = gql`
 		$city: String!
 		$zip: String!
 		$country: String!
+		$comment: String
 	) {
 		createOrder(
 			currency: $currency
@@ -28,13 +29,14 @@ const CREATE_ORDER_MUTATION = gql`
 			city: $city
 			zip: $zip
 			country: $country
+			comment: $comment
 		) {
 			id
 		}
 	}
 `
 
-const Payment = ({ children, amount, image, currency, locale, shipping }) => {
+const Payment = ({ children, amount, image, currency, locale, shipping, comment }) => {
 	const [createOrder] = useMutation(CREATE_ORDER_MUTATION)
 
 	console.log(shipping)
@@ -47,9 +49,9 @@ const Payment = ({ children, amount, image, currency, locale, shipping }) => {
 				token: res.id,
 				locale,
 				...shipping,
+				comment,
 			},
 		}).then(({ data }) => {
-			console.log(data)
 			window.location = `/${locale}/order/${data.createOrder.id}`
 		})
 	}
@@ -71,4 +73,3 @@ const Payment = ({ children, amount, image, currency, locale, shipping }) => {
 }
 
 export { Payment }
-

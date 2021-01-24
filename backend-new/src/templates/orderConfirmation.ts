@@ -18,6 +18,7 @@ const orderConfirmationTemplate = order => `
             ${productsList(order)}
             ${separator()}
             ${costs(order)}
+            ${order.comment && comment(order)}
         `)}
         
         <table cellpadding="0" cellspacing="0" class="es-footer" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top">
@@ -333,8 +334,6 @@ const costs = order => {
 
 	const shippingCosts = JSON.parse(order.shippingCosts)
 
-	console.log('shipping costs', shippingCosts)
-
 	// prettier-ignore
 	return `
         <tr style="border-collapse:collapse">
@@ -357,7 +356,7 @@ const costs = order => {
                                             ${shippingCosts.map(cost => `
                                                 <tr style="border-collapse:collapse">
                                                     <td style="padding:0;Margin:0;text-align:right;font-size:18px;line-height:27px">${translate(cost.code, order.locale)}:</td>
-                                                    <td style="padding:0;Margin:0;text-align:right;font-size:18px;line-height:27px;color:#D48344"><strong>${prettyPrice(cost.price, order.currency)}</strong></td>
+                                                    <td style="padding:0;Margin:0;text-align:right;font-size:18px;line-height:27px">${prettyPrice(cost.price, order.currency)}</td>
                                                 </tr>
                                             `)}
                                             <tr style="border-collapse:collapse">
@@ -376,6 +375,29 @@ const costs = order => {
         </tr>
     `
 }
+
+// prettier-ignore
+const comment = order => `
+    <tr style="border-collapse:collapse">
+        <td align="left" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px">
+            <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                <tr style="border-collapse:collapse">
+                    <td valign="top" style="padding:0;Margin:0;width:560px">
+                        <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:0px" width="100%" cellspacing="0" cellpadding="0" role="presentation">
+                            <tr style="border-collapse:collapse">
+                                <td style="padding:0;Margin:0;padding-top:10px;padding-bottom:15px">
+                                    <p style="font-size:14px;line-height:21px;Margin:0;mso-line-height-rule:exactly;font-family:tahoma, verdana, segoe, sans-serif;font-style:normal;font-weight:normal;color:#333333">
+                                        <strong>${translate('comments', order.locale)}: </strong>${order.comment}
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+`
 
 // prettier-ignore
 const footer = order => `

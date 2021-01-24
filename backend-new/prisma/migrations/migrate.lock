@@ -20,3 +20,5 @@
 20201229105940-add-locale-to-order
 20201229121926-add-autoincremental-order-number
 20210102133155-remove-unnecessary-field
+20210124150711-add-customization-to-purchased-sku
+20210124162022-add-comment-to-order

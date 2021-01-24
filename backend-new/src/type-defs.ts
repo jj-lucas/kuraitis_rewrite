@@ -119,6 +119,7 @@ const typeDefs = `
         auth: String
         customerId: String
         locale: String
+        comment: String
     }
 
     type Customer {
@@ -270,6 +271,7 @@ const typeDefs = `
             zip: String!
             country: String!
             shipping: String!
+            comment: String
         ): Order
 
         markOrderAsShipped(
@@ -283,6 +285,11 @@ const typeDefs = `
         
 	    sendOrderShippedMail(
             orderId: String!
+        ): SuccessMessage
+
+        previewMail(
+            orderId: String!
+            type: String!
         ): SuccessMessage
     }
 `
