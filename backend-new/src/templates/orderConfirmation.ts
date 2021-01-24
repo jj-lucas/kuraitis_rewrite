@@ -333,6 +333,8 @@ const costs = order => {
 
 	const shippingCosts = JSON.parse(order.shippingCosts)
 
+	console.log('shipping costs', shippingCosts)
+
 	// prettier-ignore
 	return `
         <tr style="border-collapse:collapse">

@@ -8,6 +8,7 @@ import { MdCached as ReturnIcon, MdPinDrop as TrackIcon } from 'react-icons/md'
 import styled from 'styled-components'
 import { CurrencyContext, LocaleContext, prettyPrice, translate } from '../../lib'
 import { Form, SellingPoints } from '../../components'
+const unescape = require('lodash.unescape')
 
 const ORDER_QUERY = gql`
 	query ORDER_QUERY($id: ID!) {
@@ -206,17 +207,17 @@ const Order = ({ orderId }) => {
 						<fielset>
 							<h2>{translate('customer_details', locale)}</h2>
 							<p>
-								<strong>{order.customer.name}</strong>
+								<strong>{unescape(order.customer.name)}</strong>
 							</p>
-							<p>{order.customer.email}</p>
+							<p>{unescape(order.customer.email)}</p>
 							<p>
-								{order.customer.address}
-								{order.customer.address2 && `, ${order.customer.address2}`}
+								{unescape(order.customer.address)}
+								{order.customer.address2 && `, ${unescape(order.customer.address2)}`}
 							</p>
 							<p>
-								{order.customer.zip} {order.customer.city}
+								{unescape(order.customer.zip)} {unescape(order.customer.city)}
 							</p>
-							<p>{order.customer.country}</p>
+							<p>{unescape(order.customer.country)}</p>
 						</fielset>
 						<fielset>
 							<h2>{translate('shipment_status', locale)}</h2>
