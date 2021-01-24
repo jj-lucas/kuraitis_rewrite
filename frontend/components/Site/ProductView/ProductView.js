@@ -12,6 +12,7 @@ const PRODUCT_BY_CODE = gql`
 		product(code: $code) {
 			id
 			code
+			customizable
 			name_da
 			name_en
 			price {

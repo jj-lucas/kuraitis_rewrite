@@ -29,7 +29,8 @@ const StyledCheckout = styled.div`
 		width: 90%;
 
 		input,
-		select {
+		select,
+		textarea {
 			margin-bottom: 1rem;
 			background: transparent;
 			border: 0 none;
@@ -74,6 +75,10 @@ const StyledCheckout = styled.div`
 		}
 	}
 	.total {
+		small {
+			font-weight: ${props => props.theme.typography.fw.light};
+			margin-left: 1rem;
+		}
 		> div {
 			display: grid;
 			grid-template-columns: 1fr 1fr;
@@ -113,6 +118,7 @@ const Checkout = () => {
 	const [zip, setZip] = useState('')
 	const [country, setCountry] = useState('Denmark')
 	const [shipping, setShipping] = useState('standard_denmark')
+	const [comment, setComment] = useState('')
 
 	const refForm = useRef(null)
 
@@ -120,7 +126,7 @@ const Checkout = () => {
 		return (
 			<>
 				<h1>{translate('checkout', locale)}</h1>
-				<p>Your shopping cart is empty</p>
+				<p>{translate('no_items_in_cart', locale)}</p>
 			</>
 		)
 	}
@@ -133,7 +139,6 @@ const Checkout = () => {
 		})
 	}
 
-	console.log(shippingProfiles)
 	// add shipping costs
 	if (shipping === 'standard_denmark' || shipping === 'standard_international') {
 		subtotal += shippingProfiles.find(profile => profile.code === `standard${shippingSuffix}`).price[currency] / 100
@@ -163,11 +168,11 @@ const Checkout = () => {
 							e.preventDefault()
 						}}>
 						<fieldset>
-							<h3>Customer information</h3>
+							<h3>{translate('customer_information', locale)}</h3>
 							<div>
 								<input
 									name="email"
-									placeholder="Email Address"
+									placeholder={translate('email', locale)}
 									type="email"
 									required
 									onChange={e => setEmail(e.target.value)}
@@ -176,11 +181,11 @@ const Checkout = () => {
 							</div>
 						</fieldset>
 						<fieldset>
-							<h3>Shipping address</h3>
+							<h3>{translate('shipping_address', locale)}</h3>
 							<div>
 								<input
 									name="name"
-									placeholder="Recipient Name"
+									placeholder={translate('name', locale)}
 									type="text"
 									required
 									onChange={e => setName(e.target.value)}
@@ -190,7 +195,7 @@ const Checkout = () => {
 							<div>
 								<input
 									name="address"
-									placeholder="Address"
+									placeholder={translate('address', locale)}
 									type="text"
 									required
 									onChange={e => setAddress(e.target.value)}
@@ -198,7 +203,7 @@ const Checkout = () => {
 								/>
 								<input
 									name="address2"
-									placeholder="Apt, suite, etc."
+									placeholder={translate('address2', locale)}
 									type="text"
 									onChange={e => setAddress2(e.target.value)}
 									value={address2}
@@ -207,7 +212,7 @@ const Checkout = () => {
 							<div>
 								<input
 									name="city"
-									placeholder="City"
+									placeholder={translate('city', locale)}
 									type="text"
 									required
 									onChange={e => setCity(e.target.value)}
@@ -215,7 +220,7 @@ const Checkout = () => {
 								/>
 								<input
 									name="zipcode"
-									placeholder="ZIP"
+									placeholder={translate('zip', locale)}
 									type="text"
 									required
 									onChange={e => setZip(e.target.value)}
@@ -238,7 +243,7 @@ const Checkout = () => {
 							</div>
 						</fieldset>
 						<fieldset>
-							<h3>Shipping method</h3>
+							<h3>{translate('shipping_method', locale)}</h3>
 							<label htmlFor="shipping_standard">
 								<input
 									id="shipping_standard"
@@ -275,6 +280,18 @@ const Checkout = () => {
 								)}
 							</label>
 						</fieldset>
+						<fieldset>
+							<h3>{translate('comments', locale)}</h3>
+							<label htmlFor="comments">
+								<textarea
+									id="comments"
+									onChange={e => {
+										e.preventDefault()
+										setComment(e.target.value)
+									}}
+									value={comment}></textarea>
+							</label>
+						</fieldset>
 						{formValid ? (
 							<Payment
 								amount={subtotal}
@@ -290,6 +307,7 @@ const Checkout = () => {
 									country,
 									shipping,
 								}}
+								comment={comment}
 								image={'/logo.png'}>
 								<button type="submit">{translate('checkout', locale)}</button>
 							</Payment>
@@ -346,7 +364,10 @@ const Checkout = () => {
 							)}
 						</div>
 						<div>
-							<h2>{translate('total', locale)}</h2>
+							<h2>
+								{translate('total', locale)}
+								<small>{translate('vat_included', locale)}</small>
+							</h2>
 							<h2>{prettyPrice(subtotal, currency)}</h2>
 						</div>
 					</div>

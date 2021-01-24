@@ -5,20 +5,20 @@ import { Picture } from '../../../components'
 import { LocaleContext } from '../../../lib'
 
 const GalleryButton = styled.a`
-	width: 60px;
+	width: 6rem;
 	display: flex;
 	justify-content: center;
 	text-align: center;
 	background: var(--lightGray);
 	border: 1px solid var(--lightishGray);
-	margin: 0 10px;
+	margin: 0 1rem;
 	padding: 4px 0;
 	position: relative;
 	color: var(--black);
 
 	@media (min-width: ${props => props.theme.breakpoints.sm}) {
-		width: 100px;
-		margin: 10px 0;
+		width: 10rem;
+		margin: 1rem 0;
 	}
 
 	${props =>
