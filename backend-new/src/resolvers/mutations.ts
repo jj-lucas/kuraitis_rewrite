@@ -189,6 +189,17 @@ const mutationResolvers = {
 	updateProduct: async (parent, args, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
+		// delete any cartSku matching a given product
+		await ctx.prisma.cartSku.deleteMany({
+			where: {
+				sku: {
+					product: {
+						id: args.id,
+					},
+				},
+			},
+		})
+
 		// delete all SKUs related to this product
 		await ctx.prisma.sku.deleteMany({
 			where: {
@@ -199,7 +210,7 @@ const mutationResolvers = {
 		})
 
 		// generate SKUs based on the provided info
-		const Skus = args.skuData ? JSON.parse(args.skuData) : []
+		const skus = args.skuData ? JSON.parse(args.skuData) : []
 
 		const resp = await axios.get('https://api.exchangeratesapi.io/latest?symbols=USD,EUR,GBP&base=DKK')
 		const conversionRates = resp.data.rates
@@ -208,8 +219,8 @@ const mutationResolvers = {
 		// Array.map doesn't respect await, causing concurrency issues
 		// due to the fact that SQLLite gets locked
 		// https://github.com/prisma/prisma/issues/484
-		for (let i in Skus) {
-			const entry = Skus[i]
+		for (let i in skus) {
+			const entry = skus[i]
 
 			if (entry.price && entry.price !== args.price) {
 				hasMultiplePrices = true
@@ -218,11 +229,12 @@ const mutationResolvers = {
 			await ctx.prisma.sku.create({
 				data: {
 					sku: entry.sku.toUpperCase(),
-					price: entry.price
-						? {
-								create: { ...makeMultiPrice(entry.price.DKK, conversionRates) },
-						  }
-						: undefined,
+					price:
+						entry.price && entry.price !== ''
+							? {
+									create: { ...makeMultiPrice(entry.price.DKK, conversionRates) },
+							  }
+							: undefined,
 					product: {
 						connect: {
 							id: args.id,

@@ -138,12 +138,19 @@ const ProductEditor = props => {
 				break
 		}
 		if (name === 'price') {
-			setChanges({
-				...changes,
-				price: {
-					DKK: val,
-				},
-			})
+			if (val && val !== '') {
+				setChanges({
+					...changes,
+					price: {
+						DKK: val,
+					},
+				})
+			} else {
+				setChanges({
+					...changes,
+					price: null,
+				})
+			}
 		} else {
 			setChanges({
 				...changes,
