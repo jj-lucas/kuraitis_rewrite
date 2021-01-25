@@ -86,9 +86,9 @@ const CART_QUERY = gql`
 	}
 `
 
-const UPDATE_CART_MUTATION = gql`
-	mutation UPDATE_CART($items: [String!]) {
-		updateCart(items: $items) {
+const ADD_TO_CART_MUTATION = gql`
+	mutation ADD_TO_CART_MUTATION($sku: String!, $customization: String) {
+		addToCart(sku: $sku, customization: $customization) {
 			id
 		}
 	}
@@ -144,4 +144,4 @@ const withCart = WrappedPage => {
 	return withCart
 }
 
-export { withCart, CART_QUERY, UPDATE_CART_MUTATION, REMOVE_FROM_CART_MUTATION }
+export { withCart, CART_QUERY, ADD_TO_CART_MUTATION, REMOVE_FROM_CART_MUTATION }
