@@ -535,6 +535,67 @@ const mutationResolvers = {
 		})
 	},
 
+	removeFromCart: async (parent, { id }, ctx: Context, info) => {
+		// delete this cartSku
+		await ctx.prisma.cartSku.delete({
+			where: {
+				id,
+			},
+		})
+
+		let cart = null
+		let gottaRegenerateCookie = false
+
+		const { cartToken } = ctx.request.cookies
+
+		// if a cart cookies is found
+		if (cartToken) {
+			const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
+
+			// find cart to update
+			cart = await ctx.prisma.cart.findOne({
+				where: {
+					id: cartId,
+				},
+				include: {
+					cartSkus: {
+						include: {
+							sku: true,
+						},
+					},
+				},
+			})
+
+			if (cart) {
+				return cart
+			}
+
+			if (!cart) {
+				// clear the cookie to prevent future errors
+				ctx.response.clearCookie('cartToken')
+				gottaRegenerateCookie = true
+			}
+		}
+
+		if (!cart) {
+			gottaRegenerateCookie = true
+			// create a new cart
+			return await ctx.prisma.cart.create({
+				data: {},
+			})
+		}
+
+		if (gottaRegenerateCookie) {
+			// generate a JWT token for the cart
+			const newCartToken = jwt.sign({ cartId: cart.id }, process.env.APP_SECRET)
+
+			// set a cookie with that cart
+			ctx.response.cookie('cartToken', newCartToken, {
+				maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+			})
+		}
+	},
+
 	createOrder: async (parent, args, ctx: Context, info) => {
 		let data = null
 
