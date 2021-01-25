@@ -47,6 +47,10 @@ const translations = {
 		en: 'Your shopping cart',
 		da: 'Din indkøbskurv',
 	},
+	customization: {
+		en: 'Customization',
+		da: '__customization',
+	},
 	subtotal: {
 		en: 'Order Subtotal',
 		da: 'Ordre subtotal',

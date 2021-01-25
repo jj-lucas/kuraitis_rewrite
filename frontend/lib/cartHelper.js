@@ -43,6 +43,36 @@ const CART_QUERY = gql`
 					}
 				}
 			}
+			cartSkus {
+				id
+				customization
+				sku {
+					sku
+					price {
+						DKK
+						USD
+						EUR
+						GBP
+					}
+					image {
+						url
+					}
+					product {
+						price {
+							DKK
+							USD
+							EUR
+							GBP
+						}
+						name_da
+						name_en
+						selectedAttributes
+						images {
+							url
+						}
+					}
+				}
+			}
 		}
 		shippingProfiles {
 			code
@@ -107,4 +137,3 @@ const withCart = WrappedPage => {
 }
 
 export { withCart, CART_QUERY, UPDATE_CART_MUTATION }
-

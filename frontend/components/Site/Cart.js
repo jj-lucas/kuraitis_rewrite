@@ -98,11 +98,12 @@ const Cart = () => {
 
 	let subtotal = 0
 	if (cart && cart.items) {
-		cart.items.split("|").map((sku, index) => {
+		cart.items.split('|').map((sku, index) => {
 			const skuData = cart.skus.find(candidate => candidate.sku == sku)
 			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
 		})
 	}
+	console.log(cart)
 
 	return (
 		<StyledCart open={cartOpen}>
@@ -112,7 +113,7 @@ const Cart = () => {
 				</div>
 				<h2>{translate('your_cart', locale)}</h2>
 
-				{cart && cart.items ? <CartProductsList cart={cart} /> : <p>{translate('no_items_in_cart', locale)}</p>}
+				{cart && cart.cartSkus ? <CartProductsList cart={cart} /> : <p>{translate('no_items_in_cart', locale)}</p>}
 
 				<div className="selling_points">
 					<p>
@@ -152,4 +153,3 @@ const Cart = () => {
 }
 
 export { Cart }
-

@@ -64,7 +64,10 @@ const CartProductsList = ({ cart }) => {
 		await updateCart({
 			variables: {
 				id: cart.id,
-				items: cart.items.split("|").slice(0, index).concat(cart.items.split("|").slice(index + 1, cart.items.split("|").length)),
+				items: cart.items
+					.split('|')
+					.slice(0, index)
+					.concat(cart.items.split('|').slice(index + 1, cart.items.split('|').length)),
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
@@ -74,34 +77,41 @@ const CartProductsList = ({ cart }) => {
 
 	return (
 		<StyledCartProductsList>
-			{cart && !cart.items.length && <p>{translate('no_items_in_cart', locale)}</p>}
+			{cart && !cart.cartSkus.length && <p>{translate('no_items_in_cart', locale)}</p>}
 			{cart &&
-				cart.items &&
-				cart.items.split("|").map((sku, index) => {
-					const skuData = cart.skus.find(candidate => candidate.sku == sku)
-					const image = skuData.image ? skuData.image.url : skuData.product.images[0].url
-					const price = skuData.price || skuData.product.price
+				cart.cartSkus &&
+				cart.cartSkus.map((cartSku, index) => {
+					const sku = cartSku.sku
+					const image = sku.image ? sku.image.url : sku.product.images[0].url
+					const price = sku.price || sku.product.price
 
-					const selectedAttributes = JSON.parse(skuData.product.selectedAttributes)
+					const selectedAttributes = JSON.parse(sku.product.selectedAttributes)
 					const attributesInSku = Object.keys(selectedAttributes).filter(
 						attribute => selectedAttributes[attribute].length
 					)
+
 					return (
 						<li key={index}>
 							<div className="image">
 								<img src={image} alt="" />
 							</div>
 							<div>
-								<p className="sku">{sku}</p>
-								<p className="name">{skuData.product[`name_${locale}`]}</p>
+								<p className="sku">{sku.sku}</p>
+								<p className="name">{sku.product[`name_${locale}`]}</p>
 								{attributesInSku.map((attribute, index) => {
 									return (
 										<p key={attribute + index}>
 											<strong>{translate(attribute, locale, 'capitalize')}: </strong>
-											{translate(sku.split('-')[index + 1], locale, 'capitalize')}
+											{translate(sku.sku.split('-')[index + 1], locale, 'capitalize')}
 										</p>
 									)
 								})}
+								{cartSku.customization && (
+									<p>
+										<strong>{translate('customization', locale, 'capitalize')}: </strong>
+										{cartSku.customization}
+									</p>
+								)}
 								<p className="price">{prettyPrice(price[currency], currency)}</p>
 							</div>
 							<div className="remove">
@@ -122,4 +132,3 @@ const CartProductsList = ({ cart }) => {
 }
 
 export { CartProductsList }
-
