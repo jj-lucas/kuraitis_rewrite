@@ -162,46 +162,30 @@ const queryResolvers = {
 					where: {
 						id: cartId,
 					},
-				})
-
-				// if it does, retrieve SKU data and parse items
-				if (cart) {
-					const result: {
-						id: string
-						items?: string
-						skus?: any
-					} = {
-						id: cart.id,
-					}
-					if (cart.items) {
-						result.skus = await ctx.prisma.sku.findMany({
-							where: {
-								sku: { in: cart.items.split('|') },
-							},
+					include: {
+						cartSkus: {
 							include: {
-								product: {
+								sku: {
 									include: {
-										price: true,
-										images: {
-											orderBy: [{ sorting: 'asc' }],
+										product: {
+											include: {
+												price: true,
+												images: {
+													orderBy: [{ sorting: 'asc' }],
+												},
+											},
 										},
+										price: true,
+										image: true,
 									},
 								},
-								price: true,
-								image: true,
 							},
-						})
+						},
+					},
+				})
 
-						// only pass items for which we have valid SKUs for
-						result.items = cart.items
-							? cart.items
-									.split('|')
-									.filter(skuToFind => result.skus.find(sku => skuToFind === sku.sku))
-									.join('|')
-							: ''
-					}
-
-					return result
+				if (cart) {
+					return cart
 				} else {
 					// we requested a cart ID that does not exist, clear this invalid cart token
 					ctx.response.clearCookie('cartToken')

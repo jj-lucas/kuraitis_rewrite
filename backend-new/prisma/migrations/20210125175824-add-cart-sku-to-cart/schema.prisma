@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -123,7 +123,7 @@ model Cart {
     id        String    @id @default(cuid())
     createdAt DateTime  @default(now())
     items     String?
-    cartSkus  CartSku[]
+    cartSku   CartSku[]
 }
 
 model ShippingProfile {

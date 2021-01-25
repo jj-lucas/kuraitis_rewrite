@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -94,10 +94,8 @@ model Sku {
 
 model CartSku {
     id            String  @id @default(cuid())
-    sku           Sku     @relation(fields: [skuId], references: [id])
-    cart          Cart    @relation(fields: [cartId], references: [id])
+    product       Sku     @relation(fields: [skuId], references: [id])
     skuId         String
-    cartId        String
     customization String?
 }
 
@@ -120,10 +118,9 @@ model Price {
 }
 
 model Cart {
-    id        String    @id @default(cuid())
-    createdAt DateTime  @default(now())
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
     items     String?
-    cartSkus  CartSku[]
 }
 
 model ShippingProfile {
