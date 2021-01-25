@@ -401,65 +401,6 @@ const mutationResolvers = {
 		}
 	},
 
-	updateCart: async (parent, { items }, ctx: Context, info) => {
-		let cart = null
-		let gottaRegenerateCookie = false
-
-		const { cartToken } = ctx.request.cookies
-
-		// if a cart cookies is found
-		if (cartToken) {
-			const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
-
-			// find cart to update
-			cart = await ctx.prisma.cart.findOne({
-				where: {
-					id: cartId,
-				},
-			})
-
-			if (!cart) {
-				// clear the cookie to prevent future errors
-				ctx.response.clearCookie('cartToken')
-				gottaRegenerateCookie = true
-			}
-
-			if (cart) {
-				// if a cart for this token existed, update it
-				cart = await ctx.prisma.cart.update({
-					where: {
-						id: cart.id,
-					},
-					data: {
-						items: items.join('|'),
-					},
-				})
-			}
-		}
-
-		if (!cart) {
-			gottaRegenerateCookie = true
-			// create a new cart
-			cart = await ctx.prisma.cart.create({
-				data: {
-					items: items.join('|'),
-				},
-			})
-		}
-
-		if (gottaRegenerateCookie) {
-			// generate a JWT token for the cart
-			const newCartToken = jwt.sign({ cartId: cart.id }, process.env.APP_SECRET)
-
-			// set a cookie with that cart
-			ctx.response.cookie('cartToken', newCartToken, {
-				maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-			})
-		}
-
-		return cart
-	},
-
 	addToCart: async (parent, { sku, customization }, ctx: Context, info) => {
 		let cart = null
 		let gottaRegenerateCookie = false

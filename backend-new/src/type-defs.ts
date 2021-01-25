@@ -105,9 +105,7 @@ const typeDefs = `
 
     type Cart {
         id: ID!
-        items: String
         cartSkus: [CartSku]
-        skus: [Sku]
     }
 
     type Order {
@@ -263,9 +261,6 @@ const typeDefs = `
             categories: [ID]
         ): SuccessMessage
         
-	    updateCart(
-            items: [String!]
-        ): Cart!
         addToCart(
             sku: String!
             customization: String
