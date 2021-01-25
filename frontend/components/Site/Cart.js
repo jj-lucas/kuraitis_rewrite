@@ -97,13 +97,11 @@ const Cart = () => {
 	}
 
 	let subtotal = 0
-	if (cart && cart.items) {
-		cart.items.split('|').map((sku, index) => {
-			const skuData = cart.skus.find(candidate => candidate.sku == sku)
-			subtotal += (skuData.price && skuData.price[currency]) || skuData.product.price[currency]
+	if (cart && cart.cartSkus) {
+		cart.cartSkus.map((cartSku, index) => {
+			subtotal += (cartSku.sku.price && cartSku.sku.price[currency]) || cartSku.product.price[currency]
 		})
 	}
-	console.log(cart)
 
 	return (
 		<StyledCart open={cartOpen}>
