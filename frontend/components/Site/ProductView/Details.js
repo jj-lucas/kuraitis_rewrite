@@ -90,6 +90,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		await addToCart({
 			variables: {
 				sku,
+				customization,
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
@@ -127,12 +128,12 @@ const Details = ({ product, className, setSKU, SKU }) => {
 								</div>
 							)
 					})}
-					{/* disable customizxation field for now 
+					{product.customizable && (
 						<div className="customization">
 							<span>{translate('customization', locale).toUpperCase()}</span>
 							<input type="text" onChange={changeCustomization} value={customization} />
 						</div>
-					*/}
+					)}
 				</div>
 
 				<button onClick={addItemToCart}>{translate('add_to_cart', locale)}</button>
@@ -146,15 +147,14 @@ const Details = ({ product, className, setSKU, SKU }) => {
 							<br />
 							We can add up to three initials to each item which can be embossed by pressure onto the surface of the
 							leather, adding a unique touch of individuality and personality. Request such customization in the
-							"comments about your order" field in the checkout page.
+							"customization" field above.
 						</p>
 					) : (
 						<p>
 							<strong>Gør dit køb personligt</strong>
 							<br />
-							Vi kan tilføje to eller tre initialer til dit køb, som enten kan presses ind i læderoverfladen. Så dit køb
-							bliver ekstra personligt og unikt. Anmod om sådan tilpasning i feltet "kommentarer om din ordre" i
-							checkout siden.
+							Vi kan tilføje op til tre initialer til dit produkt, som enten kan presses ind i læderoverfladen. Så dit
+							køb bliver ekstra personligt og unikt. Anmod om sådan tilpasning i feltet "tilpasning" ovenfor.
 						</p>
 					)}
 				</>

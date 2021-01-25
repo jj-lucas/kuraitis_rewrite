@@ -149,6 +149,7 @@ const typeDefs = `
         currency: String!
         image: String!
         variationInfo: String!
+        customization: String
     }
 
     type Query { 

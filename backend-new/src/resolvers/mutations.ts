@@ -200,6 +200,25 @@ const mutationResolvers = {
 			},
 		})
 
+		// delete any cart matching a given product
+		await ctx.prisma.cart.deleteMany({
+			where: {
+				cartSkus: {
+					some: {
+						sku: {
+							is: {
+								product: {
+									is: {
+										id: args.id,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		})
+
 		// delete all SKUs related to this product
 		await ctx.prisma.sku.deleteMany({
 			where: {
@@ -616,6 +635,7 @@ const mutationResolvers = {
 				currency: args.currency,
 				image: (cartSku.sku.image && cartSku.sku.image.url) || cartSku.sku.product.images[0].url,
 				variationInfo: JSON.stringify(variationInfo),
+				customization: cartSku.customization,
 			}
 
 			purchasedSKUs.push(purchasedSku)
