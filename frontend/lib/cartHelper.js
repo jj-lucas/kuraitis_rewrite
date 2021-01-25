@@ -94,6 +94,14 @@ const UPDATE_CART_MUTATION = gql`
 	}
 `
 
+const REMOVE_FROM_CART_MUTATION = gql`
+	mutation REMOVE_FROM_CART_MUTATION($id: ID!) {
+		removeFromCart(id: $id) {
+			id
+		}
+	}
+`
+
 const CartProvider = ({ children }) => {
 	const [cart, setCart] = React.useState()
 	const [shippingProfiles, setShippingProfiles] = React.useState()
@@ -136,4 +144,4 @@ const withCart = WrappedPage => {
 	return withCart
 }
 
-export { withCart, CART_QUERY, UPDATE_CART_MUTATION }
+export { withCart, CART_QUERY, UPDATE_CART_MUTATION, REMOVE_FROM_CART_MUTATION }
