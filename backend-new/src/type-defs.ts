@@ -270,6 +270,9 @@ const typeDefs = `
             sku: String!
             customization: String
         ): Cart!
+        removeFromCart(
+            id: ID!
+        ): Cart!
 
         createOrder(
             token: String!
