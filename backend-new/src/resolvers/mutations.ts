@@ -517,7 +517,7 @@ const mutationResolvers = {
 						sku,
 					},
 				},
-				customization: customization.substring(0, 3).toUpperCase(),
+				customization: customization ? customization.substring(0, 3).toUpperCase() : null,
 			},
 		})
 

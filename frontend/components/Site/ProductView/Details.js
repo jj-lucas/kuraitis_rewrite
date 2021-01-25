@@ -9,7 +9,7 @@ import {
 	LocaleContext,
 	prettyPrice,
 	translate,
-	UPDATE_CART_MUTATION,
+	ADD_TO_CART_MUTATION,
 } from '../../../lib'
 
 const Details = ({ product, className, setSKU, SKU }) => {
@@ -20,7 +20,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 	const [customization, setCustomization] = useState('')
 	const [price, setPrice] = useState(0)
 
-	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
+	const [addToCart, { loading: loadingAdding, error: errorAdding }] = useMutation(ADD_TO_CART_MUTATION)
 
 	useEffect(() => {
 		const defaultState = {}
@@ -83,14 +83,13 @@ const Details = ({ product, className, setSKU, SKU }) => {
 		}
 	}
 
-	const addToCart = async e => {
+	const addItemToCart = async e => {
 		e.preventDefault()
 		const sku = product.skus.find(sku => sku.sku === SKU).sku
 
-		await updateCart({
+		await addToCart({
 			variables: {
-				...(cart ? { id: cart.id } : null),
-				items: [...(cart && cart.items ? cart.items.split('|') : []), sku],
+				sku,
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
@@ -136,7 +135,7 @@ const Details = ({ product, className, setSKU, SKU }) => {
 					*/}
 				</div>
 
-				<button onClick={addToCart}>{translate('add_to_cart', locale)}</button>
+				<button onClick={addItemToCart}>{translate('add_to_cart', locale)}</button>
 			</form>
 			<ReactMarkdown>{product[`description_${locale}`]}</ReactMarkdown>
 			{product.customizable && (
