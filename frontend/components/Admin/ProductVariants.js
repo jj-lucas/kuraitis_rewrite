@@ -64,11 +64,17 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 	const [openImageModal, setOpenImageModal] = React.useState(false)
 
 	const onChangePrice = e => {
-		onChangeSku(sku, {
-			price: {
-				DKK: e.target.value,
-			},
-		})
+		if (e.target.value !== '') {
+			onChangeSku(sku, {
+				price: {
+					DKK: e.target.value,
+				},
+			})
+		} else {
+			onChangeSku(sku, {
+				price: null,
+			})
+		}
 	}
 	const onChangeImage = e => {
 		e.preventDefault()
