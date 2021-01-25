@@ -1,7 +1,14 @@
 import { useMutation } from '@apollo/client'
 import { MdClear } from 'react-icons/md'
 import styled from 'styled-components'
-import { CART_QUERY, CurrencyContext, LocaleContext, prettyPrice, translate, UPDATE_CART_MUTATION } from '../../lib'
+import {
+	CART_QUERY,
+	CurrencyContext,
+	LocaleContext,
+	prettyPrice,
+	translate,
+	REMOVE_FROM_CART_MUTATION,
+} from '../../lib'
 
 const StyledCartProductsList = styled.ul`
 	padding: 0;
@@ -58,16 +65,12 @@ const StyledCartProductsList = styled.ul`
 const CartProductsList = ({ cart }) => {
 	const { locale } = React.useContext(LocaleContext)
 	const { currency, setCurrency } = React.useContext(CurrencyContext)
-	const [updateCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_CART_MUTATION)
+	const [removeFromCart, { loading: loadingUpdate, error: errorUpdate }] = useMutation(REMOVE_FROM_CART_MUTATION)
 
-	const removeFromCart = async index => {
-		await updateCart({
+	const removeItem = async id => {
+		await removeFromCart({
 			variables: {
-				id: cart.id,
-				items: cart.items
-					.split('|')
-					.slice(0, index)
-					.concat(cart.items.split('|').slice(index + 1, cart.items.split('|').length)),
+				id,
 			},
 			refetchQueries: [{ query: CART_QUERY, variables: {} }],
 		}).then(() => {
@@ -119,7 +122,7 @@ const CartProductsList = ({ cart }) => {
 									href="#"
 									onClick={e => {
 										e.preventDefault()
-										removeFromCart(index)
+										removeItem(cartSku.id)
 									}}>
 									<MdClear size={20} />
 								</a>
