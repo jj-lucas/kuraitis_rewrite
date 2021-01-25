@@ -1,0 +1,116 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Cart",
+      "field": "cartSku",
+      "type": "CartSku",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "sku",
+      "type": "Sku",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "sku"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "sku"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[skuId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "sku"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "cart",
+      "type": "Cart",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "cart"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "cart"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[cartId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "cart"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "cartId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CartSku",
+      "field": "product"
+    }
+  ]
+}

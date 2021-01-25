@@ -460,6 +460,81 @@ const mutationResolvers = {
 		return cart
 	},
 
+	addToCart: async (parent, { sku, customization }, ctx: Context, info) => {
+		let cart = null
+		let gottaRegenerateCookie = false
+
+		const { cartToken } = ctx.request.cookies
+
+		// if a cart cookies is found
+		if (cartToken) {
+			const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
+
+			// find cart to update
+			cart = await ctx.prisma.cart.findOne({
+				where: {
+					id: cartId,
+				},
+			})
+
+			if (!cart) {
+				// clear the cookie to prevent future errors
+				ctx.response.clearCookie('cartToken')
+				gottaRegenerateCookie = true
+			}
+		}
+
+		if (!cart) {
+			gottaRegenerateCookie = true
+			// create a new cart
+			cart = await ctx.prisma.cart.create({
+				data: {},
+			})
+		}
+
+		if (gottaRegenerateCookie) {
+			// generate a JWT token for the cart
+			const newCartToken = jwt.sign({ cartId: cart.id }, process.env.APP_SECRET)
+
+			// set a cookie with that cart
+			ctx.response.cookie('cartToken', newCartToken, {
+				maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+			})
+		}
+
+		// at this point the cart should be known
+
+		// create a cartSku and assign it to it
+		const cartSku = await ctx.prisma.cartSku.create({
+			data: {
+				cart: {
+					connect: {
+						id: cart.id,
+					},
+				},
+				sku: {
+					connect: {
+						sku,
+					},
+				},
+				customization: customization.substring(0, 3).toUpperCase(),
+			},
+		})
+
+		return await ctx.prisma.cart.findOne({
+			where: {
+				id: cart.id,
+			},
+			include: {
+				cartSkus: {
+					include: {
+						sku: true,
+					},
+				},
+			},
+		})
+	},
+
 	createOrder: async (parent, args, ctx: Context, info) => {
 		let data = null
 

@@ -41,6 +41,12 @@ const typeDefs = `
         image: Image
         stock: Int
     }
+    
+    type CartSku {
+        id: ID!
+        sku: Sku!
+        customization: String
+    }
 
     type Product {
         id: ID!
@@ -100,6 +106,7 @@ const typeDefs = `
     type Cart {
         id: ID!
         items: String
+        cartSkus: [CartSku]
         skus: [Sku]
     }
 
@@ -258,6 +265,10 @@ const typeDefs = `
         
 	    updateCart(
             items: [String!]
+        ): Cart!
+        addToCart(
+            sku: String!
+            customization: String
         ): Cart!
 
         createOrder(
