@@ -297,7 +297,7 @@ const productTile = item => `
                                                 <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:'lucida sans unicode', 'lucida grande', sans-serif;line-height:21px;color:#333333"><br></p>
                                                 <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%" class="cke_show_border" cellspacing="1" cellpadding="1" border="0" role="presentation">
                                                     <tr style="border-collapse:collapse">
-                                                        <td style="padding:0;Margin:0">${item.name}</td>
+                                                        <td style="padding:0;Margin:0">${item.name}${item.customization && ` (${item.customization})`}</td>
                                                         <td style="padding:0;Margin:0;width:100px;text-align:center">${item.code}</td>
                                                         <td style="padding:0;Margin:0;width:100px;text-align:center">${prettyPrice(item.price, item.currency)}</td>
                                                     </tr>

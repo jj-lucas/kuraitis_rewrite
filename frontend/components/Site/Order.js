@@ -22,6 +22,7 @@ const ORDER_QUERY = gql`
 				price
 				image
 				variationInfo
+				customization
 			}
 			shipping
 			shippingCosts
@@ -304,6 +305,12 @@ const Order = ({ orderId }) => {
 											</p>
 										)
 									})}
+									{item.customization && (
+										<p>
+											<strong>{translate('customization', locale, 'capitalize')}: </strong>
+											{item.customization}
+										</p>
+									)}
 									<p className="price">{prettyPrice(item.price, order.currency)}</p>
 								</div>
 							</li>

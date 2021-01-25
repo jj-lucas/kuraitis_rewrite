@@ -49,7 +49,7 @@ const translations = {
 	},
 	customization: {
 		en: 'Customization',
-		da: '__customization',
+		da: 'Tilpasning',
 	},
 	subtotal: {
 		en: 'Order Subtotal',

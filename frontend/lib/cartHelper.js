@@ -15,34 +15,6 @@ const CART_QUERY = gql`
 	query CART {
 		cart {
 			id
-			items
-			skus {
-				id
-				sku
-				price {
-					DKK
-					USD
-					EUR
-					GBP
-				}
-				image {
-					url
-				}
-				product {
-					price {
-						DKK
-						USD
-						EUR
-						GBP
-					}
-					name_da
-					name_en
-					selectedAttributes
-					images {
-						url
-					}
-				}
-			}
 			cartSkus {
 				id
 				customization

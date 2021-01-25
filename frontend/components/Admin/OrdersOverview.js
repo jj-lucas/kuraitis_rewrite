@@ -23,6 +23,7 @@ const ORDERS_QUERY = gql`
 				code
 				price
 				image
+				customization
 			}
 			customer {
 				email
@@ -112,6 +113,20 @@ const StyledOrder = styled.li`
 
 		a {
 			color: black;
+		}
+
+		.customization {
+			font-weight: ${props => props.theme.typography.fw.bold};
+			background-image: linear-gradient(
+				45deg,
+				#f5f3e3 25%,
+				#facbbb 25%,
+				#facbbb 50%,
+				#f5f3e3 50%,
+				#f5f3e3 75%,
+				#facbbb 75%,
+				#facbbb 100%
+			);
 		}
 
 		img {
@@ -272,6 +287,7 @@ const Order = ({
 										<img src={item.image} />
 									</div>
 									<strong>{item.code}</strong>
+									{item.customization && <div className="customization">{item.customization}</div>}
 								</a>
 							</li>
 						))}
