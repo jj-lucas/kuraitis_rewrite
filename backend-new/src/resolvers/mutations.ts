@@ -598,42 +598,41 @@ const mutationResolvers = {
 
 	createOrder: async (parent, args, ctx: Context, info) => {
 		let data = null
+		let cart = null
 
 		const { cartToken } = ctx.request.cookies
 		const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
 
 		try {
 			// check if such a cart exists
-			const cart = await ctx.prisma.cart.findOne({
+			cart = await ctx.prisma.cart.findOne({
 				where: {
 					id: cartId,
+				},
+				include: {
+					cartSkus: {
+						include: {
+							sku: {
+								include: {
+									product: {
+										include: {
+											price: true,
+											images: {
+												orderBy: [{ sorting: 'asc' }],
+											},
+										},
+									},
+									price: true,
+									image: true,
+								},
+							},
+						},
+					},
 				},
 			})
 
 			// if it does, retrieve SKU data and parse items
-			if (cart) {
-				data = {
-					...cart,
-				}
-
-				data.skus = await ctx.prisma.sku.findMany({
-					where: {
-						sku: { in: cart.items.split('|') },
-					},
-					include: {
-						product: {
-							include: {
-								price: true,
-								images: {
-									orderBy: [{ sorting: 'asc' }],
-								},
-							},
-						},
-						price: true,
-						image: true,
-					},
-				})
-			} else {
+			if (!cart) {
 				// no cart found
 				throw new Error('Something went wrong processing your order [1]')
 			}
@@ -645,26 +644,24 @@ const mutationResolvers = {
 		let purchasedSKUs = []
 		let subtotal = 0
 
-		data.items.split('|').map((sku, index) => {
-			const skuData = data.skus.find(candidate => candidate.sku == sku)
-
+		cart.cartSkus.map((cartSku, index) => {
 			// add to subtotal
-			subtotal += (skuData.price && skuData.price[args.currency]) || skuData.product.price[args.currency]
+			subtotal += (cartSku.sku.price && cartSku.sku.price[args.currency]) || cartSku.sku.product.price[args.currency]
 
-			const selectedAttributes = JSON.parse(skuData.product.selectedAttributes)
+			const selectedAttributes = JSON.parse(cartSku.sku.product.selectedAttributes)
 			const attributesInSku = Object.keys(selectedAttributes).filter(attribute => selectedAttributes[attribute].length)
 			let variationInfo = {}
 			attributesInSku.map((attribute, index) => {
-				variationInfo[attribute] = skuData.sku.split('-')[index + 1]
+				variationInfo[attribute] = cartSku.sku.sku.split('-')[index + 1]
 			})
 
 			// craft PurchasedSku
 			const purchasedSku = {
-				code: skuData.sku,
-				name: skuData.product[`name_${args.locale}`],
-				price: (skuData.price && skuData.price[args.currency]) || skuData.product.price[args.currency],
+				code: cartSku.sku.sku,
+				name: cartSku.sku.product[`name_${args.locale}`],
+				price: (cartSku.sku.price && cartSku.sku.price[args.currency]) || cartSku.sku.product.price[args.currency],
 				currency: args.currency,
-				image: (skuData.image && skuData.image.url) || skuData.product.images[0].url,
+				image: (cartSku.sku.image && cartSku.sku.image.url) || cartSku.sku.product.images[0].url,
 				variationInfo: JSON.stringify(variationInfo),
 			}
 
@@ -766,6 +763,19 @@ const mutationResolvers = {
 		})
 
 		// clean up + delete cart
+
+		// Array.map doesn't respect await, causing concurrency issues
+		// due to the fact that SQLLite gets locked
+		// https://github.com/prisma/prisma/issues/484
+		for (let i in cart.cartSkus) {
+			const cartSku = cart.cartSkus[i]
+			await ctx.prisma.cartSku.delete({
+				where: {
+					id: cartSku.id,
+				},
+			})
+		}
+
 		await ctx.prisma.cart.delete({
 			where: {
 				id: cartId,

@@ -134,7 +134,7 @@ const Checkout = () => {
 	let subtotal = 0
 	if (cart && cart.cartSkus) {
 		cart.cartSkus.map((cartSku, index) => {
-			subtotal += (cartSku.sku.price && cartSku.sku.price[currency]) || cartSku.product.price[currency]
+			subtotal += (cartSku.sku.price && cartSku.sku.price[currency]) || cartSku.sku.product.price[currency]
 		})
 	}
 
