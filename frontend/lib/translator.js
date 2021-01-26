@@ -24,6 +24,16 @@ const translations = {
 		da: 'Valuta',
 	},
 
+	// Footer
+	customer_on: {
+		en: 'Customer, ',
+		da: 'Klient, ',
+	},
+	customer_read_more: {
+		en: 'Read more reviews',
+		da: 'Læs mere feedback',
+	},
+
 	// Product page
 	add_to_cart: {
 		en: 'Add to cart',

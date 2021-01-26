@@ -152,7 +152,14 @@ const typeDefs = `
         customization: String
     }
 
+    type Quote {
+        message: String!
+        creation_tsz: String!
+    }
+
     type Query { 
+        quote: Quote
+
         users: [User]
         currentUser: User
 
