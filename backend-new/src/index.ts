@@ -49,7 +49,7 @@ server.express.use((req, res, next) => {
 server.express.use(async (req, res, next) => {
 	// if they aren't logged in, skip this
 	if (!req.userId) return next()
-	const user = await prisma.user.findOne({
+	const user = await prisma.user.findUnique({
 		where: { id: req.userId },
 		include: {
 			permissions: true,
