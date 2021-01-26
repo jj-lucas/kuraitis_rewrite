@@ -64,7 +64,7 @@ const mutationResolvers = {
 
 	signIn: async (parent, { email, password }, ctx: Context, info) => {
 		// check if there is a user with that email
-		const user = await ctx.prisma.user.findOne({ where: { email } })
+		const user = await ctx.prisma.user.findUnique({ where: { email } })
 		if (!user) {
 			throw new Error('Invalid email or password')
 		}
@@ -443,7 +443,7 @@ const mutationResolvers = {
 			const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
 
 			// find cart to update
-			cart = await ctx.prisma.cart.findOne({
+			cart = await ctx.prisma.cart.findUnique({
 				where: {
 					id: cartId,
 				},
@@ -493,7 +493,7 @@ const mutationResolvers = {
 			},
 		})
 
-		return await ctx.prisma.cart.findOne({
+		return await ctx.prisma.cart.findUnique({
 			where: {
 				id: cart.id,
 			},
@@ -525,7 +525,7 @@ const mutationResolvers = {
 			const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
 
 			// find cart to update
-			cart = await ctx.prisma.cart.findOne({
+			cart = await ctx.prisma.cart.findUnique({
 				where: {
 					id: cartId,
 				},
@@ -577,7 +577,7 @@ const mutationResolvers = {
 
 		try {
 			// check if such a cart exists
-			cart = await ctx.prisma.cart.findOne({
+			cart = await ctx.prisma.cart.findUnique({
 				where: {
 					id: cartId,
 				},
@@ -649,7 +649,7 @@ const mutationResolvers = {
 		}
 
 		// standard
-		const shippingCost = await ctx.prisma.shippingProfile.findOne({
+		const shippingCost = await ctx.prisma.shippingProfile.findUnique({
 			where: {
 				code: args.shipping,
 			},
@@ -663,7 +663,7 @@ const mutationResolvers = {
 		// handle additional shipping costs
 		if (args.shipping.includes('track_trace')) {
 			// also include standard
-			const standardShipping = await ctx.prisma.shippingProfile.findOne({
+			const standardShipping = await ctx.prisma.shippingProfile.findUnique({
 				where: {
 					code: args.shipping.replace('track_trace', 'standard'),
 				},
@@ -797,7 +797,7 @@ const mutationResolvers = {
 	sendConfirmationMail: async (parent, { orderId }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 		// get the order
-		const order = await ctx.prisma.order.findOne({
+		const order = await ctx.prisma.order.findUnique({
 			where: {
 				id: orderId,
 			},
@@ -819,7 +819,7 @@ const mutationResolvers = {
 	sendOrderShippedMail: async (parent, { orderId }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 		// get the order
-		const order = await ctx.prisma.order.findOne({
+		const order = await ctx.prisma.order.findUnique({
 			where: {
 				id: orderId,
 			},
@@ -841,7 +841,7 @@ const mutationResolvers = {
 	previewMail: async (parent, { orderId, type }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 		// get the order
-		const order = await ctx.prisma.order.findOne({
+		const order = await ctx.prisma.order.findUnique({
 			where: {
 				id: orderId,
 			},

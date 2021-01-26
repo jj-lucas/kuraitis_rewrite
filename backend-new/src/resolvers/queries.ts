@@ -20,7 +20,7 @@ const queryResolvers = {
 			return null
 		}
 		// there is, return it
-		return await ctx.prisma.user.findOne({
+		return await ctx.prisma.user.findUnique({
 			where: {
 				id: ctx.request.userId,
 			},
@@ -76,7 +76,7 @@ const queryResolvers = {
 
 		const where = id ? { id } : { code }
 
-		const product = await ctx.prisma.product.findOne({
+		const product = await ctx.prisma.product.findUnique({
 			where,
 			include: {
 				price: true,
@@ -158,7 +158,7 @@ const queryResolvers = {
 				const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
 
 				// check if such a cart exists
-				const cart = await ctx.prisma.cart.findOne({
+				const cart = await ctx.prisma.cart.findUnique({
 					where: {
 						id: cartId,
 					},
@@ -201,7 +201,7 @@ const queryResolvers = {
 	},
 
 	order: async (parent, { id }, ctx: Context, info) => {
-		const order = await ctx.prisma.order.findOne({
+		const order = await ctx.prisma.order.findUnique({
 			where: {
 				id,
 			},
