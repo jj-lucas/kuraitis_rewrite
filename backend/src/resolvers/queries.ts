@@ -1,9 +1,33 @@
-import { FileWatcherEventKind } from 'typescript'
 import { Context } from '../index'
+const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const hasPermissions = require('../lib/hasPermissions')
 
+function getQuote(messages) {
+	return messages[Math.floor(Math.random() * messages.length)]
+}
+
 const queryResolvers = {
+	quote: async (parent, args, ctx: Context, info) => {
+		const resp = await axios.get(
+			'https://openapi.etsy.com/v2/users/lucsali/feedback/as-seller?limit=200&api_key=' + process.env.ETSY_API_KEY
+		)
+		const feedbacks = resp.data.results
+		for (let i = feedbacks.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1))
+			;[feedbacks[i], feedbacks[j]] = [feedbacks[j], feedbacks[i]]
+		}
+		let feedback
+		do {
+			feedback = getQuote(feedbacks)
+		} while (feedback.message === null || feedback.message === '')
+
+		return {
+			message: feedback.message || '',
+			creation_tsz: feedback.creation_tsz,
+		}
+	},
+
 	users: async (parent, args, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
