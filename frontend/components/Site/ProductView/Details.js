@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 import {

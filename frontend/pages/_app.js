@@ -3,6 +3,7 @@ import 'normalize.css'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { apiUrlDev, apiUrlProd } from '../config'
 import { ApolloProvider } from '@apollo/client'
+import React from 'react'
 
 class MyApp extends App {
 	static async getInitialProps({ Component, ctx }) {

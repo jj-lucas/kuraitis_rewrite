@@ -1,4 +1,5 @@
 import { MdDeleteForever } from 'react-icons/md'
+import React from 'react'
 import Select from 'react-select'
 import styled from 'styled-components'
 import { Modal } from '../../components'
