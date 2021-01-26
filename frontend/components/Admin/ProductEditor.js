@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
 import { DisplayError, Form, ImageUploader, ProductVariants } from '../../components'
 import { languages } from '../../config'

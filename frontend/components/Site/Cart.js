@@ -1,5 +1,6 @@
 import { FiTruck as DeliveryIcon } from 'react-icons/fi'
 import { ImGift as GiftIcon } from 'react-icons/im'
+import React from 'react'
 import { MdCached as ReturnIcon, MdClose } from 'react-icons/md'
 import styled from 'styled-components'
 import { CartProductsList } from '../../components'

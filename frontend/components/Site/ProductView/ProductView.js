@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client'
 import Head from 'next/head'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { LocaleContext } from '../../../lib'
 import { SellingPoints } from '../../../components'

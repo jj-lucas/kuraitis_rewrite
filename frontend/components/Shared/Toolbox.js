@@ -1,4 +1,5 @@
 import { MdRadioButtonChecked, MdShoppingCart } from 'react-icons/md'
+import React from 'react'
 import styled from 'styled-components'
 import { LanguageSelector } from '../../components'
 import { CartContext, CurrencyContext, LocaleContext, translate } from '../../lib'

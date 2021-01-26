@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import styled from 'styled-components'
 import { Picture } from '../../components'
 import { CurrencyContext, fromPrice, LocaleContext, prettyPrice } from '../../lib'
+import React from 'react'
 
 const PRODUCTS_QUERY = gql`
 	query PRODUCTS_QUERY($categorySlug: String) {
@@ -148,4 +149,3 @@ const ProductsList = ({ categorySlug }) => {
 }
 
 export { ProductsList }
-
