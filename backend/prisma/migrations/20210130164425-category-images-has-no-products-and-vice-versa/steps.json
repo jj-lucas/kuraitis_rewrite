@@ -1,0 +1,60 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Category",
+      "field": "ProductImage"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Product",
+      "field": "CategoryImage"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Sku",
+      "field": "CategoryImage"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Sku",
+      "field": "categoryImageId"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "ProductImage",
+      "field": "category"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "ProductImage",
+      "field": "categoryId"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CategoryImage",
+      "field": "product"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CategoryImage",
+      "field": "productId"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CategoryImage",
+      "field": "sku"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "CategoryImage"
+        },
+        "directive": "map"
+      }
+    }
+  ]
+}

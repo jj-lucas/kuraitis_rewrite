@@ -16,7 +16,7 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_en
 			sorting
 			images {
-				url
+				adminUrl
 			}
 		}
 	}
@@ -114,7 +114,7 @@ const CategoriesOverview = () => {
 	}
 
 	return (
-		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={4}>
+		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={5}>
 			{categories &&
 				categories.map((category, index) => (
 					<SortableItem key={category.id} index={index}>
@@ -123,7 +123,7 @@ const CategoriesOverview = () => {
 								<div>
 									<img
 										alt=""
-										src={category.images[0] ? category.images[0].url : '/images/placeholder_category.png'}
+										src={category.images[0] ? category.images[0].adminUrl : '/images/placeholder_category.png'}
 									/>
 								</div>
 
@@ -145,4 +145,3 @@ const CategoriesOverview = () => {
 }
 
 export { CategoriesOverview }
-

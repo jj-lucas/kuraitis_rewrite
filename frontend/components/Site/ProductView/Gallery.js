@@ -107,7 +107,7 @@ const Gallery = ({ product, className, SKU }) => {
 		<div className={className}>
 			<div className="mainPicture" ref={refMainPicture}>
 				<Picture
-					source={product.images.find(image => image.id === selectedImageId).url}
+					source={product.images.find(image => image.id === selectedImageId).mainUrl}
 					alt={product[`name_${locale}`]}
 				/>
 			</div>
@@ -137,7 +137,7 @@ const Gallery = ({ product, className, SKU }) => {
 								onClick={e => {
 									onClickThumb(e, image.id)
 								}}>
-								<img src={image.url} alt={product[`name_${locale}`]} />
+								<img src={image.galleryUrl} alt={product[`name_${locale}`]} />
 							</a>
 						</li>
 					))}

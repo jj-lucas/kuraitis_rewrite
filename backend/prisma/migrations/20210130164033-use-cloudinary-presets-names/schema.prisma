@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:./dev.db"
+    url = "***"
 }
 
 generator client {
@@ -24,14 +24,14 @@ model User {
 }
 
 model ProductImage {
-    id         String   @id @default(cuid())
-    mainUrl    String
-    adminUrl   String
-    galleryUrl String
-    cartUrl    String
+    id         String    @id @default(cuid())
+    largeUrl   String
     thumbUrl   String
+    cartUrl    String
     sorting    Int?
-    product    Product? @relation(fields: [productId], references: [id])
+    category   Category? @relation(fields: [categoryId], references: [id])
+    product    Product?  @relation(fields: [productId], references: [id])
+    categoryId String?
     productId  String?
     sku        Sku[]
 }
@@ -39,10 +39,14 @@ model ProductImage {
 model CategoryImage {
     id         String    @id @default(cuid())
     thumbUrl   String
-    adminUrl   String
     sorting    Int?
     category   Category? @relation(fields: [categoryId], references: [id])
+    product    Product?  @relation(fields: [productId], references: [id])
     categoryId String?
+    productId  String?
+    sku        Sku[]
+
+    @@map("Image")
 }
 
 model Category {
@@ -57,6 +61,7 @@ model Category {
     name_en        String?
     description_da String?
     description_en String?
+    ProductImage   ProductImage[]
 }
 
 model Report {
@@ -69,37 +74,40 @@ model Report {
 }
 
 model Product {
-    id                 String         @id @default(cuid())
-    code               String?        @unique
-    customizable       Boolean        @default(true)
-    price              Price?         @relation(fields: [priceId], references: [id])
-    hasMultiplePrices  Boolean        @default(false)
+    id                 String          @id @default(cuid())
+    code               String?         @unique
+    customizable       Boolean         @default(true)
+    price              Price?          @relation(fields: [priceId], references: [id])
+    hasMultiplePrices  Boolean         @default(false)
     sorting            Int?
-    published          Boolean        @default(false)
+    published          Boolean         @default(false)
     categories         Category[]
     images             ProductImage[]
     skus               Sku[]
     selectedAttributes String?
-    slug_da            String?        @unique
-    slug_en            String?        @unique
+    slug_da            String?         @unique
+    slug_en            String?         @unique
     name_da            String?
     name_en            String?
     description_da     String?
     description_en     String?
     priceId            String?
+    CategoryImage      CategoryImage[]
 }
 
 model Sku {
-    id        String        @id @default(cuid())
-    sku       String        @unique
-    product   Product       @relation(fields: [productId], references: [id])
-    price     Price?        @relation(fields: [priceId], references: [id])
-    image     ProductImage? @relation(fields: [imageId], references: [id])
-    productId String
-    priceId   String?
-    imageId   String?
-    stock     Int           @default(0)
-    CartSku   CartSku[]
+    id              String         @id @default(cuid())
+    sku             String         @unique
+    product         Product        @relation(fields: [productId], references: [id])
+    price           Price?         @relation(fields: [priceId], references: [id])
+    image           ProductImage?  @relation(fields: [imageId], references: [id])
+    productId       String
+    priceId         String?
+    imageId         String?
+    stock           Int            @default(0)
+    CartSku         CartSku[]
+    CategoryImage   CategoryImage? @relation(fields: [categoryImageId], references: [id])
+    categoryImageId String?
 }
 
 model CartSku {

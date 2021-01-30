@@ -14,10 +14,23 @@ const typeDefs = `
         permissions: [Permission]
     }
 
-    type Image {
+    type ProductImage {
         id: ID!
-        url: String!
-        largeUrl: String!
+        mainUrl:    String!
+        adminUrl:   String!
+        galleryUrl: String!
+        cartUrl:    String!
+        thumbUrl:   String!
+        sorting: Int
+        categoryId: String
+        productId: String
+        skuId: String
+    }
+
+    type CategoryImage {
+        id: ID!
+        thumbUrl:   String!
+        adminUrl:   String!
         sorting: Int
         categoryId: String
         productId: String
@@ -38,7 +51,7 @@ const typeDefs = `
         sku: String!
         product: Product!
         price: Price
-        image: Image
+        image: ProductImage
         stock: Int
     }
     
@@ -57,7 +70,7 @@ const typeDefs = `
         sorting: Int
         published: Boolean!
         categories: [Category]
-        images: [Image]
+        images: [ProductImage]
         skus: [Sku]
         selectedAttributes: String
         slug_da: String
@@ -81,7 +94,7 @@ const typeDefs = `
         sorting: Int
         published: Boolean!
         products: [Product]
-        images: [Image]
+        images: [CategoryImage]
         slug_da: String
         slug_en: String
         name_da: String
@@ -204,12 +217,19 @@ const typeDefs = `
             password: String!
         ): User
 
-        createImage(
-            url: String!
-            largeUrl: String!
-            categoryId: ID
+        createProductImage(
+            mainUrl: String!
+            thumbUrl: String!
+            adminUrl: String!
+            cartUrl: String!
+            galleryUrl: String!
             productId: ID
-        ): Image!
+        ): ProductImage!
+        createCategoryImage(
+            thumbUrl: String!
+            adminUrl: String!
+            categoryId: ID
+        ): CategoryImage!
         deleteImage(
             id: ID!
         ): SuccessMessage

@@ -15,7 +15,7 @@ const CATEGORY_QUERY = gql`
 			name_en
 			sorting
 			images {
-				image
+				thumbUrl
 			}
 		}
 	}

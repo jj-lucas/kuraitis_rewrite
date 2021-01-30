@@ -26,7 +26,7 @@ const PRODUCTS_QUERY = gql`
 			}
 			images {
 				id
-				url
+				thumbUrl
 			}
 		}
 		categories {
@@ -96,7 +96,7 @@ const CategoryOfProducts = ({ products }) => {
 								product[`slug_${locale}`]
 							}`}>
 							<div>
-								<Picture source={product.images[0] ? product.images[0].url : '/images/placeholder_product.png'} />
+								<Picture source={product.images[0] ? product.images[0].thumbUrl : '/images/placeholder_product.png'} />
 							</div>
 
 							<div>

@@ -39,8 +39,8 @@ const PRODUCT_BY_CODE = gql`
 			}
 			images {
 				id
-				url
-				largeUrl
+				mainUrl
+				galleryUrl
 			}
 		}
 	}

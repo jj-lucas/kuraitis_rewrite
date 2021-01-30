@@ -8,9 +8,26 @@ import { LocaleContext, translate } from '../../lib'
 const StyledSellingPoints = styled.div`
 	margin: 6rem 0 3rem;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-gap: 2rem;
+	grid-template-columns: 1fr;
 	text-align: center;
+
+	> div {
+		border-top: 1px solid var(--lightishGray);
+		padding-top: 2rem;
+	}
+
+	p {
+		margin-top: 0;
+	}
+
+	@media (min-width: ${props => props.theme.breakpoints.sm}) {
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-gap: 2rem;
+
+		> div {
+			border: 0 none;
+		}
+	}
 `
 
 const SellingPoints = () => {

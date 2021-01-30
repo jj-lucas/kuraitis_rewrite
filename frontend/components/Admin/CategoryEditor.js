@@ -10,7 +10,7 @@ const CATEGORY_BY_ID_QUERY = gql`
 			published
             images {
 				id
-                url
+                adminUrl
             }
             ${languages.map(lang => 'name_' + lang.id)}
             ${languages.map(lang => 'slug_' + lang.id)} 
@@ -53,7 +53,7 @@ const DELETE_CATEGORY_MUTATION = gql`
 `
 
 const CategoryEditor = props => {
-	const [changes, setChanges] = React.useState({})
+	const [changes, setChanges] = useState({})
 
 	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(CATEGORY_BY_ID_QUERY, {
 		variables: { id: props.query.id },
@@ -105,6 +105,11 @@ const CategoryEditor = props => {
 		}
 	}
 
+	const slugify = text => {
+		if (!text) return null
+		return text.toLowerCase().replaceAll('æ', 'ae').replaceAll('ø', 'oe').replaceAll('å', 'aa').replaceAll(' ', '-')
+	}
+
 	const onSubmit = async e => {
 		e.preventDefault()
 		const updates = { ...category, ...changes }
@@ -114,7 +119,7 @@ const CategoryEditor = props => {
 		if (updates.published) {
 			// make a list of required fields for a product to be published
 			let necessaryFields = []
-			for (const fields of ['slug', 'name'].map(f => languages.map(l => `${f}_${l.id}`))) {
+			for (const fields of ['name'].map(f => languages.map(l => `${f}_${l.id}`))) {
 				necessaryFields.push(...fields)
 			}
 			for (const field of necessaryFields) {
@@ -122,6 +127,13 @@ const CategoryEditor = props => {
 					throw new Error(`You cannot publish a category without a ${field}`)
 				}
 			}
+
+			// if slug is not already defined, define it
+			languages.map(l => {
+				if (!updates[`slug_${l.id}`]) {
+					updates[`slug_${l.id}`] = slugify(updates[`name_${l.id}`])
+				}
+			})
 
 			if (!updates.images || !updates.images.length) {
 				throw new Error(`You cannot publish a category without images`)
@@ -133,9 +145,13 @@ const CategoryEditor = props => {
 		await updateCategory({
 			variables: updates,
 			refetchQueries: [{ query: CATEGORY_BY_ID_QUERY, variables: { id: props.query.id } }],
-		}).catch(error => {
-			console.log(error)
 		})
+			.catch(error => {
+				console.log(error)
+			})
+			.then(() => {
+				window.location = '/admin/categories'
+			})
 	}
 
 	if (loadingQuery) return <p>Loading</p>
@@ -159,17 +175,6 @@ const CategoryEditor = props => {
 							<div key={lang.id}>
 								<h3>{lang.pretty}</h3>
 								<fieldset disabled={loading} aria-busy={loading}>
-									<label htmlFor={`slug_${lang.id}`}>
-										Slug
-										<input
-											type="text"
-											id={`slug_${lang.id}`}
-											name={`slug_${lang.id}`}
-											placeholder="Slug"
-											defaultValue={category[`slug_${lang.id}`]}
-											onChange={handleChange}
-										/>
-									</label>
 									<label htmlFor={`name_${lang.id}`}>
 										Name
 										<input
@@ -179,6 +184,21 @@ const CategoryEditor = props => {
 											placeholder="Title"
 											required={lang.required}
 											defaultValue={category[`name_${lang.id}`]}
+											onChange={handleChange}
+										/>
+									</label>
+									<label htmlFor={`slug_${lang.id}`}>
+										Slug
+										<input
+											type="text"
+											id={`slug_${lang.id}`}
+											name={`slug_${lang.id}`}
+											placeholder="Slug"
+											disabled
+											defaultValue={
+												category[`slug_${lang.id}`] ||
+												(changes[`name_${lang.id}`] ? slugify(changes[`name_${lang.id}`]) : null)
+											}
 											onChange={handleChange}
 										/>
 									</label>
@@ -229,4 +249,3 @@ const CategoryEditor = props => {
 }
 
 export { CategoryEditor }
-
