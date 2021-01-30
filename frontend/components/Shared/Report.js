@@ -76,7 +76,7 @@ const Report = props => {
 
 	const existingReports = {}
 	dataQuery.reports.map(report => {
-		existingReports[report.imageUrl] = report.message
+		existingReports[report.imageUrl] = report.description
 	})
 
 	return (
@@ -84,7 +84,8 @@ const Report = props => {
 			{({ currentUser }) =>
 				currentUser && (
 					<>
-						{(currentUser.permissions.map(permission => permission.name).includes('ADMIN') || currentUser.permissions.map(permission => permission.name).includes('REPORTCREATE')) && (
+						{(currentUser.permissions.map(permission => permission.name).includes('ADMIN') ||
+							currentUser.permissions.map(permission => permission.name).includes('REPORTCREATE')) && (
 							<span onClick={onClick}>
 								<StyledIcon size={20} reported={props.image in existingReports ? 'reported' : null} />
 							</span>
@@ -97,4 +98,3 @@ const Report = props => {
 }
 
 export { Report }
-

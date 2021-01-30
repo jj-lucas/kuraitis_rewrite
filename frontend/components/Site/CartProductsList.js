@@ -86,7 +86,7 @@ const CartProductsList = ({ cart }) => {
 				cart.cartSkus &&
 				cart.cartSkus.map((cartSku, index) => {
 					const sku = cartSku.sku
-					const image = sku.image ? sku.image.url : sku.product.images[0].url
+					const image = sku.image ? sku.image.cartUrl : sku.product.images[0].cartUrl
 					const price = sku.price || sku.product.price
 
 					const selectedAttributes = JSON.parse(sku.product.selectedAttributes)

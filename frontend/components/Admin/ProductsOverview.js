@@ -17,7 +17,7 @@ const PRODUCTS_QUERY = gql`
 			}
 			images {
 				id
-				url
+				adminUrl
 			}
 		}
 		categories {
@@ -161,14 +161,14 @@ const CategoryOfProducts = props => {
 	}
 
 	return (
-		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={4}>
+		<SortableList axis="xy" distance={1} onSortEnd={onSortEnd} columns={5}>
 			{products &&
 				products.map((product, index) => (
 					<SortableItem key={product.id} index={index}>
 						<StyledCard>
 							<a href={`/admin/product?id=${product.id}`}>
 								<div>
-									<img src={product.images[0] ? product.images[0].url : '/images/placeholder_product.png'} />
+									<img src={product.images[0] ? product.images[0].adminUrl : '/images/placeholder_product.png'} />
 								</div>
 
 								<div>

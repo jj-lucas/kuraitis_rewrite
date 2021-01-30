@@ -96,7 +96,7 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 			<StyledSKU>
 				<span className="sku">{sku}</span>
 				<span>
-					Precio:
+					Price:
 					<input
 						name="price"
 						placeholder={defaultPrice}
@@ -115,7 +115,7 @@ const SKU = ({ sku, defaultPrice, onChangeSku, value, image, productImages }) =>
 					)}
 				</span>
 				<span>
-					<img src={image && image.url} />
+					<img src={image && image.adminUrl} />
 				</span>
 			</StyledSKU>
 
@@ -163,7 +163,7 @@ const ProductVariants = props => {
 		const skuFragments = [[productCode]]
 		availableAttributes.map(attribute => {
 			if (selectedAttributes[attribute.name] && selectedAttributes[attribute.name].length) {
-				skuFragments.push(selectedAttributes[attribute.name].map(option => option.value))
+				skuFragments.push(selectedAttributes[attribute.name].map(option => option.value.toUpperCase()))
 			}
 		})
 		const updatedSKUs = doExchange(skuFragments).map(sku => {
@@ -301,7 +301,7 @@ const ImageModalContent = ({ images, setOpen, onChangeSku, sku, selectedImage })
 						key={entry.id}
 						className={entry.id === selectedImage && 'selected'}
 						onClick={e => onImageSelect(e, entry.id)}>
-						<img src={entry.url} />
+						<img src={entry.adminUrl} />
 					</a>
 				))}
 			</ul>

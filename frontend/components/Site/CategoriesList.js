@@ -15,7 +15,7 @@ const ALL_CATEGORIES_QUERY = gql`
 			name_en
 			sorting
 			images {
-				url
+				thumbUrl
 			}
 		}
 	}
@@ -110,7 +110,7 @@ const CategoriesList = () => {
 								key={item.id}
 								name={item[`name_${locale}`]}
 								path={locale + (locale === 'da' ? '/kategorier/' : '/categories/') + item[`slug_${locale}`]}
-								image={item.images[0] ? item.images[0].url : null}
+								image={item.images[0] ? item.images[0].thumbUrl : null}
 							/>
 						)
 				)}
@@ -120,4 +120,3 @@ const CategoriesList = () => {
 }
 
 export { CategoriesList }
-

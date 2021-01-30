@@ -82,55 +82,64 @@ const mutationResolvers = {
 		return user
 	},
 
-	createImage: async (parent, args, ctx: Context, info) => {
+	createProductImage: async (parent, args, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
 
-		if (!args.categoryId && !args.productId) {
-			throw new Error('Either the categoryId or the productId has to be set')
+		if (!args.productId) {
+			throw new Error('The productId has to be set')
 		}
 
-		if (args.categoryId) {
-			// category image
-			const categoryId = args.categoryId
-			delete args.categoryId
-			delete args.productId
-			const image = await ctx.prisma.image.create({
-				data: {
-					category: {
-						connect: {
-							id: categoryId,
-						},
+		const productId = args.productId
+		delete args.productId
+		const image = await ctx.prisma.productImage.create({
+			data: {
+				product: {
+					connect: {
+						id: productId,
 					},
-					...args,
 				},
-			})
-			return image
+				...args,
+			},
+		})
+		return image
+	},
+
+	createCategoryImage: async (parent, args, ctx: Context, info) => {
+		hasPermissions(ctx, ['ADMIN', 'CATEGORYUPDATE'])
+
+		if (!args.categoryId) {
+			throw new Error('The categoryId has to be set')
 		}
 
-		if (args.productId) {
-			// product image
-			const productId = args.productId
-			delete args.categoryId
-			delete args.productId
-			const image = await ctx.prisma.image.create({
-				data: {
-					product: {
-						connect: {
-							id: productId,
-						},
+		const categoryId = args.categoryId
+		delete args.categoryId
+		const image = await ctx.prisma.categoryImage.create({
+			data: {
+				category: {
+					connect: {
+						id: categoryId,
 					},
-					...args,
 				},
-			})
-			return image
-		}
+				...args,
+			},
+		})
+		return image
 	},
 
 	deleteImage: async (parent, { id }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
 		// delete the image
-		await ctx.prisma.image.delete({ where: { id } })
+		try {
+			await ctx.prisma.categoryImage.delete({ where: { id } })
+		} catch (e) {
+			// nevermind
+		}
+		try {
+			await ctx.prisma.productImage.delete({ where: { id } })
+		} catch (e) {
+			// nevermind
+		}
 
 		return { message: 'Image deleted' }
 	},
@@ -280,7 +289,7 @@ const mutationResolvers = {
 		// due to the fact that SQLLite gets locked
 		// https://github.com/prisma/prisma/issues/484
 		for (let i in images) {
-			await ctx.prisma.image.update({
+			await ctx.prisma.productImage.update({
 				where: { id: images[i] },
 				data: { sorting: parseInt(i, 10) + 1 },
 			})
@@ -374,7 +383,7 @@ const mutationResolvers = {
 			// due to the fact that SQLLite gets locked
 			// https://github.com/prisma/prisma/issues/484
 			for (let i in images) {
-				await ctx.prisma.image.update({
+				await ctx.prisma.categoryImage.update({
 					where: { id: images[i] },
 					data: { sorting: parseInt(i, 10) + 1 },
 				})
@@ -633,7 +642,7 @@ const mutationResolvers = {
 				name: cartSku.sku.product[`name_${args.locale}`],
 				price: (cartSku.sku.price && cartSku.sku.price[args.currency]) || cartSku.sku.product.price[args.currency],
 				currency: args.currency,
-				image: (cartSku.sku.image && cartSku.sku.image.url) || cartSku.sku.product.images[0].url,
+				image: (cartSku.sku.image && cartSku.sku.image.cartUrl) || cartSku.sku.product.images[0].cartUrl,
 				variationInfo: JSON.stringify(variationInfo),
 				customization: cartSku.customization,
 			}

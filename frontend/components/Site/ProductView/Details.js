@@ -174,6 +174,7 @@ const StyledDetails = styled(Details)`
 	}
 
 	h1 {
+		font-size: ${props => props.theme.typography.fs.h2};
 		margin-top: 0;
 	}
 

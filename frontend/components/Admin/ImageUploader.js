@@ -5,12 +5,39 @@ import styled from 'styled-components'
 import { DisplayError, SortableItem, SortableList } from '../../components'
 import { cloudinaryUrl } from '../../config'
 
-const CREATE_IMAGE_MUTATION = gql`
-	mutation CREATE_IMAGE_MUTATION($url: String!, $largeUrl: String!, $categoryId: ID, $productId: ID) {
-		createImage(url: $url, largeUrl: $largeUrl, categoryId: $categoryId, productId: $productId) {
+const CREATE_PRODUCT_IMAGE_MUTATION = gql`
+	mutation CREATE_PRODUCT_IMAGE_MUTATION(
+		$mainUrl: String!
+		$thumbUrl: String!
+		$adminUrl: String!
+		$cartUrl: String!
+		$galleryUrl: String!
+		$productId: ID
+	) {
+		createProductImage(
+			mainUrl: $mainUrl
+			thumbUrl: $thumbUrl
+			adminUrl: $adminUrl
+			cartUrl: $cartUrl
+			galleryUrl: $galleryUrl
+			productId: $productId
+		) {
 			id
-			url
-			largeUrl
+			mainUrl
+			thumbUrl
+			adminUrl
+			cartUrl
+			galleryUrl
+		}
+	}
+`
+
+const CREATE_CATEGORY_IMAGE_MUTATION = gql`
+	mutation CREATE_CATEGORY_IMAGE_MUTATION($thumbUrl: String!, $adminUrl: String!, $categoryId: ID) {
+		createCategoryImage(thumbUrl: $thumbUrl, adminUrl: $adminUrl, categoryId: $categoryId) {
+			id
+			thumbUrl
+			adminUrl
 		}
 	}
 `
@@ -49,7 +76,12 @@ const StyledTrashIcon = styled(MdDeleteForever)`
 `
 
 const ImageUploader = props => {
-	const [uploadImage, { loading: loadingUpload, error: errorUpload }] = useMutation(CREATE_IMAGE_MUTATION)
+	const [uploadProductImage, { loading: loadingProductUpload, error: errorProductUpload }] = useMutation(
+		CREATE_PRODUCT_IMAGE_MUTATION
+	)
+	const [uploadCategoryImage, { loading: loadingCategoryUpload, error: errorCategoryUpload }] = useMutation(
+		CREATE_CATEGORY_IMAGE_MUTATION
+	)
 	const [deleteImage, { loading: loadingDelete, error: errorDelete }] = useMutation(DELETE_IMAGE_MUTATION)
 
 	const id = props.categoryId || props.productId || null
@@ -69,27 +101,42 @@ const ImageUploader = props => {
 		})
 		const file = await res.json()
 
-		let variables = {
-			url: file.secure_url,
-			largeUrl: file.eager[0].secure_url,
-		}
 		if (props.categoryId) {
-			variables.categoryId = props.categoryId
+			// register the uploaded asset
+			await uploadCategoryImage({
+				variables: {
+					categoryId: props.categoryId,
+					thumbUrl: file.secure_url,
+					adminUrl: file.eager[0].secure_url,
+				},
+				refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
+			})
+				.catch(error => {
+					console.log(error)
+				})
+				.then(response => {
+					console.log(response.data)
+				})
 		} else if (props.productId) {
-			variables.productId = props.productId
+			// register the uploaded asset
+			await uploadProductImage({
+				variables: {
+					productId: props.productId,
+					mainUrl: file.secure_url,
+					thumbUrl: file.eager[0].secure_url,
+					adminUrl: file.eager[1].secure_url,
+					cartUrl: file.eager[2].secure_url,
+					galleryUrl: file.eager[3].secure_url,
+				},
+				refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
+			})
+				.catch(error => {
+					console.log(error)
+				})
+				.then(response => {
+					console.log(response.data)
+				})
 		}
-
-		// register the uploaded asset
-		await uploadImage({
-			variables,
-			refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
-		})
-			.catch(error => {
-				console.log(error)
-			})
-			.then(response => {
-				console.log(response.data)
-			})
 	}
 
 	const onSortEnd = async ({ oldIndex, newIndex }) => {
@@ -106,8 +153,8 @@ const ImageUploader = props => {
 		})
 	}
 
-	const loading = loadingUpload || loadingDelete
-	const error = errorUpload || errorDelete
+	const loading = loadingProductUpload || loadingDelete
+	const error = errorProductUpload || errorDelete
 
 	return (
 		<fieldset disabled={loading} aria-busy={loading}>
@@ -124,7 +171,7 @@ const ImageUploader = props => {
 					props.images.map((image, index) => (
 						<SortableItem key={image.id} index={index}>
 							<Tile>
-								<img src={image.url} />
+								<img src={image.adminUrl} />
 								<a
 									className="remove"
 									href="#"
@@ -143,4 +190,3 @@ const ImageUploader = props => {
 }
 
 export { ImageUploader }
-

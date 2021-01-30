@@ -1,0 +1,41 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "thumbUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "cartUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "ProductImage",
+      "field": "url"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "thumbUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CategoryImage",
+      "field": "url"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CategoryImage",
+      "field": "largeUrl"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Select from 'react-select'
 import { DisplayError, Form, ImageUploader, ProductVariants } from '../../components'
 import { languages } from '../../config'
@@ -16,7 +16,7 @@ const PRODUCT_BY_ID_QUERY = gql`
 			}
 			images {
 				id
-				url
+				adminUrl
 			}
             categories {
                 id
@@ -30,7 +30,7 @@ const PRODUCT_BY_ID_QUERY = gql`
 				}
 				image {
 					id
-					url
+					adminUrl
 				}
 			}
 			selectedAttributes
@@ -96,7 +96,7 @@ const DELETE_PRODUCT_MUTATION = gql`
 `
 
 const ProductEditor = props => {
-	const [changes, setChanges] = React.useState({})
+	const [changes, setChanges] = useState({})
 
 	const { loading: loadingQuery, error: errorQuery, data: dataQuery } = useQuery(PRODUCT_BY_ID_QUERY, {
 		variables: { id: props.query.id },
@@ -106,7 +106,7 @@ const ProductEditor = props => {
 
 	const [images, setImages] = useState([])
 	const [SKUs, setSKUs] = useState([])
-	const [selectedAttributes, setSelectedAttributes] = React.useState({})
+	const [selectedAttributes, setSelectedAttributes] = useState({})
 
 	const product = dataQuery && dataQuery.product
 	const loading = loadingQuery || loadingUpdate || loadingDelete
@@ -123,6 +123,11 @@ const ProductEditor = props => {
 		}
 	}, [product])
 
+	const slugify = text => {
+		if (!text) return null
+		return text.toLowerCase().replaceAll('æ', 'ae').replaceAll('ø', 'oe').replaceAll('å', 'aa').replaceAll(' ', '-')
+	}
+
 	const handleChange = e => {
 		const { name, type, value } = e.target
 		let val
@@ -136,6 +141,9 @@ const ProductEditor = props => {
 			default:
 				val = value
 				break
+		}
+		if (name === 'code') {
+			val = val.toUpperCase()
 		}
 		if (name === 'price') {
 			if (val && val !== '') {
@@ -194,7 +202,7 @@ const ProductEditor = props => {
 			if (updates.published) {
 				// make a list of required fields for a product to be published
 				let necessaryFields = ['code', 'price']
-				for (const fields of ['slug', 'name', 'description'].map(f => languages.map(l => `${f}_${l.id}`))) {
+				for (const fields of ['name', 'description'].map(f => languages.map(l => `${f}_${l.id}`))) {
 					necessaryFields.push(...fields)
 				}
 				for (const field of necessaryFields) {
@@ -202,6 +210,13 @@ const ProductEditor = props => {
 						throw new Error(`You cannot publish a product without a ${field}`)
 					}
 				}
+
+				// if slug is not already defined, define it
+				languages.map(l => {
+					if (!updates[`slug_${l.id}`]) {
+						updates[`slug_${l.id}`] = slugify(updates[`name_${l.id}`])
+					}
+				})
 
 				if (!updates.images || !updates.images.length) {
 					throw new Error(`You cannot publish a product without images`)
@@ -218,7 +233,7 @@ const ProductEditor = props => {
 			variables: updates,
 			refetchQueries: [{ query: PRODUCT_BY_ID_QUERY, variables: { id: props.query.id } }],
 		}).then(() => {
-			// window.location = '/admin/products'
+			window.location = '/admin/products'
 		})
 	}
 
@@ -294,17 +309,6 @@ const ProductEditor = props => {
 							<div key={lang.id}>
 								<fieldset disabled={loading} aria-busy={loading}>
 									<h3>{lang.pretty}</h3>
-									<label htmlFor={`slug_${lang.id}`}>
-										Slug
-										<input
-											type="text"
-											id={`slug_${lang.id}`}
-											name={`slug_${lang.id}`}
-											placeholder="Slug"
-											defaultValue={product[`slug_${lang.id}`]}
-											onChange={handleChange}
-										/>
-									</label>
 									<label htmlFor={`name_${lang.id}`}>
 										Name
 										<input
@@ -317,13 +321,28 @@ const ProductEditor = props => {
 											onChange={handleChange}
 										/>
 									</label>
+									<label htmlFor={`slug_${lang.id}`}>
+										Slug
+										<input
+											type="text"
+											id={`slug_${lang.id}`}
+											name={`slug_${lang.id}`}
+											placeholder="Slug"
+											disabled
+											defaultValue={
+												product[`slug_${lang.id}`] ||
+												(changes[`name_${lang.id}`] ? slugify(changes[`name_${lang.id}`]) : null)
+											}
+											onChange={handleChange}
+										/>
+									</label>
 									<label htmlFor={`description_${lang.id}`}>
 										Description
 										<textarea
 											type="text"
 											id={`description_${lang.id}`}
 											name={`description_${lang.id}`}
-											rows={4}
+											rows={10}
 											placeholder="Description"
 											defaultValue={product[`description_${lang.id}`]}
 											onChange={handleChange}

@@ -27,7 +27,7 @@ const CART_QUERY = gql`
 						GBP
 					}
 					image {
-						url
+						cartUrl
 					}
 					product {
 						price {
@@ -40,7 +40,7 @@ const CART_QUERY = gql`
 						name_en
 						selectedAttributes
 						images {
-							url
+							cartUrl
 						}
 					}
 				}
