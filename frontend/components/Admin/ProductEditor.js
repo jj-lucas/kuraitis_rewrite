@@ -187,7 +187,7 @@ const ProductEditor = props => {
 		}
 	}
 
-	const onSubmit = async e => {
+	const onSubmit = async (e, backToOverview = false) => {
 		e.preventDefault()
 		const updates = { ...product, categories: product.categories.map(cat => cat.id), ...changes }
 		updates.images = images.map(image => image.id)
@@ -233,7 +233,7 @@ const ProductEditor = props => {
 			variables: updates,
 			refetchQueries: [{ query: PRODUCT_BY_ID_QUERY, variables: { id: props.query.id } }],
 		}).then(() => {
-			window.location = '/admin/products'
+			if (backToOverview) window.location = '/admin/products'
 		})
 	}
 
@@ -386,6 +386,7 @@ const ProductEditor = props => {
 							Cancel
 						</button>
 						<button type="submit">Save</button>
+						<button onClick={e => onSubmit(e, true)}>Save and return to overview</button>
 						<button className="warning" onClick={handleDelete}>
 							Delete
 						</button>

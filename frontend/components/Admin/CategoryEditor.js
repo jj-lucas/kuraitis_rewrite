@@ -110,7 +110,7 @@ const CategoryEditor = props => {
 		return text.toLowerCase().replaceAll('æ', 'ae').replaceAll('ø', 'oe').replaceAll('å', 'aa').replaceAll(' ', '-')
 	}
 
-	const onSubmit = async e => {
+	const onSubmit = async (e, backToOverview = false) => {
 		e.preventDefault()
 		const updates = { ...category, ...changes }
 		updates.images = images.map(image => image.id)
@@ -150,7 +150,7 @@ const CategoryEditor = props => {
 				console.log(error)
 			})
 			.then(() => {
-				window.location = '/admin/categories'
+				if (backToOverview) window.location = '/admin/categories'
 			})
 	}
 
@@ -238,6 +238,7 @@ const CategoryEditor = props => {
 							Cancel
 						</button>
 						<button type="submit">Save</button>
+						<button onClick={e => onSubmit(e, true)}>Save and return to overview</button>
 						<button className="warning" onClick={handleDelete}>
 							Delete
 						</button>
