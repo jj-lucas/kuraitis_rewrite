@@ -10,3 +10,4 @@ layout.md
 .env
 dev.db
 backup.sql
+*.dump
