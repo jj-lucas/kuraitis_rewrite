@@ -7,6 +7,6 @@ haters/
 .next/
 .build/
 layout.md
-variables.env
+.env
 dev.db
 backup.sql

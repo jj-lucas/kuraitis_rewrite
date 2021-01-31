@@ -2,12 +2,34 @@
   "version": "0.3.14-fixed",
   "steps": [
     {
+      "tag": "CreateSource",
+      "source": "db"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "db"
+      },
+      "argument": "provider",
+      "value": "\"mysql\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Source",
+        "source": "db"
+      },
+      "argument": "url",
+      "value": "\"***\""
+    },
+    {
       "tag": "CreateModel",
-      "model": "Image"
+      "model": "Permission"
     },
     {
       "tag": "CreateField",
-      "model": "Image",
+      "model": "Permission",
       "field": "id",
       "type": "String",
       "arity": "Required"
@@ -17,7 +39,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Image",
+          "model": "Permission",
           "field": "id"
         },
         "directive": "id"
@@ -28,7 +50,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Image",
+          "model": "Permission",
           "field": "id"
         },
         "directive": "default"
@@ -40,7 +62,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Image",
+          "model": "Permission",
           "field": "id"
         },
         "directive": "default"
@@ -50,41 +72,60 @@
     },
     {
       "tag": "CreateField",
-      "model": "Image",
-      "field": "url",
+      "model": "Permission",
+      "field": "name",
       "type": "String",
       "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Image",
-      "field": "largeUrl",
-      "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Image",
-      "field": "sorting",
-      "type": "Int",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Image",
-      "field": "category",
-      "type": "Category",
-      "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Image",
-          "field": "category"
+          "model": "Permission",
+          "field": "name"
         },
-        "directive": "relation"
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Permission",
+      "field": "users",
+      "type": "User",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "User"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "id"
+        },
+        "directive": "default"
       }
     },
     {
@@ -93,13 +134,99 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Image",
-          "field": "category"
+          "model": "User",
+          "field": "id"
         },
-        "directive": "relation"
+        "directive": "default"
       },
-      "argument": "fields",
-      "value": "[categoryId]"
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "email",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "email"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "password",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "resetToken",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "resetTokenExpiry",
+      "type": "Float",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "permissions",
+      "type": "Permission",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "ProductImage"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ProductImage",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "ProductImage",
+          "field": "id"
+        },
+        "directive": "default"
+      }
     },
     {
       "tag": "CreateArgument",
@@ -107,17 +234,59 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Image",
-          "field": "category"
+          "model": "ProductImage",
+          "field": "id"
         },
-        "directive": "relation"
+        "directive": "default"
       },
-      "argument": "references",
-      "value": "[id]"
+      "argument": "",
+      "value": "cuid()"
     },
     {
       "tag": "CreateField",
-      "model": "Image",
+      "model": "ProductImage",
+      "field": "mainUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "adminUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "galleryUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "cartUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "thumbUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
+      "field": "sorting",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "ProductImage",
       "field": "product",
       "type": "Product",
       "arity": "Optional"
@@ -127,7 +296,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Image",
+          "model": "ProductImage",
           "field": "product"
         },
         "directive": "relation"
@@ -139,7 +308,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Image",
+          "model": "ProductImage",
           "field": "product"
         },
         "directive": "relation"
@@ -153,7 +322,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Image",
+          "model": "ProductImage",
           "field": "product"
         },
         "directive": "relation"
@@ -163,22 +332,136 @@
     },
     {
       "tag": "CreateField",
-      "model": "Image",
-      "field": "Sku",
-      "type": "Sku",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Image",
-      "field": "categoryId",
+      "model": "ProductImage",
+      "field": "productId",
       "type": "String",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "Image",
-      "field": "productId",
+      "model": "ProductImage",
+      "field": "sku",
+      "type": "Sku",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CategoryImage"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CategoryImage",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CategoryImage",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CategoryImage",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "thumbUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "adminUrl",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "sorting",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "category",
+      "type": "Category",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CategoryImage",
+          "field": "category"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CategoryImage",
+          "field": "category"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[categoryId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CategoryImage",
+          "field": "category"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CategoryImage",
+      "field": "categoryId",
       "type": "String",
       "arity": "Optional"
     },
@@ -266,7 +549,7 @@
         "directive": "default"
       },
       "argument": "",
-      "value": "true"
+      "value": "false"
     },
     {
       "tag": "CreateField",
@@ -279,7 +562,7 @@
       "tag": "CreateField",
       "model": "Category",
       "field": "images",
-      "type": "Image",
+      "type": "CategoryImage",
       "arity": "List"
     },
     {
@@ -435,7 +718,7 @@
     {
       "tag": "CreateField",
       "model": "Report",
-      "field": "image",
+      "field": "imageUrl",
       "type": "String",
       "arity": "Required"
     },
@@ -505,7 +788,7 @@
       "model": "Product",
       "field": "code",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateDirective",
@@ -678,7 +961,7 @@
       "tag": "CreateField",
       "model": "Product",
       "field": "images",
-      "type": "Image",
+      "type": "ProductImage",
       "arity": "List"
     },
     {
@@ -691,7 +974,7 @@
     {
       "tag": "CreateField",
       "model": "Product",
-      "field": "selectedAttrinutes",
+      "field": "selectedAttributes",
       "type": "String",
       "arity": "Optional"
     },
@@ -927,7 +1210,7 @@
       "tag": "CreateField",
       "model": "Sku",
       "field": "image",
-      "type": "Image",
+      "type": "ProductImage",
       "arity": "Optional"
     },
     {
@@ -987,6 +1270,205 @@
       "tag": "CreateField",
       "model": "Sku",
       "field": "imageId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Sku",
+      "field": "stock",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Sku",
+          "field": "stock"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Sku",
+          "field": "stock"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "0"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Sku",
+      "field": "CartSku",
+      "type": "CartSku",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CartSku"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "sku",
+      "type": "Sku",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "sku"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "sku"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[skuId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "sku"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "cart",
+      "type": "Cart",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "cart"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "cart"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[cartId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CartSku",
+          "field": "cart"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "skuId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "cartId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CartSku",
+      "field": "customization",
       "type": "String",
       "arity": "Optional"
     },
@@ -1136,21 +1618,21 @@
     {
       "tag": "CreateField",
       "model": "Price",
-      "field": "Product",
+      "field": "product",
       "type": "Product",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Price",
-      "field": "Sku",
+      "field": "sku",
       "type": "Sku",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "Price",
-      "field": "ShippingProfile",
+      "field": "shippingProfile",
       "type": "ShippingProfile",
       "arity": "List"
     },
@@ -1236,9 +1718,9 @@
     {
       "tag": "CreateField",
       "model": "Cart",
-      "field": "items",
-      "type": "String",
-      "arity": "Optional"
+      "field": "cartSkus",
+      "type": "CartSku",
+      "arity": "List"
     },
     {
       "tag": "CreateModel",
@@ -1450,7 +1932,7 @@
     {
       "tag": "CreateField",
       "model": "PurchasedSku",
-      "field": "Order",
+      "field": "order",
       "type": "Order",
       "arity": "Optional"
     },
@@ -1460,7 +1942,7 @@
         "path": {
           "tag": "Field",
           "model": "PurchasedSku",
-          "field": "Order"
+          "field": "order"
         },
         "directive": "relation"
       }
@@ -1472,7 +1954,7 @@
         "path": {
           "tag": "Field",
           "model": "PurchasedSku",
-          "field": "Order"
+          "field": "order"
         },
         "directive": "relation"
       },
@@ -1486,7 +1968,7 @@
         "path": {
           "tag": "Field",
           "model": "PurchasedSku",
-          "field": "Order"
+          "field": "order"
         },
         "directive": "relation"
       },
@@ -1501,8 +1983,58 @@
       "arity": "Optional"
     },
     {
+      "tag": "CreateField",
+      "model": "PurchasedSku",
+      "field": "customization",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
       "tag": "CreateModel",
       "model": "Order"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "number",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "number"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "number"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Order",
+          "field": "number"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
     },
     {
       "tag": "CreateField",
@@ -1519,7 +2051,7 @@
           "model": "Order",
           "field": "id"
         },
-        "directive": "id"
+        "directive": "unique"
       }
     },
     {
@@ -1578,6 +2110,13 @@
       },
       "argument": "",
       "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "shippedAt",
+      "type": "DateTime",
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
@@ -1670,45 +2209,6 @@
     {
       "tag": "CreateField",
       "model": "Order",
-      "field": "shippedAt",
-      "type": "DateTime",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Order",
-      "field": "fullfilled",
-      "type": "Boolean",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Order",
-          "field": "fullfilled"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Order",
-          "field": "fullfilled"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "false"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Order",
       "field": "archived",
       "type": "Boolean",
       "arity": "Required"
@@ -1748,27 +2248,23 @@
     {
       "tag": "CreateField",
       "model": "Order",
-      "field": "auth",
+      "field": "customerId",
       "type": "String",
       "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Order",
-          "field": "auth"
-        },
-        "directive": "unique"
-      }
     },
     {
       "tag": "CreateField",
       "model": "Order",
-      "field": "customerId",
+      "field": "locale",
       "type": "String",
       "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Order",
+      "field": "comment",
+      "type": "String",
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -1904,14 +2400,6 @@
       "field": "orders",
       "type": "Order",
       "arity": "List"
-    },
-    {
-      "tag": "DeleteModel",
-      "model": "Test"
-    },
-    {
-      "tag": "DeleteModel",
-      "model": "TestUser"
     }
   ]
 }

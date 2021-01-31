@@ -4,7 +4,7 @@ import typeDefs from './type-defs'
 
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
-require('dotenv').config({ path: 'variables.env' })
+require('dotenv').config({ path: '.env' })
 
 /*import * as fs from 'fs';
 import * as path from 'path';
