@@ -57,19 +57,14 @@ app.use(async (req, res, next) => {
 	next()
 })
 
-server.applyMiddleware({ app })
-/*
-const options = {
-	port: process.env.PORT,
-	endpoint: '/graphqlish',
-	subscriptions: '/subscriptions',
-	playground: '/playground',
+server.applyMiddleware({
+	app,
 	cors: {
 		credentials: true,
 		origin: process.env.FRONTEND_URL,
 	},
-}
-*/
+})
+
 app.listen({ port: process.env.PORT }, () =>
 	console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
 )
