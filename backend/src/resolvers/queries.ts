@@ -40,13 +40,13 @@ const queryResolvers = {
 
 	currentUser: async (parent, args, ctx: Context, info) => {
 		// check if there is a current user
-		if (!ctx.request.userId) {
+		if (!ctx.req.userId) {
 			return null
 		}
 		// there is, return it
 		return await ctx.prisma.user.findUnique({
 			where: {
-				id: ctx.request.userId,
+				id: ctx.req.userId,
 			},
 			include: {
 				permissions: true,
@@ -176,7 +176,7 @@ const queryResolvers = {
 	},
 
 	cart: async (parent, args, ctx: Context, info) => {
-		const { cartToken } = ctx.request.cookies
+		const { cartToken } = ctx.req.cookies
 		if (cartToken) {
 			try {
 				const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
@@ -212,11 +212,11 @@ const queryResolvers = {
 					return cart
 				} else {
 					// we requested a cart ID that does not exist, clear this invalid cart token
-					ctx.response.clearCookie('cartToken')
+					ctx.res.clearCookie('cartToken')
 				}
 			} catch (e) {
 				// clear this invalid cart token
-				ctx.response.clearCookie('cartToken')
+				ctx.res.clearCookie('cartToken')
 			}
 		}
 
