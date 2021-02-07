@@ -1,8 +1,8 @@
 const hasPermissions = (ctx, eligiblePermissions) => {
-	if (!ctx.request.userId) {
+	if (!ctx.req.userId) {
 		throw new Error('You must be logged in to do this')
 	}
-	const hasPermission = ctx.request.user.permissions
+	const hasPermission = ctx.req.user.permissions
 		.map(permission => permission.name)
 		.some(permission => eligiblePermissions.includes(permission))
 	if (!hasPermission) {

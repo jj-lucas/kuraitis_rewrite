@@ -1,335 +1,282 @@
-const typeDefs = `
-    type Permission {
-        name: String!
-    }
+const { gql } = require('apollo-server-express')
 
-    type SuccessMessage {
-        message: String
-    }
+const typeDefs = gql`
+	type Permission {
+		name: String!
+	}
 
-    type User {
-        id: ID!
-        name: String!
-        email: String!
-        permissions: [Permission]
-    }
+	type SuccessMessage {
+		message: String
+	}
 
-    type ProductImage {
-        id: ID!
-        mainUrl:    String!
-        adminUrl:   String!
-        galleryUrl: String!
-        cartUrl:    String!
-        thumbUrl:   String!
-        sorting: Int
-        categoryId: String
-        productId: String
-        skuId: String
-    }
+	type User {
+		id: ID!
+		name: String!
+		email: String!
+		permissions: [Permission]
+	}
 
-    type CategoryImage {
-        id: ID!
-        thumbUrl:   String!
-        adminUrl:   String!
-        sorting: Int
-        categoryId: String
-        productId: String
-        skuId: String
-    }
+	type ProductImage {
+		id: ID!
+		mainUrl: String!
+		adminUrl: String!
+		galleryUrl: String!
+		cartUrl: String!
+		thumbUrl: String!
+		sorting: Int
+		categoryId: String
+		productId: String
+		skuId: String
+	}
 
-    type Report {
-        id: ID!
-        createdAt: String!
-        resolvedAt: String
-        description: String!
-        url: String!
-        imageUrl: String!
-    }
-    
-    type Sku {
-        id: ID!
-        sku: String!
-        product: Product!
-        price: Price
-        image: ProductImage
-        stock: Int
-    }
-    
-    type CartSku {
-        id: ID!
-        sku: Sku!
-        customization: String
-    }
+	type CategoryImage {
+		id: ID!
+		thumbUrl: String!
+		adminUrl: String!
+		sorting: Int
+		categoryId: String
+		productId: String
+		skuId: String
+	}
 
-    type Product {
-        id: ID!
-        code: String
-        customizable: Boolean!
-        price: Price
-        hasMultiplePrices: Boolean!
-        sorting: Int
-        published: Boolean!
-        categories: [Category]
-        images: [ProductImage]
-        skus: [Sku]
-        selectedAttributes: String
-        slug_da: String
-        slug_en: String
-        name_da: String
-        name_en: String
-        description_da: String
-        description_en: String
-    }
+	type Report {
+		id: ID!
+		createdAt: String!
+		resolvedAt: String
+		description: String!
+		url: String!
+		imageUrl: String!
+	}
 
-    type Price {
-        id: ID!
-        DKK: Int
-        USD: Int
-        EUR: Int
-        GBP: Int
-    }
+	type Sku {
+		id: ID!
+		sku: String!
+		product: Product!
+		price: Price
+		image: ProductImage
+		stock: Int
+	}
 
-    type Category {
-        id: ID!
-        sorting: Int
-        published: Boolean!
-        products: [Product]
-        images: [CategoryImage]
-        slug_da: String
-        slug_en: String
-        name_da: String
-        name_en: String
-        description_da: String
-        description_en: String
-    }
+	type CartSku {
+		id: ID!
+		sku: Sku!
+		customization: String
+	}
 
-    type Attribute {
-        id: ID!
-        name: String
-        options: String
-        position: Int
-    }
+	type Product {
+		id: ID!
+		code: String
+		customizable: Boolean!
+		price: Price
+		hasMultiplePrices: Boolean!
+		sorting: Int
+		published: Boolean!
+		categories: [Category]
+		images: [ProductImage]
+		skus: [Sku]
+		selectedAttributes: String
+		slug_da: String
+		slug_en: String
+		name_da: String
+		name_en: String
+		description_da: String
+		description_en: String
+	}
 
-    type ShippingProfile {
-        id: ID!
-        code: String
-        price: Price
-    }
+	type Price {
+		id: ID!
+		DKK: Int
+		USD: Int
+		EUR: Int
+		GBP: Int
+	}
 
-    type Cart {
-        id: ID!
-        cartSkus: [CartSku]
-    }
+	type Category {
+		id: ID!
+		sorting: Int
+		published: Boolean!
+		products: [Product]
+		images: [CategoryImage]
+		slug_da: String
+		slug_en: String
+		name_da: String
+		name_en: String
+		description_da: String
+		description_en: String
+	}
 
-    type Order {
-        id: ID!
-        number: Int
-        createdAt: String!
-        items: [PurchasedSku]!
-        shipping: String!
-        shippingCosts: String!
-        total: Int!
-        currency: String!
-        charge: String!
-        customer: Customer!
-        shippedAt: String
-        archived: Boolean!
-        trackingCode: String
-        auth: String
-        customerId: String
-        locale: String
-        comment: String
-    }
+	type Attribute {
+		id: ID!
+		name: String
+		options: String
+		position: Int
+	}
 
-    type Customer {
-        id: ID!
-        createdAt: String!
-        email: String!
-        name: String!
-        address: String!
-        address2: String
-        city: String!
-        zip: String!
-        country: String!
-        orders: [Order]
-    }
+	type ShippingProfile {
+		id: ID!
+		code: String
+		price: Price
+	}
 
-    type PurchasedSku {
-        id: ID!
-        code: String!
-        name: String!
-        price: Int!
-        currency: String!
-        image: String!
-        variationInfo: String!
-        customization: String
-    }
+	type Cart {
+		id: ID!
+		cartSkus: [CartSku]
+	}
 
-    type Quote {
-        message: String!
-        creation_tsz: String!
-    }
+	type Order {
+		id: ID!
+		number: Int
+		createdAt: String!
+		items: [PurchasedSku]!
+		shipping: String!
+		shippingCosts: String!
+		total: Int!
+		currency: String!
+		charge: String!
+		customer: Customer!
+		shippedAt: String
+		archived: Boolean!
+		trackingCode: String
+		auth: String
+		customerId: String
+		locale: String
+		comment: String
+	}
 
-    type Query { 
-        quote: Quote
+	type Customer {
+		id: ID!
+		createdAt: String!
+		email: String!
+		name: String!
+		address: String!
+		address2: String
+		city: String!
+		zip: String!
+		country: String!
+		orders: [Order]
+	}
 
-        users: [User]
-        currentUser: User
+	type PurchasedSku {
+		id: ID!
+		code: String!
+		name: String!
+		price: Int!
+		currency: String!
+		image: String!
+		variationInfo: String!
+		customization: String
+	}
 
-        reports: [Report]
+	type Quote {
+		message: String!
+		creation_tsz: String!
+	}
 
-        products(
-            categorySlug: String
-        ): [Product]
-        product(
-            id: ID
-            code: String
-        ): Product
+	type Query {
+		quote: Quote
 
-        attributes: [Attribute]
+		users: [User]
+		currentUser: User
 
-        shippingProfiles: [ShippingProfile]
+		reports: [Report]
 
-        categories: [Category]
-        category(
-            id: ID
-            slug_da: String
-            slug_en: String
-        ): Category
+		products(categorySlug: String): [Product]
+		product(id: ID, code: String): Product
 
-        cart: Cart
+		attributes: [Attribute]
 
-        order(
-            id: ID!
-        ): Order
-        orders: [Order]
-    }
+		shippingProfiles: [ShippingProfile]
 
-    type Mutation {
-        signUp(
-            name: String!
-            email: String!
-            password: String!
-        ): User!
-        signOut: SuccessMessage
-        signIn(
-            email: String!, 
-            password: String!
-        ): User
+		categories: [Category]
+		category(id: ID, slug_da: String, slug_en: String): Category
 
-        createProductImage(
-            mainUrl: String!
-            thumbUrl: String!
-            adminUrl: String!
-            cartUrl: String!
-            galleryUrl: String!
-            productId: ID
-        ): ProductImage!
-        createCategoryImage(
-            thumbUrl: String!
-            adminUrl: String!
-            categoryId: ID
-        ): CategoryImage!
-        deleteImage(
-            id: ID!
-        ): SuccessMessage
+		cart: Cart
 
-        createReport(
-            description: String!,
-            url: String!,
-            imageUrl: String!,
-        ): Report
-        deleteReport(
-            id: ID!
-        ): SuccessMessage
+		order(id: ID!): Order
+		orders: [Order]
+	}
 
-        createProduct(
-            categoryId: ID
-        ): Product
-        deleteProduct(
-            id: ID!
-        ): SuccessMessage
-        updateProduct(
-            id: ID!
-            code: String
-            customizable: Boolean
-            price: Int
-            published: Boolean
-            categories: [ID]
-            images: [ID]
-            skuData: String
-            selectedAttributes: String
-            slug_da: String
-            slug_en: String
-            name_da: String
-            name_en: String
-            description_da: String
-            description_en: String
-        ): Product
-        sortProducts(
-            products: [ID]
-        ): SuccessMessage
+	type Mutation {
+		signUp(name: String!, email: String!, password: String!): User!
+		signOut: SuccessMessage
+		signIn(email: String!, password: String!): User
 
-        createCategory: Category
-        deleteCategory(
-            id: ID!
-        ): SuccessMessage
-        updateCategory(
-            id: ID!
-            published: Boolean
-            images: [ID]
-            slug_da: String
-            slug_en: String
-            name_da: String
-            name_en: String
-            description_da: String
-            description_en: String
-        ): Category
-        sortCategories(
-            categories: [ID]
-        ): SuccessMessage
-        
-        addToCart(
-            sku: String!
-            customization: String
-        ): Cart!
-        removeFromCart(
-            id: ID!
-        ): Cart!
+		createProductImage(
+			mainUrl: String!
+			thumbUrl: String!
+			adminUrl: String!
+			cartUrl: String!
+			galleryUrl: String!
+			productId: ID
+		): ProductImage!
+		createCategoryImage(thumbUrl: String!, adminUrl: String!, categoryId: ID): CategoryImage!
+		deleteImage(id: ID!): SuccessMessage
 
-        createOrder(
-            token: String!
-            currency: String!
-            locale: String!
-            email: String!
-            name: String!
-            address: String!
-            address2: String
-            city: String!
-            zip: String!
-            country: String!
-            shipping: String!
-            comment: String
-        ): Order
+		createReport(description: String!, url: String!, imageUrl: String!): Report
+		deleteReport(id: ID!): SuccessMessage
 
-        markOrderAsShipped(
-            id: String!
-            trackingCode: String
-        ): SuccessMessage
-        
-	    sendConfirmationMail(
-            orderId: String!
-        ): SuccessMessage
-        
-	    sendOrderShippedMail(
-            orderId: String!
-        ): SuccessMessage
+		createProduct(categoryId: ID): Product
+		deleteProduct(id: ID!): SuccessMessage
+		updateProduct(
+			id: ID!
+			code: String
+			customizable: Boolean
+			price: Int
+			published: Boolean
+			categories: [ID]
+			images: [ID]
+			skuData: String
+			selectedAttributes: String
+			slug_da: String
+			slug_en: String
+			name_da: String
+			name_en: String
+			description_da: String
+			description_en: String
+		): Product
+		sortProducts(products: [ID]): SuccessMessage
 
-        previewMail(
-            orderId: String!
-            type: String!
-        ): SuccessMessage
-    }
+		createCategory: Category
+		deleteCategory(id: ID!): SuccessMessage
+		updateCategory(
+			id: ID!
+			published: Boolean
+			images: [ID]
+			slug_da: String
+			slug_en: String
+			name_da: String
+			name_en: String
+			description_da: String
+			description_en: String
+		): Category
+		sortCategories(categories: [ID]): SuccessMessage
+
+		addToCart(sku: String!, customization: String): Cart!
+		removeFromCart(id: ID!): Cart!
+
+		createOrder(
+			token: String!
+			currency: String!
+			locale: String!
+			email: String!
+			name: String!
+			address: String!
+			address2: String
+			city: String!
+			zip: String!
+			country: String!
+			shipping: String!
+			comment: String
+		): Order
+
+		markOrderAsShipped(id: String!, trackingCode: String): SuccessMessage
+
+		sendConfirmationMail(orderId: String!): SuccessMessage
+
+		sendOrderShippedMail(orderId: String!): SuccessMessage
+
+		previewMail(orderId: String!, type: String!): SuccessMessage
+	}
 `
 
 export default typeDefs

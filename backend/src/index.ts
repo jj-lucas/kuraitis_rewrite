@@ -1,4 +1,6 @@
+const express = require('express')
 import { PrismaClient } from '@prisma/client'
+const { ApolloServer } = require('apollo-server-express')
 import resolvers from './resolvers'
 import typeDefs from './type-defs'
 
@@ -10,32 +12,26 @@ require('dotenv').config({ path: '.env' })
 import * as path from 'path';
 const typeDefs = fs.readFileSync(path.join(__dirname, "schema.graphql"), 'utf8')*/
 
-const { GraphQLServer } = require('graphql-yoga')
-
 export type Context = {
 	prisma: PrismaClient
-	request: any
-	response: any
+	req: any
+	res: any
 }
-
-const { makeExecutableSchema } = require('@graphql-tools/schema')
-
-const schema = makeExecutableSchema({
-	typeDefs,
-	resolvers,
-})
 
 const prisma = new PrismaClient()
 
-const server = new GraphQLServer({
-	schema,
+const app = express()
+
+const server = new ApolloServer({
+	typeDefs,
+	resolvers,
 	context: req => ({ ...req, prisma }),
 })
 
-server.express.use(cookieParser())
+app.use(cookieParser())
 
-// Decode the JWT so we can get the user ID on each request
-server.express.use((req, res, next) => {
+// create a middleware that populates the user on each request
+app.use(async (req, res, next) => {
 	const { token } = req.cookies
 	if (token) {
 		const { userId } = jwt.verify(token, process.env.APP_SECRET)
@@ -45,10 +41,12 @@ server.express.use((req, res, next) => {
 	next()
 })
 
-// create a middleware that populates the user on each request
-server.express.use(async (req, res, next) => {
+app.use(async (req, res, next) => {
 	// if they aren't logged in, skip this
-	if (!req.userId) return next()
+	if (!req.userId) {
+		req.user = null
+		return next()
+	}
 	const user = await prisma.user.findUnique({
 		where: { id: req.userId },
 		include: {
@@ -59,14 +57,14 @@ server.express.use(async (req, res, next) => {
 	next()
 })
 
-const options = {
-	port: process.env.PORT,
-	endpoint: '/graphql',
-	subscriptions: '/subscriptions',
-	playground: '/playground',
+server.applyMiddleware({
+	app,
 	cors: {
 		credentials: true,
 		origin: process.env.FRONTEND_URL,
 	},
-}
-server.start(options, ({ port }) => console.log(`Server started, listening on port ${port} for incoming requests.`))
+})
+
+app.listen({ port: process.env.PORT }, () =>
+	console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
+)

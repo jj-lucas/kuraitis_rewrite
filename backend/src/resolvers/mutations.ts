@@ -16,7 +16,7 @@ const generateJWT = (user, ctx) => {
 	// generate a JWT token
 	const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET)
 	// set the JWT as a cookie on the response
-	ctx.response.cookie('token', token, {
+	ctx.res.cookie('token', token, {
 		httpOnly: true,
 		maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 	})
@@ -56,7 +56,7 @@ const mutationResolvers = {
 	},
 
 	signOut: async (parent, args, ctx: Context, info) => {
-		ctx.response.clearCookie('token')
+		ctx.res.clearCookie('token')
 		return {
 			message: 'Goodbye',
 		}
@@ -445,7 +445,7 @@ const mutationResolvers = {
 		let cart = null
 		let gottaRegenerateCookie = false
 
-		const { cartToken } = ctx.request.cookies
+		const { cartToken } = ctx.req.cookies
 
 		// if a cart cookies is found
 		if (cartToken) {
@@ -460,7 +460,7 @@ const mutationResolvers = {
 
 			if (!cart) {
 				// clear the cookie to prevent future errors
-				ctx.response.clearCookie('cartToken')
+				ctx.res.clearCookie('cartToken')
 				gottaRegenerateCookie = true
 			}
 		}
@@ -478,7 +478,7 @@ const mutationResolvers = {
 			const newCartToken = jwt.sign({ cartId: cart.id }, process.env.APP_SECRET)
 
 			// set a cookie with that cart
-			ctx.response.cookie('cartToken', newCartToken, {
+			ctx.res.cookie('cartToken', newCartToken, {
 				maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 			})
 		}
@@ -527,7 +527,7 @@ const mutationResolvers = {
 		let cart = null
 		let gottaRegenerateCookie = false
 
-		const { cartToken } = ctx.request.cookies
+		const { cartToken } = ctx.req.cookies
 
 		// if a cart cookies is found
 		if (cartToken) {
@@ -553,7 +553,7 @@ const mutationResolvers = {
 
 			if (!cart) {
 				// clear the cookie to prevent future errors
-				ctx.response.clearCookie('cartToken')
+				ctx.res.clearCookie('cartToken')
 				gottaRegenerateCookie = true
 			}
 		}
@@ -571,7 +571,7 @@ const mutationResolvers = {
 			const newCartToken = jwt.sign({ cartId: cart.id }, process.env.APP_SECRET)
 
 			// set a cookie with that cart
-			ctx.response.cookie('cartToken', newCartToken, {
+			ctx.res.cookie('cartToken', newCartToken, {
 				maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 			})
 		}
@@ -581,7 +581,7 @@ const mutationResolvers = {
 		let data = null
 		let cart = null
 
-		const { cartToken } = ctx.request.cookies
+		const { cartToken } = ctx.req.cookies
 		const { cartId } = jwt.verify(cartToken, process.env.APP_SECRET)
 
 		try {
@@ -763,7 +763,7 @@ const mutationResolvers = {
 				id: cartId,
 			},
 		})
-		ctx.response.clearCookie('cartToken')
+		ctx.res.clearCookie('cartToken')
 
 		// send order confirmation mail
 		sendConfirmationMail(order)
