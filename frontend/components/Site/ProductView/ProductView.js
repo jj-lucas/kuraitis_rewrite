@@ -72,6 +72,7 @@ const ProductView = ({ code, cart }) => {
 				<Details product={data.product} SKU={SKU} setSKU={setSKU} />
 				<Head>
 					<title>{data.product[`name_${locale}`]} | Sergio Kuraitis: Naturligt Design</title>
+					<meta name="description" content={data.product[`description_${locale}`]} />
 				</Head>
 			</Wrapper>
 			<SellingPoints />
