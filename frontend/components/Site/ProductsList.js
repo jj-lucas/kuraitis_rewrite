@@ -89,28 +89,33 @@ const CategoryOfProducts = ({ products }) => {
 	return (
 		<StyledList>
 			{products &&
-				products.map(product => (
-					<StyledCard key={product.id}>
-						<a
-							href={`/${locale}/${locale == 'da' ? `produkt` : 'product'}/${product.code}/${
-								product[`slug_${locale}`]
-							}`}>
-							<div>
-								<Picture source={product.images[0] ? product.images[0].thumbUrl : '/images/placeholder_product.png'} />
-							</div>
+				products.map(
+					product =>
+						product.published && (
+							<StyledCard key={product.id}>
+								<a
+									href={`/${locale}/${locale == 'da' ? `produkt` : 'product'}/${product.code}/${
+										product[`slug_${locale}`]
+									}`}>
+									<div>
+										<Picture
+											source={product.images[0] ? product.images[0].thumbUrl : '/images/placeholder_product.png'}
+										/>
+									</div>
 
-							<div>
-								<div className="meta">
-									<h3>{product[`name_${locale}`]}</h3>
-								</div>
-								<div className="meta">
-									{fromPrice(product.hasMultiplePrices, locale)}
-									{prettyPrice(product.price && product.price[currency], currency)}
-								</div>
-							</div>
-						</a>
-					</StyledCard>
-				))}
+									<div>
+										<div className="meta">
+											<h3>{product[`name_${locale}`]}</h3>
+										</div>
+										<div className="meta">
+											{fromPrice(product.hasMultiplePrices, locale)}
+											{prettyPrice(product.price && product.price[currency], currency)}
+										</div>
+									</div>
+								</a>
+							</StyledCard>
+						)
+				)}
 		</StyledList>
 	)
 }
