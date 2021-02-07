@@ -31,7 +31,10 @@ export default class MyDocument extends Document {
 	render() {
 		return (
 			<Html>
-				<Head>{this.props.styleTags}</Head>
+				<Head>
+					<meta name="google-site-verification" content="s_-BEnOf_PC0c6rehuABgBvyrqSu1YIXdLzhzG8GQGs" />
+					{this.props.styleTags}
+				</Head>
 				<body>
 					<Main />
 					<NextScript />
