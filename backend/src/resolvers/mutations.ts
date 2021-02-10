@@ -189,6 +189,26 @@ const mutationResolvers = {
 	deleteProduct: async (parent, { id }, ctx: Context, info) => {
 		hasPermissions(ctx, ['ADMIN'])
 
+		// delete any cartSku matching a given product
+		await ctx.prisma.cartSku.deleteMany({
+			where: {
+				sku: {
+					product: {
+						id: id,
+					},
+				},
+			},
+		})
+
+		// delete any sku matching a given product
+		await ctx.prisma.sku.deleteMany({
+			where: {
+				product: {
+					id,
+				},
+			},
+		})
+
 		// delete the product
 		await ctx.prisma.product.delete({ where: { id } })
 

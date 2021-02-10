@@ -88,9 +88,9 @@ const UPDATE_PRODUCT_MUTATION = gql`
 `
 
 const DELETE_PRODUCT_MUTATION = gql`
-	mutation DELETDELETE_PRODUCT_MUTATIONE_CATEGORY_MUTATION($id: ID!) {
+	mutation DELETE_PRODUCT_MUTATION_CATEGORY_MUTATION($id: ID!) {
 		deleteProduct(id: $id) {
-			id
+			message
 		}
 	}
 `

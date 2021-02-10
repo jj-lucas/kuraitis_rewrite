@@ -47,7 +47,7 @@ const UPDATE_CATEGORY_MUTATION = gql`
 const DELETE_CATEGORY_MUTATION = gql`
 	mutation DELETE_CATEGORY_MUTATION($id: ID!) {
 		deleteCategory(id: $id) {
-			id
+			message
 		}
 	}
 `
