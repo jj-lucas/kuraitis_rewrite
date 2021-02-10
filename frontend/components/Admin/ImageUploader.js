@@ -88,54 +88,57 @@ const ImageUploader = props => {
 
 	const onFileUpload = async e => {
 		const files = e.target.files
-		const data = new FormData()
-		data.append('file', files[0])
-		if (props.categoryId) {
-			data.append('upload_preset', 'kuraitis_category')
-		} else if (props.productId) {
-			data.append('upload_preset', 'kuraitis_product')
-		}
-		const res = await fetch(cloudinaryUrl, {
-			method: 'POST',
-			body: data,
-		})
-		const file = await res.json()
 
-		if (props.categoryId) {
-			// register the uploaded asset
-			await uploadCategoryImage({
-				variables: {
-					categoryId: props.categoryId,
-					thumbUrl: file.secure_url,
-					adminUrl: file.eager[0].secure_url,
-				},
-				refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
+		for (let i = 0; i < files.length; i++) {
+			const data = new FormData()
+			data.append('file', files[i])
+			if (props.categoryId) {
+				data.append('upload_preset', 'kuraitis_category')
+			} else if (props.productId) {
+				data.append('upload_preset', 'kuraitis_product')
+			}
+			const res = await fetch(cloudinaryUrl, {
+				method: 'POST',
+				body: data,
 			})
-				.catch(error => {
-					console.log(error)
+			const file = await res.json()
+
+			if (props.categoryId) {
+				// register the uploaded asset
+				await uploadCategoryImage({
+					variables: {
+						categoryId: props.categoryId,
+						thumbUrl: file.secure_url,
+						adminUrl: file.eager[0].secure_url,
+					},
+					refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
 				})
-				.then(response => {
-					console.log(response.data)
+					.catch(error => {
+						console.log(error)
+					})
+					.then(response => {
+						console.log(response.data)
+					})
+			} else if (props.productId) {
+				// register the uploaded asset
+				await uploadProductImage({
+					variables: {
+						productId: props.productId,
+						mainUrl: file.secure_url,
+						thumbUrl: file.eager[0].secure_url,
+						adminUrl: file.eager[1].secure_url,
+						cartUrl: file.eager[2].secure_url,
+						galleryUrl: file.eager[3].secure_url,
+					},
+					refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
 				})
-		} else if (props.productId) {
-			// register the uploaded asset
-			await uploadProductImage({
-				variables: {
-					productId: props.productId,
-					mainUrl: file.secure_url,
-					thumbUrl: file.eager[0].secure_url,
-					adminUrl: file.eager[1].secure_url,
-					cartUrl: file.eager[2].secure_url,
-					galleryUrl: file.eager[3].secure_url,
-				},
-				refetchQueries: [{ query: props.queryToRefetch, variables: { id } }],
-			})
-				.catch(error => {
-					console.log(error)
-				})
-				.then(response => {
-					console.log(response.data)
-				})
+					.catch(error => {
+						console.log(error)
+					})
+					.then(response => {
+						console.log(response.data)
+					})
+			}
 		}
 	}
 
@@ -163,7 +166,7 @@ const ImageUploader = props => {
 			<h3>Images</h3>
 			<label htmlFor="file">
 				Image
-				<input type="file" id="file" name="file" placeholder="Upload an image" onChange={onFileUpload} />
+				<input type="file" id="file" name="file" multiple placeholder="Upload an image" onChange={onFileUpload} />
 			</label>
 
 			<SortableList onSortEnd={onSortEnd} axis="xy" distance={1}>
