@@ -11,6 +11,12 @@ const Meta = () => (
 			rel="stylesheet"></link>
 		<link rel="stylesheet" href="/static/droidsans_regular_macroman/stylesheet.css" type="text/css" charSet="utf-8" />
 		<title>Sergio Kuraitis: Naturligt Design</title>
+		<script
+			id="Cookiebot"
+			src="https://consent.cookiebot.com/uc.js"
+			data-cbid="8acec528-3104-4e78-8c7a-fb958f7ceff1"
+			data-blockingmode="auto"
+			type="text/javascript"></script>
 	</Head>
 )
 
