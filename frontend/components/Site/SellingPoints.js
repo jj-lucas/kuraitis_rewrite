@@ -45,14 +45,17 @@ const SellingPoints = () => {
 						Actual delivery time is not included. See the FAQ for more info.
 					</p>
 				) : (
-					<p>__selling_points_delivery</p>
+					<p>
+						3-5 dage, indtil din ordre er foretaget og afsendt. <br />
+						Faktisk leveringstid er ikke inkluderet. Se FAQ for mere info.
+					</p>
 				)}
 			</div>
 			<div>
 				<div>
 					<GiftIcon size={25} />
 				</div>
-				{locale === 'en' ? <p>All items are shipped in gift packaging.</p> : <p>__selling_points_gift_wrapping</p>}
+				{locale === 'en' ? <p>All items are shipped in gift packaging.</p> : <p>Alle varer sendes i gaveemballage.</p>}
 			</div>
 			<div>
 				<div>
@@ -64,7 +67,10 @@ const SellingPoints = () => {
 						30 days return right for non-customized products.
 					</p>
 				) : (
-					<p>__selling_points_cancellations_returns</p>
+					<p>
+						Gratis afbestilling inden forsendelse. <br />
+						30 dages returret for ikke-tilpassede produkter.
+					</p>
 				)}
 			</div>
 		</StyledSellingPoints>

@@ -2,97 +2,100 @@ const translations = {
 	// Mails
 	subject_order_confirmation: {
 		en: data => `Thank you for your order from Kuraitis.dk (#${data.id})`,
-		da: '__subject_order_confirmation',
+		da: data => `Tak for din ordre fra Kuraitis.dk (#${data.id})`,
 	},
 	subject_shipping: {
 		en: data => `Your order from Kuraitis.dk has been shipped (#${data.id})`,
-		da: '__subject_shipping',
+		da: data => `Din ordre fra Kuraitis.dk er sendt (#${data.id})`,
 	},
 	// Shipment mail
 	order_shipped: {
 		en: 'Your order has been shipped',
-		da: '__order_shipped',
+		da: 'Din bestilling er blevet afsendt',
 	},
 	shipped_today: {
 		en: data => `Your order #${data.id} placed on the ${data.date} is on its way.`,
-		da: '__shipped_today',
+		da: data => `Din ordre #${data.id}, der blev afgivet den ${data.date}, er afsendt.`,
 	},
 	track_package: {
 		en: 'Track your package',
-		da: '__track_package',
+		da: 'Følg din pakke',
 	},
 	additional_questions: {
 		en: data =>
 			`For any additional question check out the FAQ page <a href="${data.url}/en/faq">here</a>.<br />
 			You are welcome to contact Sergio directly for any question/comment regarding your order.`,
-		da: '__additional_questions',
+		da: data =>
+			`For yderligere spørgsmål, se FAQ side <a href="${data.url}/en/faq">her</a>.<br />
+			Du er velkommen til at kontakte Sergio direkte for spørgsmål / kommentarer vedrørende din ordre.`,
 	},
 
 	// Order confirmation mail
 	thank_you_for_order: {
 		en: 'Thank you for your order',
-		da: '__thank_you_for_order',
+		da: 'Tak for din ordre',
 	},
 	you_will_receive_mail: {
 		en:
 			"You'll receive an email when your items have been shipped. <br>If you have any questions, feel free to respond to this mail.",
-		da: '__you_will_receive_mail',
+		da:
+			'Du modtager en e-mail, når dine varer er sendt. <br> Hvis du har spørgsmål, er du velkommen til at svare på denne mail.',
 	},
 	view_order_status: {
 		en: 'View order status',
-		da: '__view_order_status',
+		da: 'Se ordrestatus',
 	},
 	summary: {
 		en: 'summary',
-		da: '__summary',
+		da: 'summary',
 	},
 	order_nr: {
 		en: 'Order #',
-		da: '__order_nr',
+		da: 'Bestillingsnummer',
 	},
 	order_date: {
 		en: 'Order Date',
-		da: '__order_date',
+		da: 'Bestillingsdato',
 	},
 	order_total: {
 		en: 'Order total (VAT included)',
-		da: '__order_total (inkl moms)',
+		da: 'Bestilt i alt (inkl moms)',
 	},
 	shipping_address: {
 		en: 'Shipping address',
-		da: '__shipping_address',
+		da: 'Leveringsadresse',
 	},
 	items_ordered: {
 		en: 'Items ordered',
-		da: '__items_ordered',
+		da: 'Varer bestilt',
 	},
 	items_name: {
 		en: 'name',
-		da: '__items_ordered',
+		da: 'navn',
 	},
 	items_sku: {
 		en: 'SKU',
-		da: '__items_sku',
+		da: 'SKU',
 	},
 	items_price: {
 		en: 'price',
-		da: '__items_price',
+		da: 'pris',
 	},
 	subtotal: {
 		en: 'Subtotal',
-		da: '__subtotal',
+		da: 'Subtotal',
 	},
 	subtotal_item: {
 		en: 'item',
-		da: '__subtotal_item',
+		da: 'vare',
 	},
 	subtotal_items: {
 		en: 'items',
-		da: '__subtotal_items',
+		da: 'varer',
 	},
 	comments: {
 		en: 'Comments about your order',
-		da: 'Kommentarer om din ordre',
+		da: 'Kommentarer til din ordre',
 	},
 
 	// shipping codes
@@ -115,11 +118,12 @@ const translations = {
 
 	information: {
 		en: 'Information',
-		da: '__information',
+		da: 'Information',
 	},
 	you_are_receiving_this: {
 		en: `You are receiving this email because you have placed an order on <a href="http://www.kuraitis.dk">www.kuraitis.dk</a>`,
-		da: '__you_are_receiving_this',
+		da:
+			'Du modtager denne e-mail, fordi du har afgivet en ordre på <a href="http://www.kuraitis.dk">www.kuraitis.dk</a>',
 	},
 }
 

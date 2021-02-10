@@ -141,7 +141,7 @@ const Cart = () => {
 						</h3>
 						<Form>
 							<button type="submit" onClick={checkout}>
-								{translate('checkout', locale)}
+								{translate('to_the_checkout', locale)}
 							</button>
 						</Form>{' '}
 					</>

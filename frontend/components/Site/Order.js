@@ -275,12 +275,12 @@ const Order = ({ orderId }) => {
 								</p>
 							) : (
 								<p>
-									Check out the{' '}
+									Tjek siden{' '}
 									<Link href={`/${locale}/faq`}>
-										<a>Frequently Asked Questions</a>
-									</Link>{' '}
-									page. You are welcome to <a href="mailto:sergio@kuraitis.dk">contact Sergio</a> directly for any
-									question/comment regarding your order.
+										<a>Ofte stillede spørgsmål</a>
+									</Link>
+									. Du er velkommen til at <a href="mailto:sergio@kuraitis.dk">kontakte Sergio</a> direkte for enhver
+									spørgsmål / kommentar vedrørende din ordre.
 								</p>
 							)}
 						</fielset>

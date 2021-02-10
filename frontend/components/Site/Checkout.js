@@ -269,7 +269,7 @@ const Checkout = () => {
 									currency
 								)}
 								{shipping == 'standard_denmark'
-									? ' (Not trackable, choose Track and Trace to monitor shipment progress)'
+									? ' (Kan ikke spores, vælg Track and Trace for at overvåge forsendelsesfremskridt)'
 									: ' (Not trackable, choose Track and Trace to monitor shipment progress)'}
 							</label>
 							<br />
@@ -319,10 +319,10 @@ const Checkout = () => {
 								}}
 								comment={comment}
 								image={'/logo.png'}>
-								<button type="submit">{translate('checkout', locale)}</button>
+								<button type="submit">{translate('pay', locale)}</button>
 							</Payment>
 						) : (
-							<button type="submit">{translate('checkout', locale)}</button>
+							<button type="submit">{translate('pay', locale)}</button>
 						)}
 					</Form>
 				</div>
@@ -335,7 +335,7 @@ const Checkout = () => {
 								<>
 									<p title={translate('choose_track_trace', locale)}>
 										<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
-										<strong> Standard delivery</strong>
+										<strong> {translate(shipping, locale)}</strong>
 									</p>
 									<p>
 										{prettyPrice(
@@ -349,7 +349,7 @@ const Checkout = () => {
 								<>
 									<p>
 										<DeliveryIcon size={23} style={{ marginRight: 10, marginLeft: 10 }} />
-										<strong> Standard delivery</strong>
+										<strong> {translate('standard_international', locale)}</strong>
 									</p>
 									<p>
 										{prettyPrice(

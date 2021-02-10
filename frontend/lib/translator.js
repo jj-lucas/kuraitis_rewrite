@@ -45,13 +45,13 @@ const translations = {
 	},
 	customization: {
 		en: 'Customization',
-		da: '__customization',
+		da: 'Tilpasning',
 	},
 
 	// Cart
 	no_items_in_cart: {
 		en: 'There are no items in your shopping cart',
-		da: '__no_items_in_cart',
+		da: 'Der er ingen varer i din indkøbskurv',
 	},
 	your_cart: {
 		en: 'Your shopping cart',
@@ -81,15 +81,23 @@ const translations = {
 		en: 'The return right does not include customized products',
 		da: 'Returret inkluderer ikke customiserede produkter',
 	},
+	to_the_checkout: {
+		en: 'Checkout',
+		da: 'Til kassen',
+	},
 
 	// Checkout
 	checkout: {
 		en: 'Checkout',
-		da: '__checkout',
+		da: 'Checkout',
+	},
+	pay: {
+		en: 'Proceed to payment',
+		da: 'Fortsæt til betaling',
 	},
 	total: {
 		en: 'Total',
-		da: '__total',
+		da: 'Total',
 	},
 	vat_included: {
 		en: 'VAT included',
@@ -97,43 +105,43 @@ const translations = {
 	},
 	order_summary: {
 		en: 'Order summary',
-		da: '__order_summary',
+		da: 'Ordreoversigt',
 	},
 	customer_information: {
-		en: 'Customer_information',
-		da: '__customer_information',
+		en: 'Customer information',
+		da: 'Kunde information',
 	},
 	email: {
 		en: 'Email Address',
-		da: '__email',
+		da: 'Email adresse',
 	},
 	shipping_address: {
 		en: 'Shipping address',
-		da: '__shipping_address',
+		da: 'Leveringsadresse',
 	},
 	name: {
-		en: 'Recipient Name',
-		da: '__name',
+		en: 'Recipient name',
+		da: 'Modtagers navn',
 	},
 	address: {
 		en: 'Address',
-		da: '__address',
+		da: 'Adresse',
 	},
 	address2: {
 		en: 'Apt, suite, etc.',
-		da: '__address2',
+		da: 'Apt, suite',
 	},
 	city: {
 		en: 'City',
-		da: '__city',
+		da: 'By',
 	},
 	zip: {
 		en: 'ZIP',
-		da: '__zip',
+		da: 'Postnummer',
 	},
 	shipping_method: {
 		en: 'Shipping method',
-		da: '__shipping_method',
+		da: 'Fragtmetode',
 	},
 	comments: {
 		en: 'Comments about your order',
@@ -143,7 +151,7 @@ const translations = {
 	// Order
 	your_order: {
 		en: 'Your order',
-		da: '__your_order',
+		da: 'Din bestilling',
 	},
 	track_trace_international: {
 		en: 'Track & Trace',
@@ -155,43 +163,43 @@ const translations = {
 	},
 	standard_international: {
 		en: 'Standard shipping',
-		da: 'Standard shipping',
+		da: 'Standard levering',
 	},
 	standard_denmark: {
 		en: 'Standard shipping',
-		da: 'Standard shipping',
+		da: 'Standard levering',
 	},
 	customer_details: {
 		en: 'Customer information',
-		da: '__customer_details',
+		da: 'Kunde information',
 	},
 	shipment_status: {
 		en: 'Shipment status',
-		da: '__shipment_status',
+		da: 'Forsendelsesstatus',
 	},
 	still_in_progress: {
 		en: 'Sergio is now making the products you purchased. You will receive an email when your order has been shipped.',
-		da: '__still_in_progress',
+		da: 'Sergio fremstiller nu de produkter, du har købt. Du modtager en e-mail, når din ordre er afsendt.',
 	},
 	additional_help: {
 		en: 'Need additional help?',
-		da: '__additional_help',
+		da: 'Brug for yderligere hjælp?',
 	},
 	order_details: {
 		en: 'Order details',
-		da: '__order_details',
+		da: 'Ordre detaljer',
 	},
 	order_date: {
 		en: 'Order date',
-		da: '__order_date',
+		da: 'Bestillingsdato',
 	},
 	order_id: {
 		en: 'Order ID',
-		da: '__order_id',
+		da: 'Ordre ID',
 	},
 	order_number: {
 		en: 'Order #',
-		da: '__order_number',
+		da: 'Bestillingsnummer #',
 	},
 }
 
