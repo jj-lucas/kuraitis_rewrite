@@ -80,8 +80,8 @@ model Product {
   sorting            Int?
   published          Boolean        @default(false)
   selectedAttributes String?
-  slug_da            String?        @unique
-  slug_en            String?        @unique
+  slug_da            String?
+  slug_en            String?
   name_da            String?
   name_en            String?
   description_da     String?

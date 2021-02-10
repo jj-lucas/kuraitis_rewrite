@@ -1,5 +1,3 @@
-# npx prisma migrate save --experimental
-
-# npx prisma migrate up --experimental
+# prisma migrate dev --preview-feature
 
 # npx prisma generate

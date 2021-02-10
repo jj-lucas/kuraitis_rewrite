@@ -10,19 +10,30 @@ import { CartContext, CurrencyContext, LocaleContext, prettyPrice, translate } f
 const StyledCheckout = styled.div`
 	.main {
 		display: flex;
+		flex-wrap: wrap;
 	}
 	.remove {
 		display: none;
 	}
 
 	.details {
-		flex-basis: 60%;
+		flex-basis: 100%;
+		@media (min-width: ${props => props.theme.breakpoints.sm}) {
+			flex-basis: 60%;
+		}
 	}
 	.items {
-		flex-basis: 40%;
+		flex-basis: 100%;
+		@media (min-width: ${props => props.theme.breakpoints.sm}) {
+			flex-basis: 40%;
+		}
 
 		ul {
 			border-bottom: 1px solid black;
+		}
+
+		img {
+			margin-right: 1rem;
 		}
 	}
 	${Form} {

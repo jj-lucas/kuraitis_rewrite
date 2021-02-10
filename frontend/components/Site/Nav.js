@@ -47,19 +47,17 @@ const links = {
 		{ label: 'Home', path: '/' },
 		{ label: 'Products', path: '/products' },
 		{ label: 'About', path: '/about' },
-		{ label: 'Markets', path: '/markets' },
+		/*{ label: 'Markets', path: '/markets' },*/
 		{ label: 'FAQ', path: '/faq' },
 		{ label: 'Contact', path: '/contact' },
-		{ label: 'TESTS', path: '/tests' },
 	],
 	da: [
 		{ label: 'Hjem', path: '/' },
 		{ label: 'Produkter', path: '/produkter' },
 		{ label: 'Om Sergio', path: '/om-sergio' },
-		{ label: 'Markeder', path: '/markeder' },
+		/*{ label: 'Markeder', path: '/markeder' },*/
 		{ label: 'FAQ', path: '/faq' },
 		{ label: 'Kontakt', path: '/contact' },
-		{ label: 'TESTS', path: '/tests' },
 	],
 }
 
@@ -119,4 +117,3 @@ const Nav = ({ className, children }) => {
 }
 
 export { Nav }
-
